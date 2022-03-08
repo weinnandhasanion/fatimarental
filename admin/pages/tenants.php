@@ -36,14 +36,14 @@ $rooms = mysqli_fetch_all($roomsRes, MYSQLI_ASSOC);
       <?php include './../templates/topnav.php'?>
       <div class="main-content">
         <div class="row ">
-          <div class="col-lg-7 col-md-12">
+          <div class="col-md-12">
             <div class="card" style="min-height: 485px">
               <div class="card-header card-header-text d-flex justify-content-start align-items-center">
                 <h4 class="card-title flex-grow-1">Tenant Status</h4>
                 <button class="btn btn-primary" data-toggle="modal" data-target="#add-tenant-modal">Add &#43;</button>
               </div>
               <div class="card-content table-responsive">
-                <table class="table table-hover">
+                <table class="table table-hover" id='tenants-table'>
                   <thead class="text-primary">
                     <tr>
                       <th>ID</th>
@@ -58,41 +58,20 @@ $rooms = mysqli_fetch_all($roomsRes, MYSQLI_ASSOC);
                       foreach ($users as $user) {
                       ?>
                     <tr>
-                      <td><?=$user['id']?></td>
-                      <td><?=$user['first_name'] . " " . $user['middle_initial'] . " " . $user['last_name']?></td>
-                      <td>₱3,000</td>
-                      <td><?=$user['room_number']?></td>
+                      <td class='align-middle'><?=$user['id']?></td>
+                      <td class='align-middle'><?=$user['first_name'] . " " . $user['middle_initial'] . " " . $user['last_name']?></td>
+                      <td class='align-middle'>₱3,000</td>
+                      <td class='align-middle'>Paid</td>
+                      <td class='align-middle'>
+                        <button class="btn btn-small btn-link">View</button>
+                        <button class="btn btn-small btn-link text-success">Bill</button>
+                      </td>
                     </tr>
-                    <?php
+                      <?php
                       }
-                      ?>
+                    ?>
                   </tbody>
                 </table>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-5 col-md-12">
-            <div class="card" style="min-height: 485px">
-              <div class="card-header card-header-text">
-                <h4 class="card-title">Contact Tenant</h4>
-                <hr>
-              </div>
-              <div class="card-content">
-                <div>
-                  <form action="#" id="contact-tenant-form">
-                    <label for="fname">Room Number</label>
-                    <input class="form-control mb-2" type="text" id="fname" name="Room" placeholder="Room">
-                    <label for="lname">Name</label>
-                    <input class="form-control mb-2" type="text" id="lname" name="Number" placeholder="Name of tenant">
-                    <label for="lname">Contact number</label>
-                    <input class="form-control mb-2" type="text" id="lname" name="Number" placeholder="Contact number">
-                    <label for="lname">Payment</label>
-                    <input class="form-control mb-2" type="text" id="lname" name="Number"
-                      placeholder="Enter Amount of payment">
-                    <hr>
-                    <button class="btn btn-primary" type="submit">Send &#8594</button>
-                  </form>
-                </div>
               </div>
             </div>
           </div>
@@ -199,8 +178,12 @@ $rooms = mysqli_fetch_all($roomsRes, MYSQLI_ASSOC);
     <script src="./../js/jquery-3.3.1.min.js"></script>
     <script src="./../js/popper.min.js"></script>
     <script src="./../js/bootstrap.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+
     <script type="text/javascript">
     $(document).ready(function() {
+      $('#tenants-table').DataTable();
+
       $('#sidebarCollapse').on('click', function() {
         $('#sidebar').toggleClass('active');
         $('#content').toggleClass('active');

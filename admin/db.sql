@@ -131,3 +131,26 @@ create table `reservations` (
     PRIMARY KEY (`id`),
     FOREIGN KEY (`room_id`) REFERENCES `rooms`(`id`)
   );
+create table `bills` (
+    `id` INT AUTO_INCREMENT,
+    `room_id` int,
+    `admin_id` int,
+    `room_charge` FLOAT,
+    `electricity_balance` FLOAT,
+    `water_balance` FLOAT, 
+    `start_period` timestamp NULL,
+    `end_period` TIMESTAMP NULL,
+    `date_added` timestamp not null DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`room_id`) REFERENCES `rooms`(`id`),
+    FOREIGN KEY (`admin_id`) REFERENCES `admins`(`id`)
+  );
+create table `tenant_bills` (
+    `id` INT AUTO_INCREMENT,
+    `tenant_id` int,
+    `bill_id` int,
+    `date_added` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`tenant_id`) REFERENCES `tenants`(`id`),
+    FOREIGN KEY (`bill_id`) REFERENCES `bills`(`id`)
+  );

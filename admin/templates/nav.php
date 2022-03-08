@@ -10,7 +10,6 @@ $page = basename($_SERVER['PHP_SELF']);
     <li class="<?= $page === 'dashboard.php' ? "active" : "" ?>">
       <a href="./dashboard.php" class="dashboard"><i class="material-icons">dashboard</i><span>Dashboard</span></a>
     </li>
-
     <div class="small-screen navbar-display">
       <li class="dropdown d-lg-none d-md-block d-xl-none d-sm-block">
         <a href="#homeSubmenu0" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
@@ -19,15 +18,11 @@ $page = basename($_SERVER['PHP_SELF']);
           <li>
             <a href="#">You have 5 new messages</a>
           </li>
-
         </ul>
       </li>
-
-
       <li class="d-lg-none d-md-block d-xl-none d-sm-block">
         <a href="#"><i class="material-icons">person</i><span>user</span></a>
       </li>
-
       <li class="d-lg-none d-md-block d-xl-none d-sm-block">
         <a href="#"><i class="material-icons">settings</i><span>setting</span></a>
       </li>
@@ -41,7 +36,6 @@ $page = basename($_SERVER['PHP_SELF']);
       <a href="./tenants.php">
         <i class="material-icons">group</i><span>Tenants</span></a>
     </li>
-
 
     <li class="<?= $page === 'records.php' ? "active" : "" ?>">
       <a href="./records.php">
