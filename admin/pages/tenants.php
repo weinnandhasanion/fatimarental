@@ -63,7 +63,8 @@ $rooms = mysqli_fetch_all($roomsRes, MYSQLI_ASSOC);
                       <td class='align-middle'>₱3,000</td>
                       <td class='align-middle'>Paid</td>
                       <td class='align-middle'>
-                        <button class="btn btn-small btn-link">View</button>
+                        <button class="btn btn-small btn-link" onclick="viewMember(<?=htmlspecialchars(json_encode($user))?>)">View</button>
+                        <button class="btn btn-small btn-link" onclick="updateMember(<?=htmlspecialchars(json_encode($user))?>)">Update</button>
                         <button class="btn btn-small btn-link text-success">Bill</button>
                       </td>
                     </tr>
@@ -78,6 +79,8 @@ $rooms = mysqli_fetch_all($roomsRes, MYSQLI_ASSOC);
         </div>
       </div>
     </div>
+
+    <!-- Add Tenant Modal -->
     <div id="add-tenant-modal" tabindex="-1" class="modal fade" role="dialog">
       <form id="add-tenant-form" enctype="multipart/form-data">
         <div class="modal-dialog" role='document'>
@@ -175,84 +178,345 @@ $rooms = mysqli_fetch_all($roomsRes, MYSQLI_ASSOC);
       </form>
     </div>
 
+    <!-- View Tenant Modal -->
+    <div id="view-tenant-modal" tabindex="-1" class="modal fade" role="dialog">
+      <div class="modal-dialog" role='document'>
+        <div class="modal-content" style="max-width:600px">
+          <div class="modal-header">
+            <h5 class="modal-title">Tenant Details</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row mb-2">
+              <div class="col-sm-5">
+                <label>First Name</label>
+                <input class="form-control" type="text" name="first_name-view" readonly>
+                <small id='first_name-error' class='text-danger'></small>
+              </div>
+              <div class="col-sm-5">
+                <label>Last Name</label>
+                <input class="form-control" type="text" name="last_name-view" readonly>
+                <small id='last_name-error' class='text-danger'></small>
+              </div>
+              <div class="col-sm-2">
+                <label>M.I.</label>
+                <input class="form-control" type="text" name="middle_initial-view" readonly>
+                <small id='middle_initial-error' class='text-danger'></small>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-sm-12">
+                <label>Room</label>
+                <select class="form-control" placeholder="Enter Room" name="room_number-view" readonly>
+                  <?php
+                  foreach ($rooms as $room) {
+                  ?>
+                  <option value="<?=$room['id']?>"><?=$room['room_number']?></option>
+                  <?php
+                  }
+                  ?>
+                </select>
+                <small id='room_number-error' class='text-danger'></small>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-sm-6">
+                <label>Birthdate</label>
+                <input class="form-control" type="date" name="birthdate-view" readonly>
+                <small id='birthdate-error' class='text-danger'></small>
+              </div>
+              <div class="col-sm-6">
+                <label>Gender</label>
+                <select class="form-control" name="gender-view" readonly>
+                  <option value="0">Male</option>
+                  <option value="1">Female</option>
+                  <option value="2">Unspecified</option>
+                </select>
+                <small id='gender-error' class='text-danger'></small>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-sm-6">
+                <label>Email Address</label>
+                <input class="form-control" type="email" name="email_address-view" readonly>
+                <small id='email_address-error' class='text-danger'></small>
+              </div>
+              <div class="col-sm-6">
+                <label>Contact Number</label>
+                <input class="form-control" type="text" name="contact_number-view" readonly />
+                <small id='contact_number-error' class='text-danger'></small>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-sm-12">
+                <label>Address</label>
+                <textarea rows="2" class="form-control" type="text" name="address-view" readonly></textarea>
+                <small id='address-error' class='text-danger'></small>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-sm-12 d-flex flex-column">
+                Valid ID
+                <input type="file" hidden="true" id="file-input" name="valid_id">
+                <small id="valid_id-error" class="text-danger"></small>
+                <small id="pathname-cont"></small>
+                <button type="button" class="btn btn-primary btn-sm" style="width: 100px"
+                  onclick="document.querySelector('#file-input').click()">View</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Update Tenant Modal -->
+    <div id="update-tenant-modal" tabindex="-1" class="modal fade" role="dialog">
+      <form id="update-tenant-form" method="POST">
+        <div class="modal-dialog" role='document'>
+          <div class="modal-content" style="max-width:600px">
+            <div class="modal-header">
+              <h5 class="modal-title">Update Tenant</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <input type="hidden" name="id-update" />
+              <div class="row mb-2">
+                <div class="col-sm-5">
+                  <label>First Name</label>
+                  <input class="form-control" type="text" name="first_name-update" required>
+                  <small id='first_name-error' class='text-danger'></small>
+                </div>
+                <div class="col-sm-5">
+                  <label>Last Name</label>
+                  <input class="form-control" type="text" name="last_name-update" required>
+                  <small id='last_name-error' class='text-danger'></small>
+                </div>
+                <div class="col-sm-2">
+                  <label>M.I.</label>
+                  <input class="form-control" type="text" name="middle_initial-update" required>
+                  <small id='middle_initial-error' class='text-danger'></small>
+                </div>
+              </div>
+              <div class="row mb-2">
+                <div class="col-sm-12">
+                  <label>Room</label>
+                  <select class="form-control" placeholder="Enter Room" name="room_number-update" required>
+                    <?php
+                    foreach ($rooms as $room) {
+                    ?>
+                    <option value="<?=$room['id']?>"><?=$room['room_number']?></option>
+                    <?php
+                    }
+                    ?>
+                  </select>
+                  <small id='room_number-error' class='text-danger'></small>
+                </div>
+              </div>
+              <div class="row mb-2">
+                <div class="col-sm-6">
+                  <label>Birthdate</label>
+                  <input class="form-control" type="date" name="birthdate-update" required>
+                  <small id='birthdate-error' class='text-danger'></small>
+                </div>
+                <div class="col-sm-6">
+                  <label>Gender</label>
+                  <select class="form-control" name="gender-update" required>
+                    <option value="0">Male</option>
+                    <option value="1">Female</option>
+                    <option value="2">Unspecified</option>
+                  </select>
+                  <small id='gender-error' class='text-danger'></small>
+                </div>
+              </div>
+              <div class="row mb-2">
+                <div class="col-sm-6">
+                  <label>Email Address</label>
+                  <input class="form-control" type="email" name="email_address-update" required>
+                  <small id='email_address-error' class='text-danger'></small>
+                </div>
+                <div class="col-sm-6">
+                  <label>Contact Number</label>
+                  <input class="form-control" type="text" name="contact_number-update" required />
+                  <small id='contact_number-error' class='text-danger'></small>
+                </div>
+              </div>
+              <div class="row mb-2">
+                <div class="col-sm-12">
+                  <label>Address</label>
+                  <textarea rows="2" class="form-control" type="text" name="address-update" required></textarea>
+                  <small id='address-error' class='text-danger'></small>
+                </div>
+              </div>
+              <div class="row mb-2">
+                <div class="col-sm-12 d-flex flex-column">
+                  Valid ID
+                  <input type="text" hidden id="valid_id-update" name="valid_id-update">
+                  <input type="file" hidden="true" id="file-input-update" name="valid_id">
+                  <small id="valid_id-update-error" class="text-danger"></small>
+                  <small id="pathname-cont-update"></small>
+                  <div class="d-flex">
+                    <button type="button" class="btn btn-secondary btn-sm mr-1" style="width: 70px"
+                      onclick="">View</button>
+                    <button type="button" class="btn btn-secondary btn-sm mr-1" style="width: 70px"
+                      onclick="document.querySelector('#file-input-update').click()">Upload</button>
+                    <button id='valid_id-delete' type="button" class="btn btn-danger btn-sm" style="width: 70px"
+                      onclick="">Delete</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-success">Update</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
     <script src="./../js/jquery-3.3.1.min.js"></script>
     <script src="./../js/popper.min.js"></script>
     <script src="./../js/bootstrap.min.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
 
     <script type="text/javascript">
-    $(document).ready(function() {
-      $('#tenants-table').DataTable();
+      function viewMember(user) {
+        for (key in user) {
+          $(`input[name=${key}-view]`).val(user[key]);
+        }
+        $('textarea[name=address-view]').val(user.address);
+        $('#view-tenant-modal').modal('show');
+      };
 
-      $('#sidebarCollapse').on('click', function() {
-        $('#sidebar').toggleClass('active');
-        $('#content').toggleClass('active');
-      });
+      function updateMember(user) {
+        for (key in user) {
+          $(`input[name=${key}-update]`).val(user[key]);
+        }
+        $('textarea[name=address-update]').val(user.address);
+        if ($('#valid_id-update').val() !== '') {
+          $('#pathname-cont-update').text(user.valid_id);
+          $('#valid_id-delete').removeAttr('disabled');
+        } else {
+          $('#valid_id-delete').attr('disabled', 'disabled');
+        }
+        $('#update-tenant-modal').modal('show');
+      }
 
-      $('.more-button,.body-overlay').on('click', function() {
-        $('#sidebar,.body-overlay').toggleClass('show-nav');
-      });
+      $(document).ready(function() {
+        $('#tenants-table').DataTable();
 
-      $('.sidebar-link').click(function(e) {
-        if ($(this).hasClass('active')) {
+        $('#sidebarCollapse').on('click', function() {
+          $('#sidebar').toggleClass('active');
+          $('#content').toggleClass('active');
+        });
+
+        $('.more-button,.body-overlay').on('click', function() {
+          $('#sidebar,.body-overlay').toggleClass('show-nav');
+        });
+
+        $('.sidebar-link').click(function(e) {
+          if ($(this).hasClass('active')) {
+            e.preventDefault();
+            return;
+          }
+          $('.sidebar-link').removeClass('active');
+          $(this).addClass('active');
+        });
+
+        // Add image in add tenant modal
+        $("#file-input").change(function(e) {
+          let {
+            files
+          } = e.target;
+
+          if (files.length > 0) {
+            $('#pathname-cont').text(files[0].name);
+          }
+
+          $('#valid_id-error').text('');
+        });
+
+        // Add tenant
+        $("#add-tenant-form").submit(function(e) {
           e.preventDefault();
-          return;
-        }
-        $('.sidebar-link').removeClass('active');
-        $(this).addClass('active');
-      });
+          let data = $(this).serializeArray();
+          let formData = new FormData();
+          let file = document.querySelector('#file-input');
 
-      // Add image in add tenant modal
-      $("#file-input").change(function(e) {
-        let {
-          files
-        } = e.target;
+          if (file.files.length < 1) {
+            $("#valid_id-error").text('Please upload a valid ID.');
+            return;
+          }
 
-        if (files.length > 0) {
-          $('#pathname-cont').text(files[0].name);
-        }
+          data.forEach((d) => formData.append(d.name, d.value));
+          formData.append('file', file.files[0]);
 
-        $('#valid_id-error').text('');
-      });
-
-      // Add tenant
-      $("#add-tenant-form").submit(function(e) {
-        e.preventDefault();
-        let data = $(this).serializeArray();
-        let formData = new FormData();
-        let file = document.querySelector('#file-input');
-
-        if (file.files.length < 1) {
-          $("#valid_id-error").text('Please upload a valid ID.');
-          return;
-        }
-
-        data.forEach((d) => formData.append(d.name, d.value));
-        formData.append('file', file.files[0]);
-
-        $.ajax({
-          type: "POST",
-          enctype: 'multipart/form-data',
-          url: "./../functions/add_tenant.php",
-          data: formData,
-          processData: false,
-          contentType: false,
-          cache: false,
-          timeout: 800000,
-          success: function(data) {
-            let res = JSON.parse(data);
-            if (res.status === 422) {
-              for (error in res.errors) {
-                $(`#${error}-error`).text(res.errors[error]);
+          $.ajax({
+            type: "POST",
+            enctype: 'multipart/form-data',
+            url: "./../functions/add_tenant.php",
+            data: formData,
+            processData: false,
+            contentType: false,
+            cache: false,
+            timeout: 800000,
+            success: function(data) {
+              let res = JSON.parse(data);
+              if (res.status === 422) {
+                for (error in res.errors) {
+                  $(`#${error}-error`).text(res.errors[error]);
+                }
+              } else {
+                alert('Tenant successfully added.');
+                window.location.reload();
               }
-            } else {
-              alert('Tenant successfully added.');
-              window.location.reload();
-            }
-          },
+            },
+          });
+        });
+
+        // Update tenant
+        $("#update-tenant-form").submit(function(e) {
+          e.preventDefault();
+          let data = $(this).serializeArray();
+          let formData = new FormData();
+          let file = document.querySelector('#file-input');
+          let validIdInput = $('#valid_id-update').val();
+
+          if (validIdInput === '' && file.files.length < 1) {
+            $("#valid_id-update-error").text('Please upload a valid ID.');
+            return;
+          }
+
+          data.forEach((d) => formData.append(d.name, d.value));
+          formData.append('file', file.files[0]);
+
+          $.ajax({
+            type: "POST",
+            enctype: 'multipart/form-data',
+            url: "./../functions/update_tenant.php",
+            data: formData,
+            processData: false,
+            contentType: false,
+            cache: false,
+            timeout: 800000,
+            success: function(data) {
+              let res = JSON.parse(data);
+              if (res.status === 422) {
+                for (error in res.errors) {
+                  $(`#${error}-error`).text(res.errors[error]);
+                }
+              } else {
+                alert('Tenant successfully updated.');
+                window.location.reload();
+              }
+            },
+          });
         });
       });
-    });
     </script>
 </body>
 
