@@ -1,5 +1,5 @@
 <?php
-include './../functions/connect.php';
+include './../../services/connect.php';
 session_start();
 if (!isset($_SESSION['user'])) {
     header("Location: ./..");
@@ -222,13 +222,8 @@ $users = mysqli_fetch_all($usersRes, MYSQLI_ASSOC);
 
 
 
+    <?php include './../templates/scripts.php' ?>
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="./../js/jquery-3.3.1.slim.min.js"></script>
-    <script src="./../js/popper.min.js"></script>
-    <script src="./../js/bootstrap.min.js"></script>
-    <script src="./../js/jquery-3.3.1.min.js"></script>
 
 
     <script type="text/javascript">
@@ -255,9 +250,9 @@ $users = mysqli_fetch_all($usersRes, MYSQLI_ASSOC);
       $('#logout-link').click(function() {
         let x = confirm("Do you want to logout?");
         if (x) {
-          $.get("./../functions/logout.php", function(message) {
+          $.get("./../../services/logout.php", function(message) {
             alert(message);
-            window.location = './login.php';
+            window.location = './../login.php';
           });
         }
       });

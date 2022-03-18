@@ -1,5 +1,5 @@
 <?php
-include './connect.php';
+include './../../services/connect.php';
 
 $id = $_GET['id'];
 

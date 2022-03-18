@@ -1,5 +1,5 @@
 <?php
-include './connect.php';
+include './../../services/connect.php';
 
 $file = $_FILES['file'];
 $room_number = $_POST['room_number'];

@@ -40,7 +40,7 @@
                 <a href="#">Change Password</a>
               </li>
               <li>
-                <a href="login.html">Logout</a>
+                <a href="#" id="logout-link">Logout</a>
               </li>
             </ul>
           </li>
