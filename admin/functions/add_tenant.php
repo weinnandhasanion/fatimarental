@@ -42,8 +42,8 @@ if (!in_array(end($ext), $acceptedExts)) {
 // If no errors are encountered, proceed to storing in database
 if (count($errors) === 0) {
     $sql = "INSERT INTO tenants
-      (`first_name`, `last_name`, `middle_initial`, `room_id`, `birthdate`, `gender`, `email_address`, `contact_number`, `address`, `valid_id`)
-      VALUES ('$first_name', '$last_name', '$middle_initial', '$room_id', '$birthdate', '$gender', '$email_address', '$contact_number', '$address', '" . $file["name"] . "')";
+      (`first_name`, `last_name`, `middle_initial`, `room_id`, `birthdate`, `gender`, `email_address`, `contact_number`, `address`, `valid_id`, `password`)
+      VALUES ('$first_name', '$last_name', '$middle_initial', '$room_id', '$birthdate', '$gender', '$email_address', '$contact_number', '$address', '" . $file["name"] . "', 'fatima123')";
     $res = mysqli_query($conn, $sql);
     if ($res) {
       move_uploaded_file($file['tmp_name'], './../../uploads/' . $file['name']);

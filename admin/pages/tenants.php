@@ -55,22 +55,25 @@ $rooms = mysqli_fetch_all($roomsRes, MYSQLI_ASSOC);
                   </thead>
                   <tbody>
                     <?php
-                      foreach ($users as $user) {
-                      ?>
+foreach ($users as $user) {
+    ?>
                     <tr>
                       <td class='align-middle'><?=$user['id']?></td>
-                      <td class='align-middle'><?=$user['first_name'] . " " . $user['middle_initial'] . " " . $user['last_name']?></td>
-                      <td class='align-middle'>₱3,000</td>
-                      <td class='align-middle'>Paid</td>
                       <td class='align-middle'>
-                        <button class="btn btn-small btn-link" onclick="viewMember(<?=htmlspecialchars(json_encode($user))?>)">View</button>
-                        <button class="btn btn-small btn-link" onclick="updateMember(<?=htmlspecialchars(json_encode($user))?>)">Update</button>
+                        <?=$user['first_name'] . " " . $user['middle_initial'] . " " . $user['last_name']?></td>
+                      <td class='align-middle'>Paid</td>
+                      <td class='align-middle'><?=$user['room_number']?></td>
+                      <td class='align-middle'>
+                        <button class="btn btn-small btn-link" onclick="viewMember($(this).attr('data-id'))"
+                          data-id="<?=$user['id']?>">View</button>
+                        <button class="btn btn-small btn-link" onclick="updateMember($(this).attr('data-id'))"
+                          data-id="<?=$user['id']?>">Update</button>
                         <button class="btn btn-small btn-link text-success">Bill</button>
                       </td>
                     </tr>
-                      <?php
-                      }
-                    ?>
+                    <?php
+}
+?>
                   </tbody>
                 </table>
               </div>
@@ -114,12 +117,12 @@ $rooms = mysqli_fetch_all($roomsRes, MYSQLI_ASSOC);
                   <label>Room</label>
                   <select class="form-control" placeholder="Enter Room" name="room_number" required>
                     <?php
-                    foreach ($rooms as $room) {
-                    ?>
+foreach ($rooms as $room) {
+    ?>
                     <option value="<?=$room['id']?>"><?=$room['room_number']?></option>
                     <?php
-                    }
-                    ?>
+}
+?>
                   </select>
                   <small id='room_number-error' class='text-danger'></small>
                 </div>
@@ -207,16 +210,22 @@ $rooms = mysqli_fetch_all($roomsRes, MYSQLI_ASSOC);
               </div>
             </div>
             <div class="row mb-2">
+              <div class="col-sm-6">
+                <label for="">Username</label>
+                <input type="text" class="form-control" name='username-view' readonly />
+              </div>
+            </div>
+            <div class="row mb-2">
               <div class="col-sm-12">
                 <label>Room</label>
                 <select class="form-control" placeholder="Enter Room" name="room_number-view" readonly>
                   <?php
-                  foreach ($rooms as $room) {
-                  ?>
+foreach ($rooms as $room) {
+    ?>
                   <option value="<?=$room['id']?>"><?=$room['room_number']?></option>
                   <?php
-                  }
-                  ?>
+}
+?>
                 </select>
                 <small id='room_number-error' class='text-danger'></small>
               </div>
@@ -261,9 +270,9 @@ $rooms = mysqli_fetch_all($roomsRes, MYSQLI_ASSOC);
                 Valid ID
                 <input type="file" hidden="true" id="file-input" name="valid_id">
                 <small id="valid_id-error" class="text-danger"></small>
-                <small id="pathname-cont"></small>
+                <small id="pathname-cont-view"></small>
                 <button type="button" class="btn btn-primary btn-sm" style="width: 100px"
-                  onclick="document.querySelector('#file-input').click()">View</button>
+                  id="view-valid-id">View</button>
               </div>
             </div>
           </div>
@@ -303,15 +312,25 @@ $rooms = mysqli_fetch_all($roomsRes, MYSQLI_ASSOC);
               </div>
               <div class="row mb-2">
                 <div class="col-sm-12">
+                  <label for="">Username</label>
+                  <div class="d-flex" style='gap: 20px'>
+                    <input type="text" class="form-control" name='username-update' id='username-update' readonly />
+                    <button type='button' class="btn btn-sm btn-primary" id='generate-username-btn'>Generate
+                      Username</button>
+                  </div>
+                </div>
+              </div>
+              <div class="row mb-2">
+                <div class="col-sm-12">
                   <label>Room</label>
                   <select class="form-control" placeholder="Enter Room" name="room_number-update" required>
                     <?php
-                    foreach ($rooms as $room) {
-                    ?>
+foreach ($rooms as $room) {
+    ?>
                     <option value="<?=$room['id']?>"><?=$room['room_number']?></option>
                     <?php
-                    }
-                    ?>
+}
+?>
                   </select>
                   <small id='room_number-error' class='text-danger'></small>
                 </div>
@@ -380,23 +399,44 @@ $rooms = mysqli_fetch_all($roomsRes, MYSQLI_ASSOC);
     <script src="./../js/jquery-3.3.1.min.js"></script>
     <script src="./../js/popper.min.js"></script>
     <script src="./../js/bootstrap.min.js"></script>
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js">
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
 
     <script type="text/javascript">
-      function viewMember(user) {
+    // Function to populate view tenant modal
+    function viewMember(id) {
+      $.get('./../functions/user_details.php?id=' + id, function(res) {
+        const user = JSON.parse(res);
         for (key in user) {
           $(`input[name=${key}-view]`).val(user[key]);
         }
         $('textarea[name=address-view]').val(user.address);
+        $('#pathname-cont-view').text(user.valid_id);
         $('#view-tenant-modal').modal('show');
-      };
+      });
+    };
 
-      function updateMember(user) {
+    // Function to populate update tenant modal
+    function updateMember(id) {
+      $.get('./../functions/user_details.php?id=' + id, function(res) {
+        const user = JSON.parse(res);
+
+        // Put user ID in form data-id attribute
+        $('#update-tenant-form').attr('data-id', id);
+
         for (key in user) {
           $(`input[name=${key}-update]`).val(user[key]);
         }
+
         $('textarea[name=address-update]').val(user.address);
+
+        if ($('#username-update').val() !== '') {
+          $('#generate-username-btn').attr('disabled', 'disabled');
+        } else {
+          $('#generate-username-btn').removeAttr('disabled');
+        }
+
         if ($('#valid_id-update').val() !== '') {
           $('#pathname-cont-update').text(user.valid_id);
           $('#valid_id-delete').removeAttr('disabled');
@@ -404,119 +444,147 @@ $rooms = mysqli_fetch_all($roomsRes, MYSQLI_ASSOC);
           $('#valid_id-delete').attr('disabled', 'disabled');
         }
         $('#update-tenant-modal').modal('show');
-      }
+      })
+    }
 
-      $(document).ready(function() {
-        $('#tenants-table').DataTable();
+    $(document).ready(function() {
+      $('#tenants-table').DataTable();
 
-        $('#sidebarCollapse').on('click', function() {
-          $('#sidebar').toggleClass('active');
-          $('#content').toggleClass('active');
-        });
+      $('#sidebarCollapse').on('click', function() {
+        $('#sidebar').toggleClass('active');
+        $('#content').toggleClass('active');
+      });
 
-        $('.more-button,.body-overlay').on('click', function() {
-          $('#sidebar,.body-overlay').toggleClass('show-nav');
-        });
+      $('.more-button,.body-overlay').on('click', function() {
+        $('#sidebar,.body-overlay').toggleClass('show-nav');
+      });
 
-        $('.sidebar-link').click(function(e) {
-          if ($(this).hasClass('active')) {
-            e.preventDefault();
-            return;
-          }
-          $('.sidebar-link').removeClass('active');
-          $(this).addClass('active');
-        });
-
-        // Add image in add tenant modal
-        $("#file-input").change(function(e) {
-          let {
-            files
-          } = e.target;
-
-          if (files.length > 0) {
-            $('#pathname-cont').text(files[0].name);
-          }
-
-          $('#valid_id-error').text('');
-        });
-
-        // Add tenant
-        $("#add-tenant-form").submit(function(e) {
+      $('.sidebar-link').click(function(e) {
+        if ($(this).hasClass('active')) {
           e.preventDefault();
-          let data = $(this).serializeArray();
-          let formData = new FormData();
-          let file = document.querySelector('#file-input');
+          return;
+        }
+        $('.sidebar-link').removeClass('active');
+        $(this).addClass('active');
+      });
 
-          if (file.files.length < 1) {
-            $("#valid_id-error").text('Please upload a valid ID.');
-            return;
-          }
+      // Add image in add tenant modal
+      $("#file-input").change(function(e) {
+        let {
+          files
+        } = e.target;
 
-          data.forEach((d) => formData.append(d.name, d.value));
-          formData.append('file', file.files[0]);
+        if (files.length > 0) {
+          $('#pathname-cont').text(files[0].name);
+        }
 
-          $.ajax({
-            type: "POST",
-            enctype: 'multipart/form-data',
-            url: "./../functions/add_tenant.php",
-            data: formData,
-            processData: false,
-            contentType: false,
-            cache: false,
-            timeout: 800000,
-            success: function(data) {
-              let res = JSON.parse(data);
-              if (res.status === 422) {
-                for (error in res.errors) {
-                  $(`#${error}-error`).text(res.errors[error]);
-                }
-              } else {
-                alert('Tenant successfully added.');
-                window.location.reload();
+        $('#valid_id-error').text('');
+      });
+
+      // Add tenant
+      $("#add-tenant-form").submit(function(e) {
+        e.preventDefault();
+        let data = $(this).serializeArray();
+        let formData = new FormData();
+        let file = document.querySelector('#file-input');
+
+        if (file.files.length < 1) {
+          $("#valid_id-error").text('Please upload a valid ID.');
+          return;
+        }
+
+        data.forEach((d) => formData.append(d.name, d.value));
+        formData.append('file', file.files[0]);
+
+        $.ajax({
+          type: "POST",
+          enctype: 'multipart/form-data',
+          url: "./../functions/add_tenant.php",
+          data: formData,
+          processData: false,
+          contentType: false,
+          cache: false,
+          timeout: 800000,
+          success: function(data) {
+            let res = JSON.parse(data);
+            if (res.status === 422) {
+              for (error in res.errors) {
+                $(`#${error}-error`).text(res.errors[error]);
               }
-            },
-          });
-        });
-
-        // Update tenant
-        $("#update-tenant-form").submit(function(e) {
-          e.preventDefault();
-          let data = $(this).serializeArray();
-          let formData = new FormData();
-          let file = document.querySelector('#file-input');
-          let validIdInput = $('#valid_id-update').val();
-
-          if (validIdInput === '' && file.files.length < 1) {
-            $("#valid_id-update-error").text('Please upload a valid ID.');
-            return;
-          }
-
-          data.forEach((d) => formData.append(d.name, d.value));
-          formData.append('file', file.files[0]);
-
-          $.ajax({
-            type: "POST",
-            enctype: 'multipart/form-data',
-            url: "./../functions/update_tenant.php",
-            data: formData,
-            processData: false,
-            contentType: false,
-            cache: false,
-            timeout: 800000,
-            success: function(data) {
-              let res = JSON.parse(data);
-              if (res.status === 422) {
-                for (error in res.errors) {
-                  $(`#${error}-error`).text(res.errors[error]);
-                }
-              } else {
-                alert('Tenant successfully updated.');
-                window.location.reload();
-              }
-            },
-          });
+            } else {
+              alert('Tenant successfully added.');
+              window.location.reload();
+            }
+          },
         });
       });
+
+      // Update tenant
+      $("#update-tenant-form").submit(function(e) {
+        e.preventDefault();
+        let data = $(this).serializeArray();
+        let formData = new FormData();
+        let file = document.querySelector('#file-input');
+        let validIdInput = $('#valid_id-update').val();
+
+        if (validIdInput === '' && file.files.length < 1) {
+          $("#valid_id-update-error").text('Please upload a valid ID.');
+          return;
+        }
+
+        data.forEach((d) => formData.append(d.name, d.value));
+        formData.append('file', file.files[0]);
+
+        $.ajax({
+          type: "POST",
+          enctype: 'multipart/form-data',
+          url: "./../functions/update_tenant.php",
+          data: formData,
+          processData: false,
+          contentType: false,
+          cache: false,
+          timeout: 800000,
+          success: function(data) {
+            let res = JSON.parse(data);
+            if (res.status === 422) {
+              for (error in res.errors) {
+                $(`#${error}-error`).text(res.errors[error]);
+              }
+            } else {
+              alert('Tenant successfully updated.');
+              window.location.reload();
+            }
+          },
+        });
+      });
+
+      // Generate username for user
+      $('#generate-username-btn').click(function() {
+        let id = $('#update-tenant-form').attr('data-id');
+        $.get('./../functions/generate_username.php?id=' + id, function(res) {
+          let data = JSON.parse(res);
+          if (data !== null) {
+            $('#username-update').val(data);
+            $('#generate-username-btn').attr('disabled', 'disabled');
+          } else {
+            alert("Error in generating username. Please try again.");
+          }
+        });
+      });
+
+      // View valid id
+      $('#view-valid-id').click(function() {
+        let filename = $('#pathname-cont-view').text();
+        let path = '../../uploads/' + filename;
+        $.dialog({
+          backgroundDismiss: true,
+          title: 'Valid ID',
+          content: `<div style='display: flex; justify-content: center; align-items: center;'>
+              <img src='${path}' alt='valid-id' />
+            </div>`
+        });
+      });
+    });
     </script>
 </body>
 
