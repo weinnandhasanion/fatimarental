@@ -1,4 +1,4 @@
-<?php 
+<?php
 include './../functions/connect.php';
 session_start();
 if (!isset($_SESSION['user'])) {
@@ -9,30 +9,30 @@ $rooms = [];
 $sql = "SELECT * FROM rooms";
 $roomsRes = $conn->query($sql);
 if ($roomsRes) {
-  $rooms = array_map(function($room) use ($conn) {
-    $room['tenants'] = [];
-    $sql = "SELECT * FROM tenants WHERE room_id = " . $room['id'];
-    $res = $conn->query($sql);
-    $tenants = [];
-    if ($res->num_rows > 0) {
-      while ($row = $res->fetch_assoc()) {
-        $tenants[] = $row;
-      }
-      $room['tenants'] = $tenants;
-    }
-    return $room;
-  }, $roomsRes->fetch_all(MYSQLI_ASSOC));
+    $rooms = array_map(function ($room) use ($conn) {
+        $room['tenants'] = [];
+        $sql = "SELECT * FROM tenants WHERE room_id = " . $room['id'];
+        $res = $conn->query($sql);
+        $tenants = [];
+        if ($res->num_rows > 0) {
+            while ($row = $res->fetch_assoc()) {
+                $tenants[] = $row;
+            }
+            $room['tenants'] = $tenants;
+        }
+        return $room;
+    }, $roomsRes->fetch_all(MYSQLI_ASSOC));
 }
 
 function renderTenants($tenants)
 {
-  if (count($tenants) > 0) {
-    return implode(", ", array_map(function($tenant) {
-      return $tenant['first_name']." ".$tenant['last_name'];
-    }, $tenants));
-  }
+    if (count($tenants) > 0) {
+        return implode(", ", array_map(function ($tenant) {
+            return $tenant['first_name'] . " " . $tenant['last_name'];
+        }, $tenants));
+    }
 
-  return "N/A";
+    return "N/A";
 }
 ?>
 
@@ -50,12 +50,12 @@ function renderTenants($tenants)
 
     <!-- Page Content  -->
     <div id="content">
-    <?php include './../templates/topnav.php'?>
+      <?php include './../templates/topnav.php'?>
       <div class="main-content">
         <div class="row ">
           <div class="col-sm-12">
             <div class="card" style="min-height: 485px">
-            <div class="card-header card-header-text d-flex justify-content-start align-items-center">
+              <div class="card-header card-header-text d-flex justify-content-start align-items-center">
                 <h4 class="card-title flex-grow-1">Rooms</h4>
                 <button class="btn btn-primary" data-toggle="modal" data-target="#add-room-modal">Add &#43;</button>
               </div>
@@ -71,13 +71,14 @@ function renderTenants($tenants)
                     </tr>
                   </thead>
                   <tbody>
-                  <?php 
-                  foreach ($rooms as $room) {
-                    ?>
+                    <?php
+foreach ($rooms as $room) {
+    ?>
                     <tr>
                       <td class="align-middle"><?=$room['room_number']?></td>
                       <td class="align-middle text-truncate"><?=count($room['tenants'])?></td>
-                      <td class="align-middle"><?=count($room['tenants']) > 0 ? 'Occupied' : 'Unoccupied'?></td>
+                      <td class="align-middle"><?=count($room['tenants']) === $room['capacity'] ? 'Full' : 'Available'?>
+                      </td>
                       <td class="align-middle"><?=$room['capacity']?></td>
                       <td class="align-middle">
                         <button class="btn btn-link btn-small">Details</button>
@@ -86,8 +87,8 @@ function renderTenants($tenants)
                       </td>
                     </tr>
                     <?php
-                  }
-                  ?>
+}
+?>
                   </tbody>
                 </table>
               </div>
@@ -140,7 +141,8 @@ function renderTenants($tenants)
               <div class="row mb-2">
                 <div class="col-sm-12">
                   <label>Room Description</label>
-                  <textarea style="resize: none" rows="5" class="form-control" type="text" name="description" required></textarea>
+                  <textarea style="resize: none" rows="5" class="form-control" type="text" name="description"
+                    required></textarea>
                   <small id='description-error' class='text-danger'></small>
                 </div>
               </div>
@@ -148,7 +150,7 @@ function renderTenants($tenants)
                 <div class="col-sm-12 d-flex flex-column">
                   Room Images
                   <input type="file" hidden multiple id="file-input" name="room_images">
-                  <small id="valid_id-error" class="text-danger"></small>
+                  <small id="room_images-error" class="text-danger"></small>
                   <small id="pathname-cont"></small>
                   <button type="button" class="btn btn-secondary btn-sm" style="width: 120px"
                     onclick="document.querySelector('#file-input').click()">Upload Image/s</button>
@@ -166,56 +168,69 @@ function renderTenants($tenants)
     <script src="./../js/jquery-3.3.1.min.js"></script>
     <script src="./../js/popper.min.js"></script>
     <script src="./../js/bootstrap.min.js"></script>
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js">
+    </script>
 
     <script type="text/javascript">
-      $(document).ready(function() {
-        $('#rooms-table').DataTable();
+    $(document).ready(function() {
+      $('#rooms-table').DataTable();
 
-        $('#sidebarCollapse').on('click', function() {
-          $('#sidebar').toggleClass('active');
-          $('#content').toggleClass('active');
+      $('#sidebarCollapse').on('click', function() {
+        $('#sidebar').toggleClass('active');
+        $('#content').toggleClass('active');
+      });
+
+      $('.more-button,.body-overlay').on('click', function() {
+        $('#sidebar,.body-overlay').toggleClass('show-nav');
+      });
+
+      // This function runs after choosing files
+      $('#file-input').change(function() {
+        let files = $(this)[0].files;
+        let textCont = $('#pathname-cont');
+        if (files.length > 1) {
+          textCont.text(`${files.length} files`)
+        } else {
+          textCont.text(files[0].name);
+        }
+      });
+
+      $('#add-room-form').submit(function(e) {
+        e.preventDefault();
+        let data = $(this).serializeArray();
+        let formData = new FormData();
+        let file = document.querySelector('#file-input');
+
+        data.forEach((d) => formData.append(d.name, d.value));
+        $.each($("#file-input")[0].files, function(i, file) {
+          formData.append('file[]', file);
         });
 
-        $('.more-button,.body-overlay').on('click', function() {
-          $('#sidebar,.body-overlay').toggleClass('show-nav');
-        });
-
-        $('#add-room-form').submit(function(e) {
-          e.preventDefault();
-          let data = $(this).serializeArray();
-          let formData = new FormData();
-          let file = document.querySelector('#file-input');
-
-          data.forEach((d) => formData.append(d.name, d.value));
-          $.each($("#file-input")[0].files, function(i, file) {
-            formData.append('file', file);
-          });
-
-          $.ajax({
-            type: "POST",
-            enctype: 'multipart/form-data',
-            url: "./../functions/add_room.php",
-            data: formData,
-            processData: false,
-            contentType: false,
-            cache: false,
-            timeout: 800000,
-            success: function(data) {
-              console.log(data);
-              let res = JSON.parse(data);
-              if (res.status === 422) {
-                for (error in res.errors) { 
-                  $(`#${error}-error`).text(res.errors[error]);
-                }
-              } else {
-                alert('Room successfully added.');
-                window.location.reload();
+        $.ajax({
+          type: "POST",
+          enctype: 'multipart/form-data',
+          url: "./../functions/add_room.php",
+          data: formData,
+          processData: false,
+          contentType: false,
+          cache: false,
+          timeout: 800000,
+          success: function(data) {
+            console.log(data);
+            let res = JSON.parse(data);
+            if (res.status === 422) {
+              for (error in res.errors) {
+                $(`#${error}-error`).text(res.errors[error]);
               }
-            },
-          });
+            } else {
+              alert('Room successfully added.');
+              window.location.reload();
+            }
+          },
         });
       });
+    });
     </script>
 </body>
+
 </html>
