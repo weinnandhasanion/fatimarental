@@ -1,3 +1,7 @@
+<?php
+include_once './redirect.php';
+?>
+
 <!doctype html>
 <html lang="en">
 

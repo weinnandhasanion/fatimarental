@@ -45,7 +45,7 @@ if (isset($_SESSION['user'])) {
       $('form').submit(function(e) {
         e.preventDefault();
       
-        $.post("./functions/login.php", $(this).serializeArray(), function(data) {
+        $.post("./../services/login.php", $(this).serializeArray(), function(data) {
 					console.log(data);
           let res = JSON.parse(data);
 

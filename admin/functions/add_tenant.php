@@ -36,20 +36,20 @@ if (isset($contact_number) && !preg_match("/^(09|\+639)\d{9}$/", $contact_number
 $acceptedExts = ['jpg', 'jpeg', 'png'];
 $ext = explode('.', strtolower($file['name']));
 if (!in_array(end($ext), $acceptedExts)) {
-    $errors['valid_id'] ='Only .jpg and .png files are accepted.';
-} 
+    $errors['valid_id'] = 'Only .jpg and .png files are accepted.';
+}
 
 // If no errors are encountered, proceed to storing in database
 if (count($errors) === 0) {
     $sql = "INSERT INTO tenants
       (`first_name`, `last_name`, `middle_initial`, `room_id`, `birthdate`, `gender`, `email_address`, `contact_number`, `address`, `valid_id`, `password`)
-      VALUES ('$first_name', '$last_name', '$middle_initial', '$room_id', '$birthdate', '$gender', '$email_address', '$contact_number', '$address', '" . $file["name"] . "', 'fatima123')";
+      VALUES ('$first_name', '$last_name', '$middle_initial', '$room_id', '$birthdate', '$gender', '$email_address', '$contact_number', '$address', '" . $file["name"] . "', '" . password_hash('fatima123', PASSWORD_DEFAULT) . "')";
     $res = mysqli_query($conn, $sql);
     if ($res) {
-      move_uploaded_file($file['tmp_name'], './../../uploads/' . $file['name']);
-      $status = 200;
+        move_uploaded_file($file['tmp_name'], './../../uploads/' . $file['name']);
+        $status = 200;
     } else {
-      $errors['error'] = 'Error in db';
+        $errors['error'] = 'Error in db';
     }
 }
 

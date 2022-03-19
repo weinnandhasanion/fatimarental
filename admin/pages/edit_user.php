@@ -1,3 +1,7 @@
+<?php
+include_once './redirect.php';
+?>
+
 <!doctype html>
 <html lang="en">
 
@@ -15,7 +19,7 @@
     <div class="body-overlay"></div>
 
 
-    <?php include './../templates/nav.php' ?>
+    <?php include './../templates/nav.php'?>
 
 
 
@@ -114,7 +118,7 @@
 
 
 
-    <?php include './../templates/scripts.php' ?>
+    <?php include './../templates/scripts.php'?>
 
 
 

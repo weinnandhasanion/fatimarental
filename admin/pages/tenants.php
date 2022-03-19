@@ -1,9 +1,6 @@
 <?php
 include './../../services/connect.php';
-session_start();
-if (!isset($_SESSION['user'])) {
-    header("Location: ./..");
-}
+include_once './redirect.php';
 
 // Get users
 $users = [];

@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (isset($_SESSION['user'])) {
+    header("Location: ./../index.php");
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,28 +15,27 @@
 	<title>Login</title>
 </head>
 <body>
-	
+
 	<div class="container">
-		<form action="#" class="login active">
+		<form action="#" class="login active" id="login-form">
 			<h2 class="title">Login with your account</h2>
 			<div class="form-group">
-				<label for="email">Email</label>
+				<label for="email">Username</label>
 				<div class="input-group">
-					<input type="email" id="email" placeholder="Email address">
+					<input type="text" id="username" name="username" placeholder="Username">
 					<i class='bx bx-envelope'></i>
 				</div>
 			</div>
 			<div class="form-group">
 				<label for="password">Password</label>
 				<div class="input-group">
-					<input type="password" pattern=".{8,}" id="password" placeholder="Your password">
+					<input type="password" id="password" name="password" placeholder="Your password">
 					<i class='bx bx-lock-alt' ></i>
 				</div>
-				<span class="help-text">At least 8 characters</span>
 			</div>
 			<button type="submit" class="btn-submit">Login</button>
 			<a href="#">Forgot password?</a>
-			<p>I don't have an account. <a href="#" onclick="switchForm('register', event)">Register</a></p>
+			<!-- <p>I don't have an account. <a href="#" onclick="switchForm('register', event)">Register</a></p> -->
 		</form>
 
 		<form action="#" class="register">
@@ -63,5 +69,26 @@
 	</div>
 
 	<script src="js/js.js"></script>
+
+	<?php
+		$filename = basename(__FILE__);
+		include './templates/scripts.php'
+	?>
+	<script>
+		$(document).ready(function() {
+			$("#login-form").submit(function(e) {
+				e.preventDefault();
+
+				$.post("./../services/login.php?from=tenant", $(this).serializeArray(), function(data) {
+					let res = JSON.parse(data);
+
+					alert(res.message);
+					if (res.status === 200) {
+						window.location.reload();
+					}
+				});
+			});
+		});
+	</script>
 </body>
 </html>

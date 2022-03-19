@@ -1,9 +1,6 @@
 <?php
 include './../../services/connect.php';
-session_start();
-if (!isset($_SESSION['user'])) {
-    header("Location: ./..");
-}
+include_once './redirect.php';
 
 // Get users
 $users = [];
@@ -141,8 +138,8 @@ $users = mysqli_fetch_all($usersRes, MYSQLI_ASSOC);
                   </thead>
                   <tbody>
                     <?php
-                    foreach ($users as $user) {
-                    ?>
+foreach ($users as $user) {
+    ?>
                     <tr>
                       <td><?=$user['id']?></td>
                       <td><?=$user['first_name'] . " " . $user['middle_initial'] . " " . $user['last_name']?></td>
@@ -150,8 +147,8 @@ $users = mysqli_fetch_all($usersRes, MYSQLI_ASSOC);
                       <td><?=$user['room_number']?></td>
                     </tr>
                     <?php
-                    }
-                    ?>
+}
+?>
                   </tbody>
                 </table>
               </div>
@@ -222,7 +219,7 @@ $users = mysqli_fetch_all($usersRes, MYSQLI_ASSOC);
 
 
 
-    <?php include './../templates/scripts.php' ?>
+    <?php include './../templates/scripts.php'?>
 
 
 
