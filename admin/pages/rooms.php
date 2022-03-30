@@ -68,24 +68,21 @@ function renderTenants($tenants)
                     </tr>
                   </thead>
                   <tbody>
-                    <?php
-foreach ($rooms as $room) {
-    ?>
+                    <?php foreach ($rooms as $room) { ?>
                     <tr>
                       <td class="align-middle"><?=$room['room_number']?></td>
                       <td class="align-middle text-truncate"><?=count($room['tenants'])?></td>
-                      <td class="align-middle"><?=count($room['tenants']) === $room['capacity'] ? 'Full' : 'Available'?>
+                      <td class="align-middle"><?=count($room['tenants']) === intval( $room['capacity']) ? 'Full' : 'Available'?>
                       </td>
                       <td class="align-middle"><?=$room['capacity']?></td>
                       <td class="align-middle">
-                        <button class="btn btn-link btn-small">Details</button>
+                        <button class="btn btn-link btn-small" data-id="<?=$room['id']?>"
+                          onclick="viewRoomDetails($(this).attr('data-id'))">Details</button>
                         <button class="btn btn-small btn-link">Update</button>
                         <button class="btn btn-small btn-link text-success">Bill</button>
                       </td>
                     </tr>
-                    <?php
-}
-?>
+                    <?php } ?>
                   </tbody>
                 </table>
               </div>
@@ -95,6 +92,7 @@ foreach ($rooms as $room) {
       </div>
     </div>
 
+    <!-- Add Room Modal -->
     <div id="add-room-modal" tabindex="-1" class="modal fade" role="dialog">
       <form id="add-room-form" enctype="multipart/form-data">
         <div class="modal-dialog modal-lg" role='document'>
@@ -162,9 +160,98 @@ foreach ($rooms as $room) {
       </form>
     </div>
 
+    <!-- View Room Modal -->
+    <div id="view-room-modal" tabindex="-1" class="modal fade" role="dialog">
+      <div class="modal-dialog modal-lg" role='document'>
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">View Room Details</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row mb-2">
+              <div class="col-sm-4">
+                <label>Room Number</label>
+                <input class="form-control" type="text" name="room_number-view" required readonly>
+              </div>
+              <div class="col-sm-4">
+                <label for="price">Price</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">₱</span>
+                  </div>
+                  <input type="text" name="price-view" class="form-control" readonly>
+                  <div class="input-group-append">
+                    <span class="input-group-text">.00</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <label for="capacity">Capacity</label>
+                <div class="input-group">
+                  <input type="number" name="capacity-view" class="form-control" min="0" readonly>
+                  <div class="input-group-append">
+                    <span class="input-group-text">pax</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-sm-12">
+                <label>Room Description</label>
+                <textarea style="resize: none" rows="5" class="form-control" type="text" name="description-view"
+                  required readonly></textarea>
+                <small id='description-error' class='text-danger'></small>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-sm-12">
+                <label>Occupants</label>
+                <input class="form-control" type="text" name="tenants-view" required readonly>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-sm-12 d-flex flex-column">
+                Room Images
+                <div id="room-images-cont" style='display: flex; gap: 15px; flex-wrap: wrap; align-items: center;'>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <?php include './../templates/scripts.php' ?>
 
     <script type="text/javascript">
+    // View room modal
+    function viewRoomDetails(id) {
+      $.get('./../functions/room_details.php?id=' + id, function(res) {
+        console.log(res);
+        let data = JSON.parse(res);
+        for (key in data) {
+          $(`input[name=${key}-view]`).val(data[key]);
+        }
+        $('textarea[name=description-view]').val(data.description);
+        if (data.room_images.length > 0) {
+          $('#room-images-cont').html('');
+          data.room_images.forEach(function(img) {
+            $('#room-images-cont').append(`
+            <div style='width: 32%; height: 200px; overflow: hidden;'>
+              <img src="./../../uploads/${img.image_pathname}" style='min-height: 100%; width: 100%; object-fit: cover;' />
+            </div>
+          `);
+          })
+        } else {
+          $('#room-images-cont').html('<small>No images to show.</small>');
+        }
+        $('#view-room-modal').modal('show');
+      });
+    }
+
     $(document).ready(function() {
       $('#rooms-table').DataTable();
 

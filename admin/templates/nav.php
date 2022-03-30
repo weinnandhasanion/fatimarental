@@ -42,9 +42,9 @@ $page = basename($_SERVER['PHP_SELF']);
         <i class="material-icons">feed</i><span>Records</span></a>
     </li>
 
-    <li class="<?= $page === 'asdf.php' ? "active" : "" ?>">
-      <a href="#pageSubmenu7" data-toggle="collapse" aria-expanded="false">
-        <i class="material-icons">content_copy</i><span>Paid</span></a>
+    <li class="<?= $page === 'billing.php' ? "active" : "" ?>">
+      <a href="./billing.php">
+        <i class="material-icons">content_copy</i><span>Billing</span></a>
     </li>
 
     <li class="<?= $page === 'rooms.php' ? "active" : "" ?>">

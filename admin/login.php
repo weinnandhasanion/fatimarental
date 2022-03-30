@@ -46,7 +46,6 @@ if (isset($_SESSION['user'])) {
         e.preventDefault();
       
         $.post("./../services/login.php", $(this).serializeArray(), function(data) {
-					console.log(data);
           let res = JSON.parse(data);
 
 					alert(res.message);

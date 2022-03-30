@@ -14,13 +14,8 @@ if (isset($_SESSION['user']) && array_key_exists('user_type', $_SESSION['user'])
   <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
     integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
   <link rel="stylesheet" href="css/style.css">
-
   <script src="https://code.jquery.com/jquery-1.12.4.min.js"
     integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
-
-
-
-
 </head>
 
 <body>
@@ -40,7 +35,6 @@ if (isset($_SESSION['user']) && array_key_exists('user_type', $_SESSION['user'])
       </div>
     </div>
   </section>
-
 
   <header class="header">
     <div class="container">

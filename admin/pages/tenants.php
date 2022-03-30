@@ -65,7 +65,6 @@ foreach ($users as $user) {
                           data-id="<?=$user['id']?>">View</button>
                         <button class="btn btn-small btn-link" onclick="updateMember($(this).attr('data-id'))"
                           data-id="<?=$user['id']?>">Update</button>
-                        <button class="btn btn-small btn-link text-success">Bill</button>
                       </td>
                     </tr>
                     <?php
@@ -289,29 +288,29 @@ foreach ($rooms as $room) {
               </button>
             </div>
             <div class="modal-body">
-              <input type="hidden" name="id-update" />
+              <input type="hidden" name="id" id="id-update" />
               <div class="row mb-2">
                 <div class="col-sm-5">
                   <label>First Name</label>
-                  <input class="form-control" type="text" name="first_name-update" required>
-                  <small id='first_name-error' class='text-danger'></small>
+                  <input class="form-control" type="text" name="first_name" id="first_name-update" required>
+                  <small id='first_name-error-update' class='text-danger'></small>
                 </div>
                 <div class="col-sm-5">
                   <label>Last Name</label>
-                  <input class="form-control" type="text" name="last_name-update" required>
-                  <small id='last_name-error' class='text-danger'></small>
+                  <input class="form-control" type="text" name="last_name" id="last_name-update" required>
+                  <small id='last_name-error-update' class='text-danger'></small>
                 </div>
                 <div class="col-sm-2">
                   <label>M.I.</label>
-                  <input class="form-control" type="text" name="middle_initial-update" required>
-                  <small id='middle_initial-error' class='text-danger'></small>
+                  <input class="form-control" type="text" name="middle_initial" id="middle_initial-update" required>
+                  <small id='middle_initial-error-update' class='text-danger'></small>
                 </div>
               </div>
               <div class="row mb-2">
                 <div class="col-sm-12">
                   <label for="">Username</label>
                   <div class="d-flex" style='gap: 20px'>
-                    <input type="text" class="form-control" name='username-update' id='username-update' readonly />
+                    <input type="text" class="form-control" name='username' id='username-update' readonly />
                     <button type='button' class="btn btn-sm btn-primary" id='generate-username-btn'>Generate
                       Username</button>
                   </div>
@@ -320,7 +319,7 @@ foreach ($rooms as $room) {
               <div class="row mb-2">
                 <div class="col-sm-12">
                   <label>Room</label>
-                  <select class="form-control" placeholder="Enter Room" name="room_number-update" required>
+                  <select class="form-control" placeholder="Enter Room" name="room_number" id="room_id-update" required>
                     <?php
 foreach ($rooms as $room) {
     ?>
@@ -329,58 +328,53 @@ foreach ($rooms as $room) {
 }
 ?>
                   </select>
-                  <small id='room_number-error' class='text-danger'></small>
+                  <small id='room_number-error-update' class='text-danger'></small>
                 </div>
               </div>
               <div class="row mb-2">
                 <div class="col-sm-6">
                   <label>Birthdate</label>
-                  <input class="form-control" type="date" name="birthdate-update" required>
-                  <small id='birthdate-error' class='text-danger'></small>
+                  <input class="form-control" type="date" name="birthdate" id="birthdate-update" required>
+                  <small id='birthdate-error-update' class='text-danger'></small>
                 </div>
                 <div class="col-sm-6">
                   <label>Gender</label>
-                  <select class="form-control" name="gender-update" required>
+                  <select class="form-control" name="gender" id="gender-update" required>
                     <option value="0">Male</option>
                     <option value="1">Female</option>
                     <option value="2">Unspecified</option>
                   </select>
-                  <small id='gender-error' class='text-danger'></small>
+                  <small id='gender-error-update' class='text-danger'></small>
                 </div>
               </div>
               <div class="row mb-2">
                 <div class="col-sm-6">
                   <label>Email Address</label>
-                  <input class="form-control" type="email" name="email_address-update" required>
-                  <small id='email_address-error' class='text-danger'></small>
+                  <input class="form-control" type="email" name="email_address" id="email_address-update" required>
+                  <small id='email_address-error-update' class='text-danger'></small>
                 </div>
                 <div class="col-sm-6">
                   <label>Contact Number</label>
-                  <input class="form-control" type="text" name="contact_number-update" required />
-                  <small id='contact_number-error' class='text-danger'></small>
+                  <input class="form-control" type="text" name="contact_number" id="contact_number-update" required />
+                  <small id='contact_number-error-update' class='text-danger'></small>
                 </div>
               </div>
               <div class="row mb-2">
                 <div class="col-sm-12">
                   <label>Address</label>
-                  <textarea rows="2" class="form-control" type="text" name="address-update" required></textarea>
-                  <small id='address-error' class='text-danger'></small>
+                  <textarea rows="2" class="form-control" type="text" name="address" id="address-update" required></textarea>
+                  <small id='address-error-update' class='text-danger'></small>
                 </div>
               </div>
               <div class="row mb-2">
                 <div class="col-sm-12 d-flex flex-column">
                   Valid ID
-                  <input type="text" hidden id="valid_id-update" name="valid_id-update">
-                  <input type="file" hidden="true" id="file-input-update" name="valid_id">
-                  <small id="valid_id-update-error" class="text-danger"></small>
+                  <input type="file" hidden="true" id="file-input-update" name="valid_id-new">
+                  <small id="valid_id-error-update" class="text-danger"></small>
                   <small id="pathname-cont-update"></small>
                   <div class="d-flex">
                     <button type="button" class="btn btn-secondary btn-sm mr-1" style="width: 70px"
-                      onclick="">View</button>
-                    <button type="button" class="btn btn-secondary btn-sm mr-1" style="width: 70px"
                       onclick="document.querySelector('#file-input-update').click()">Upload</button>
-                    <button id='valid_id-delete' type="button" class="btn btn-danger btn-sm" style="width: 70px"
-                      onclick="">Delete</button>
                   </div>
                 </div>
               </div>
@@ -418,10 +412,10 @@ foreach ($rooms as $room) {
         $('#update-tenant-form').attr('data-id', id);
 
         for (key in user) {
-          $(`input[name=${key}-update]`).val(user[key]);
+          $(`#${key}-update`).val(user[key]);
         }
 
-        $('textarea[name=address-update]').val(user.address);
+        $('#address-update').val(user.address);
 
         if ($('#username-update').val() !== '') {
           $('#generate-username-btn').attr('disabled', 'disabled');
@@ -516,11 +510,10 @@ foreach ($rooms as $room) {
         e.preventDefault();
         let data = $(this).serializeArray();
         let formData = new FormData();
-        let file = document.querySelector('#file-input');
-        let validIdInput = $('#valid_id-update').val();
+        let file = document.querySelector('#file-input-update');
 
-        if (validIdInput === '' && file.files.length < 1) {
-          $("#valid_id-update-error").text('Please upload a valid ID.');
+        if ($('#pathname-cont-update').text() === '' && file.files.length < 1) {
+          $("#valid_id-error-update").text('Please upload a valid ID.');
           return;
         }
 
@@ -530,17 +523,18 @@ foreach ($rooms as $room) {
         $.ajax({
           type: "POST",
           enctype: 'multipart/form-data',
-          url: "./../functions/update_tenant.php",
+          url: "./../functions/update_tenant.php?id=" + $(this).attr('data-id'),
           data: formData,
           processData: false,
           contentType: false,
           cache: false,
           timeout: 800000,
           success: function(data) {
+            console.log(data);
             let res = JSON.parse(data);
             if (res.status === 422) {
               for (error in res.errors) {
-                $(`#${error}-error`).text(res.errors[error]);
+                $(`#${error}-error-update`).text(res.errors[error]);
               }
             } else {
               alert('Tenant successfully updated.');
@@ -575,6 +569,19 @@ foreach ($rooms as $room) {
               <img src='${path}' alt='valid-id' />
             </div>`
         });
+      });
+
+      // Insert new photo to file input when updating tenant
+      $('#file-input-update').change(function(e) {
+        let {
+          files
+        } = e.target;
+
+        if (files.length > 0) {
+          $('#pathname-cont-update').text(files[0].name);
+        }
+
+        $('#valid_id-error-update').text('');
       });
     });
     </script>

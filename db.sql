@@ -9,7 +9,7 @@ create table `admins` (
   `email_address` VARCHAR(255),
   `contact_number` VARCHAR(255),
   `user_type` TINYINT(2),
-  -- 0 = Admin, 1 = Manager
+  -- 0 = Super Admin, 1 = Admin
   `date_added` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 );
@@ -136,8 +136,8 @@ create table `bills` (
     `room_id` int,
     `admin_id` int,
     `room_charge` FLOAT,
-    `electricity_balance` FLOAT,
-    `water_balance` FLOAT, 
+    `electricity_bill` FLOAT,
+    `water_bill` FLOAT, 
     `start_period` timestamp NULL,
     `end_period` TIMESTAMP NULL,
     `date_added` timestamp not null DEFAULT CURRENT_TIMESTAMP,
@@ -145,6 +145,14 @@ create table `bills` (
     FOREIGN KEY (`room_id`) REFERENCES `rooms`(`id`),
     FOREIGN KEY (`admin_id`) REFERENCES `admins`(`id`)
   );
+create table `additional_charges` (
+  `id` INT AUTO_INCREMENT,
+  `bill_id` INT,
+  `name` VARCHAR(255),
+  `charge` FLOAT, 
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`bill_id`) REFERENCES `bills`(`id`)
+);
 create table `tenant_bills` (
     `id` INT AUTO_INCREMENT,
     `tenant_id` int,
@@ -154,3 +162,6 @@ create table `tenant_bills` (
     FOREIGN KEY (`tenant_id`) REFERENCES `tenants`(`id`),
     FOREIGN KEY (`bill_id`) REFERENCES `bills`(`id`)
   );
+create table `payments` (
+  -- WIP
+);

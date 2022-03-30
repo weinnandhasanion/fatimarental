@@ -15,6 +15,18 @@ $file = $_FILES['file'];
 $errors = [];
 $status = 422;
 
+if (!preg_match("/[^0-9]/", $first_name)) {
+    $errors['first_name'] = 'Name should not contain any digits.';
+}
+
+if (!preg_match("/[^0-9]/", $middle_initial)) {
+    $errors['middle_initial'] = 'Name should not contain any digits.';
+}
+
+if (!preg_match("/[^0-9]/", $last_name)) {
+    $errors['last_name'] = 'Name should not contain any digits.';
+}
+
 // Check if birthday is greater than current date
 if (strtotime($birthdate) > time()) {
     $errors['birthdate'] = 'Birthdate must be before current date.';
@@ -31,6 +43,17 @@ if (mysqli_num_rows($res) > 1) {
 if (isset($contact_number) && !preg_match("/^(09|\+639)\d{9}$/", $contact_number)) {
     $errors['contact_number'] = 'Please enter a valid phone number.';
 }
+
+// Check if room has available occupancy
+$sql = "SELECT capacity FROM rooms WHERE id = $room_id";
+$res = $conn->query($sql);
+$capacity = intval($res->fetch_assoc()['capacity']);
+$sql = "SELECT * FROM tenants WHERE room_id = $room_id";
+$res = $conn->query($sql);
+if ($res->num_rows === $capacity) {
+    $errors['room_number'] = 'Room is already full.';
+} 
+
 
 // Check if file is image
 $acceptedExts = ['jpg', 'jpeg', 'png'];

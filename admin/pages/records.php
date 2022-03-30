@@ -1,40 +1,25 @@
 <?php 
 include_once './redirect.php';
 ?>
-
 <!doctype html>
 <html lang="en">
 
 <?php include './../templates/head.php'?>
 
-
 <body>
-
-
-
-
   <div class="wrapper">
-
-
     <div class="body-overlay"></div>
 
-
     <?php include './../templates/nav.php' ?>
-
-
-
 
     <!-- Page Content  -->
     <div id="content">
 
-    <?php include './../templates/topnav.php'?>
-
-
+      <?php include './../templates/topnav.php'?>
 
       <div class="main-content">
         <div class="w3-container">
           <h2>Search Records</h2>
-
         </div>
         <form class="example" action="action_page.php">
           <input type="text" placeholder="ID" name="search">
@@ -116,31 +101,17 @@ include_once './redirect.php';
                       <td>UnPaid</td>
                       <td>₱3,000</td>
                       <td>Room 7</td>
-
                     </tr>
                   </tbody>
                 </table>
               </div>
             </div>
           </div>
-
-
-
         </div>
-
-
-
       </div>
     </div>
 
-
-
-
-
-
     <?php include './../templates/scripts.php' ?>
-
-
 
     <script type="text/javascript">
     $(document).ready(function() {
@@ -165,11 +136,6 @@ include_once './redirect.php';
 
     });
     </script>
-
-
-
-
-
 </body>
 
 </html>
