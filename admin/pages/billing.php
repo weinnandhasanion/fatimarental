@@ -1,6 +1,12 @@
 <?php
 include './../../services/connect.php';
 include_once './redirect.php';
+
+$sql = "SELECT b.*, r.room_number FROM bills AS b 
+  INNER JOIN rooms AS r
+  ON b.room_id = r.id";
+$res = $conn->query($sql);
+$bills = $res->fetch_all(MYSQLI_ASSOC);
 ?>
 <!doctype html>
 <html lang="en">
@@ -38,19 +44,20 @@ include_once './redirect.php';
                     </tr>
                   </thead>
                   <tbody>
-                    <?php foreach ($rooms as $room) {?>
+                    <?php foreach ($bills as $bill) {?>
                     <tr>
-                      <td class="align-middle"><?=$room['room_number']?></td>
-                      <td class="align-middle text-truncate"><?=count($room['tenants'])?></td>
+                      <td class="align-middle"><?=$bill['id']?></td>
+                      <td class="align-middle text-truncate"><?=$bill['room_number']?></td>
                       <td class="align-middle">
-                        <?=count($room['tenants']) === intval($room['capacity']) ? 'Full' : 'Available'?>
+                        <?=date("M d, Y", strtotime($bill['start_period']))?>
                       </td>
-                      <td class="align-middle"><?=$room['capacity']?></td>
                       <td class="align-middle">
-                        <button class="btn btn-link btn-small" data-id="<?=$room['id']?>"
+                        <?=date("M d, Y", strtotime($bill['end_period']))?>
+                      </td>
+                      <td class="align-middle">Paid</td>
+                      <td class="align-middle">
+                        <button class="btn btn-link btn-small" data-id="<?=$bill['id']?>"
                           onclick="viewRoomDetails($(this).attr('data-id'))">Details</button>
-                        <button class="btn btn-small btn-link">Update</button>
-                        <button class="btn btn-small btn-link text-success">Bill</button>
                       </td>
                     </tr>
                     <?php }?>
@@ -115,6 +122,7 @@ foreach ($res->fetch_all(MYSQLI_ASSOC) as $row) {?>
                       <span class="input-group-text">.00</span>
                     </div>
                   </div>
+                  <small id='water_bill-error' class='text-danger error-text'></small>
                 </div>
                 <div class="col-sm-6">
                   <label for="capacity">Electricity Bill</label>
@@ -127,16 +135,19 @@ foreach ($res->fetch_all(MYSQLI_ASSOC) as $row) {?>
                       <span class="input-group-text">.00</span>
                     </div>
                   </div>
+                  <small id='electricity_bill-error' class='text-danger error-text'></small>
                 </div>
               </div>
               <div class="row mb-2">
                 <div class="col-sm-6">
                   <label for="start_period">Start Period</label>
                   <input type="date" name="start_period" class="form-control" />
+                  <small id='start_period-error' class='text-danger error-text'></small>
                 </div>
                 <div class="col-sm-6">
                   <label for="start_period">End Period</label>
                   <input type="date" name="end_period" class="form-control" />
+                  <small id='end_period-error' class='text-danger error-text'></small>
                 </div>
               </div>
               <div class="row mb-2">
@@ -158,11 +169,42 @@ foreach ($res->fetch_all(MYSQLI_ASSOC) as $row) {?>
     <?php include './../templates/scripts.php'?>
 
     <script type="text/javascript">
-    function renderAdditionalCharge(index) {
-      return `
-        <div class="row mb-2" id="addtl-charge-${index}">
+    let addtlChargeIndex = 0;
+
+    function deleteCharge(index) {
+      $(`#addtl-charge-${index}`).remove();
+      addtlChargeIndex--;
+      $('.charge-cont').each(function(idx, elem) {
+        elem.setAttribute('id', `addtl-charge-${idx}`)
+      });
+      $('.addtl-charge-name').each(function(idx, elem) {
+        elem.setAttribute('name', `name-${idx}`)
+      });
+      $('.name-error-cont').each(function(idx, elem) {
+        elem.setAttribute('id', `name-${idx}-error`)
+      });
+      $('.charge-error-cont').each(function(idx, elem) {
+        elem.setAttribute('id', `charge-${idx}-error`)
+      });
+      $('.addtl-charge-charge').each(function(idx, elem) {
+        elem.setAttribute('name', `charge-${idx}`)
+      });
+      $('.delete-charge-btn').each(function(idx, elem) {
+        elem.setAttribute('onclick', `deleteCharge(${idx})`)
+      });
+    }
+    $(document).ready(function() {
+      $('#add-charge').click(function() {
+        $('#addtl-charges-cont').append(renderAdditionalCharge(addtlChargeIndex));
+        addtlChargeIndex++;
+      });
+
+      function renderAdditionalCharge(index) {
+        return `
+        <div class="row mb-2 charge-cont" id="addtl-charge-${index}">
           <div class="col-sm-5">
             <input type="text" class="form-control addtl-charge-name" name="name-${index}" placeholder="Name">
+            <small id='name-${index}-error' class='text-danger name-error-cont error-text'></small>
           </div>
           <div class="col-sm-5">
             <div class="input-group">
@@ -174,23 +216,12 @@ foreach ($res->fetch_all(MYSQLI_ASSOC) as $row) {?>
                 <span class="input-group-text">.00</span>
               </div>
             </div>
+            <small id='charge-${index}-error' class='text-danger charge-error-cont error-text'></small>
           </div>
-          <button class="btn btn-sm btn-link text-danger" onclick="deleteCharge(${index})">Delete</button>
+          <button type="button" class="btn btn-sm btn-link text-danger delete-charge-btn" onclick="deleteCharge(${index})">Delete</button>
         </div>
       `;
-    }
-
-    function deleteCharge(index) {
-      $(`#addtl-charge-${index}`).remove();
-    }
-
-    $(document).ready(function() {
-      let addtlChargeIndex = 0;
-
-      $('#add-charge').click(function() {
-        $('#addtl-charges-cont').append(renderAdditionalCharge(addtlChargeIndex));
-        addtlChargeIndex++;
-      });
+      }
 
       $('#billing-table').DataTable();
 
@@ -203,9 +234,20 @@ foreach ($res->fetch_all(MYSQLI_ASSOC) as $row) {?>
         $('#sidebar,.body-overlay').toggleClass('show-nav');
       });
 
+      // When choosing room, update room charge input field
+      $('select[name=room_number]').change(function(e) {
+        $.get("./../functions/room_price.php?id=" + $(this).val(), function(res) {
+          $('input[name=room_charge]').val(res);
+        });
+      });
+
       // Add bill
       $('#add-bill-form').submit(function(e) {
         e.preventDefault();
+
+        $('.error-text').each(function(_, el) {
+          if (el.innerText !== '') el.innerText = '';
+        });
 
         let addtlCharges = [];
         $('.addtl-charge-name').each(function(idx, el) {
@@ -226,7 +268,16 @@ foreach ($res->fetch_all(MYSQLI_ASSOC) as $row) {?>
         };
 
         $.post('./../functions/add_bill.php', data, function(data) {
-          console.log(data);
+          let res = JSON.parse(data);
+
+          if (res.status !== 200) {
+            for (key in res.errors) {
+              $(`#${key}-error`).text(res.errors[key]);
+            }
+          } else {
+            alert('Successfully billed room.');
+            window.location.reload();
+          }
         });
       });
     });
