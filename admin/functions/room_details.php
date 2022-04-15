@@ -17,7 +17,7 @@ if ($res->num_rows > 0) {
   foreach ($res->fetch_all(MYSQLI_ASSOC) as $tenant) {
     $arr[] = $tenant['first_name']." ".$tenant['last_name'];
   }
-  $row['tenants'] = implode(',', $arr);
+  $row['tenants'] = implode(', ', $arr);
 }
 
 // Get room images
