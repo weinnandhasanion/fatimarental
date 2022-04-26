@@ -2,7 +2,7 @@
 include './../../services/connect.php';
 include_once './redirect.php';
 
-$sql = "SELECT b.*, r.room_number FROM bills AS b 
+$sql = "SELECT b.*, r.room_number FROM bills AS b
   INNER JOIN rooms AS r
   ON b.room_id = r.id";
 $res = $conn->query($sql);
@@ -23,7 +23,7 @@ $bills = $res->fetch_all(MYSQLI_ASSOC);
     <div id="content">
       <?php include './../templates/topnav.php'?>
       <div class="main-content">
-        <div class="row ">
+        <div class="row">
           <div class="col-sm-12">
             <div class="card" style="min-height: 485px">
               <div class="card-header card-header-text d-flex justify-content-start align-items-center">
@@ -88,7 +88,10 @@ $bills = $res->fetch_all(MYSQLI_ASSOC);
                   <select class="form-control" type="text" name="room_number" required>
                     <option value="">Select a room...</option>
                     <?php
-$sql = "SELECT id, room_number FROM rooms";
+$sql = "SELECT r.id, r.room_number FROM rooms AS r
+  INNER JOIN tenants AS t
+  ON t.room_id = r.id
+  WHERE t.room_id IN (SELECT id FROM rooms)";
 $res = $conn->query($sql);
 foreach ($res->fetch_all(MYSQLI_ASSOC) as $row) {?>
                     <option value="<?=$row['id']?>"><?=$row['room_number']?></option>
@@ -151,6 +154,14 @@ foreach ($res->fetch_all(MYSQLI_ASSOC) as $row) {?>
                 </div>
               </div>
               <div class="row mb-2">
+                <div class="col-sm-6">
+                  <label>Bill To</label>
+                  <select class="form-control" type="text" name="bill_to" required disabled>
+                    <option value="">Select a tenant...</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row mb-2">
                 <div class="col-sm-12" style='display: flex; flex-direction: column; align-items: flex-start'>
                   <label for="">Additional Charges</label>
                   <button type='button' class="btn btn-sm btn-secondary" id="add-charge">New &#43;</button>
@@ -193,7 +204,21 @@ foreach ($res->fetch_all(MYSQLI_ASSOC) as $row) {?>
         elem.setAttribute('onclick', `deleteCharge(${idx})`)
       });
     }
+
     $(document).ready(function() {
+      if (window.location.search) openAddBillModal();
+
+      function openAddBillModal() {
+        const id = parseInt(window.location.search.substring(window.location.search.indexOf('=') + 1))
+        $('select[name=room_number]').val(id);
+        $.get('./../functions/room_price.php?id=' + id, function(res) {
+          $('input[name=room_charge]').val(res);
+        });
+        renderBillToOptions($('select[name=bill_to]'), id);
+        $('select[name=bill_to]').removeAttr('disabled');
+        $('#add-bill-modal').modal('show');
+      }
+
       $('#add-charge').click(function() {
         $('#addtl-charges-cont').append(renderAdditionalCharge(addtlChargeIndex));
         addtlChargeIndex++;
@@ -236,10 +261,29 @@ foreach ($res->fetch_all(MYSQLI_ASSOC) as $row) {?>
 
       // When choosing room, update room charge input field
       $('select[name=room_number]').change(function(e) {
+        const val = $(this).val();
+        const billToSelect = $('select[name=bill_to]');
+        renderBillToOptions(billToSelect, val);
+        val === '' ? billToSelect.attr('disabled', 'disabled') : billToSelect.removeAttr('disabled');
         $.get("./../functions/room_price.php?id=" + $(this).val(), function(res) {
           $('input[name=room_charge]').val(res);
         });
       });
+
+      function renderBillToOptions(elem, val) {
+        if (val === '') {
+          elem.html('<option value="">Select a tenant...</option>')
+          return;
+        }
+
+        $.get("./../functions/get_room_tenants.php?id=" + val, function(res) {
+          const data = JSON.parse(res);
+          const defaultOption = elem.html().trim();
+          const options = data.map(d => `<option value="${d.id}">${d.first_name} ${d.last_name}</option>`).join(
+            ' ');
+          elem.html(`${defaultOption} ${options}`);
+        });
+      }
 
       // Add bill
       $('#add-bill-form').submit(function(e) {
@@ -264,10 +308,12 @@ foreach ($res->fetch_all(MYSQLI_ASSOC) as $row) {?>
           electricity_bill: $('input[name=electricity_bill]').val(),
           start_period: $('input[name=start_period]').val(),
           end_period: $('input[name=end_period]').val(),
+          bill_to: $('select[name=bill_to]').val(),
           additional_charges: addtlCharges
         };
 
         $.post('./../functions/add_bill.php', data, function(data) {
+          console.log(data);
           let res = JSON.parse(data);
 
           if (res.status !== 200) {
@@ -276,7 +322,7 @@ foreach ($res->fetch_all(MYSQLI_ASSOC) as $row) {?>
             }
           } else {
             alert('Successfully billed room.');
-            window.location.reload();
+            window.location.href = './billing.php';
           }
         });
       });

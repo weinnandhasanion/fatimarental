@@ -8,6 +8,7 @@ $water_bill = $_POST['water_bill'];
 $electricity_bill = $_POST['electricity_bill'];
 $start_period = $_POST['start_period'];
 $end_period = $_POST['end_period'];
+$bill_to_tenant_id = $_POST['bill_to'];
 $addtl_charges = [];
 
 if (isset($_POST['additional_charges']) && count($_POST['additional_charges']) > 0) {
@@ -19,6 +20,10 @@ $status = 422;
 
 if (!preg_match("/^[0-9]*$/", $water_bill)) {
     $errors['water_bill'] = 'Water bill should not contain any letters.';
+}
+
+if (!isset($bill_to_tenant_id)) {
+    $errors['bill_to'] = 'Please select a tenant to bill.';
 }
 
 if (!preg_match("/^[0-9]*$/", $electricity_bill)) {
@@ -52,8 +57,8 @@ foreach ($addtl_charges as $idx => $addtl) {
 }
 
 if (count($errors) < 1) {
-    $sql = "INSERT INTO bills (room_id, admin_id, room_charge, electricity_bill, water_bill, start_period, end_period)
-    VALUES ('$room_id', " . $_SESSION['user']['id'] . ", '$room_charge', '$electricity_bill', '$water_bill', '$start_period', '$end_period')";
+    $sql = "INSERT INTO bills (room_id, admin_id, bill_to_tenant_id, room_charge, electricity_bill, water_bill, start_period, end_period)
+    VALUES ('$room_id', " . $_SESSION['user']['id'] . ", " . intval($bill_to_tenant_id) . ", '$room_charge', '$electricity_bill', '$water_bill', '$start_period', '$end_period')";
     $res = $conn->query($sql);
 
     if ($res) {
