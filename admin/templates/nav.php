@@ -47,7 +47,7 @@ $page = basename($_SERVER['PHP_SELF']);
         <i class="material-icons">content_copy</i><span>Billing</span></a>
     </li>
 
-    <li class="<?= $page === 'rooms.php' ? "active" : "" ?>">
+    <li class="<?= in_array($page, ['rooms.php', 'edit_room_images.php']) ? "active" : "" ?>">
       <a href="./rooms.php">
         <i class="material-icons">meeting_room</i><span>Rooms</span></a>
     </li>
