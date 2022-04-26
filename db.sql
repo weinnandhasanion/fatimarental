@@ -134,6 +134,7 @@ create table `reservations` (
 create table `bills` (
     `id` INT AUTO_INCREMENT,
     `room_id` int,
+    `bill_to_tenant_id` int,
     `admin_id` int,
     `room_charge` FLOAT,
     `electricity_bill` FLOAT,
@@ -143,6 +144,7 @@ create table `bills` (
     `date_added` timestamp not null DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`room_id`) REFERENCES `rooms`(`id`),
+    FOREIGN KEY (`bill_to_tenant_id`) REFERENCES `tenants`(`id`),
     FOREIGN KEY (`admin_id`) REFERENCES `admins`(`id`)
   );
 create table `additional_charges` (
@@ -162,6 +164,6 @@ create table `tenant_bills` (
     FOREIGN KEY (`tenant_id`) REFERENCES `tenants`(`id`),
     FOREIGN KEY (`bill_id`) REFERENCES `bills`(`id`)
   );
-create table `payments` (
-  -- WIP
-);
+-- create table `payments` (
+--   -- WIP
+-- );
