@@ -45,6 +45,7 @@ $rooms = mysqli_fetch_all($roomsRes, MYSQLI_ASSOC);
                     <tr>
                       <th>ID</th>
                       <th>Name</th>
+                      <th>Username</th>
                       <th>Room</th>
                       <th>Action</th>
                     </tr>
@@ -57,6 +58,7 @@ foreach ($users as $user) {
                       <td class='align-middle'><?=$user['id']?></td>
                       <td class='align-middle'>
                         <?=$user['first_name'] . " " . $user['middle_initial'] . " " . $user['last_name']?></td>
+                      <td class='align-middle'><?=$user['username']?></td>
                       <td class='align-middle'><?=$user['room_number']?></td>
                       <td class='align-middle'>
                         <button class="btn btn-small btn-link" onclick="viewMember($(this).attr('data-id'))"
@@ -550,6 +552,15 @@ foreach ($rooms as $room) {
           if (data !== null) {
             $('#username-update').val(data);
             $('#generate-username-btn').attr('disabled', 'disabled');
+            $.alert({
+              title: '',
+              content: 'Username successfully generated.',
+              buttons: {
+                close: function() {
+                  window.location.reload();
+                }
+              }
+            });
           } else {
             alert("Error in generating username. Please try again.");
           }
