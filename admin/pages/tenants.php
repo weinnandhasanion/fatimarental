@@ -45,7 +45,6 @@ $rooms = mysqli_fetch_all($roomsRes, MYSQLI_ASSOC);
                     <tr>
                       <th>ID</th>
                       <th>Name</th>
-                      <th>Payment Status</th>
                       <th>Room</th>
                       <th>Action</th>
                     </tr>
@@ -58,7 +57,6 @@ foreach ($users as $user) {
                       <td class='align-middle'><?=$user['id']?></td>
                       <td class='align-middle'>
                         <?=$user['first_name'] . " " . $user['middle_initial'] . " " . $user['last_name']?></td>
-                      <td class='align-middle'>Paid</td>
                       <td class='align-middle'><?=$user['room_number']?></td>
                       <td class='align-middle'>
                         <button class="btn btn-small btn-link" onclick="viewMember($(this).attr('data-id'))"
