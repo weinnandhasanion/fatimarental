@@ -221,7 +221,7 @@ function renderTenants($tenants)
                   <small id="pathname-cont-update"></small>
                   <button type="button" class="btn btn-secondary btn-sm" style="width: 120px"
                     onclick="document.querySelector('#file-input-update').click()">Upload Image/s</button> -->
-                  <button class="btn btn-secondary btn-sm" style="width: 120px" id="update-images-btn">Update
+                  <button type="button" class="btn btn-secondary btn-sm" style="width: 120px" id="update-images-btn">Update
                     images</button>
                 </div>
               </div>

@@ -1,5 +1,15 @@
 <?php
 include_once './redirect.php';
+include './../../services/connect.php';
+
+$url = $_SERVER['REQUEST_URI'];
+$room_id = explode("=", parse_url($url, PHP_URL_QUERY))[1];
+$sql = "SELECT * FROM room_images WHERE room_id = " . intval($room_id);
+$res = $conn->query($sql);
+// $images = [];
+if ($res) {
+    $images = $res->fetch_all(MYSQLI_ASSOC);
+}
 ?>
 <!doctype html>
 <html lang="en">
@@ -19,9 +29,23 @@ include_once './redirect.php';
         <div class="row">
           <div class="col-sm-12">
             <h4 class="font-weight-normal" id="title"></h4>
+            <div class="container my-4">
+              <ul>
+                <?php foreach ($images as $image) {?>
+                <li>
+                  <div class="d-flex align-items-center" style="width: 250px">
+                    <p style="flex-grow: 1; margin: 0"><?=$image['image_pathname']?></p>
+                    <button class="btn btn-link" onclick="viewImage('<?= $image['image_pathname'] ?>')">View</button>
+                    <button class="btn btn-link text-danger" onclick="deleteImage(<?= $image['id'] ?>)">Delete</button>
+                  </div>
+                </li>
+                <?php }?>
+              </ul>
+            </div>
             <form class="dropzone" id="my-great-dropzone"></form>
 
-            <button type="submit" form="my-great-dropzone" class="btn btn-success" style="margin-top: 15px">Submit</button>
+            <button type="submit" form="my-great-dropzone" class="btn btn-success mb-3"
+              style="margin-top: 15px">Submit</button>
           </div>
         </div>
       </div>
@@ -31,25 +55,66 @@ include_once './redirect.php';
   <?php include './../templates/scripts.php'?>
 
   <script type="text/javascript">
+  Dropzone.autoDiscover = false;
+
+  const room_id = new URLSearchParams(window.location.search).get('id');
+
   const dropzone = new Dropzone('#my-great-dropzone', {
-    url: "./../functions/upload_room_image.php",
+    url: "./../functions/upload_room_image.php?id=" + room_id,
     paramName: "file",
-    maxFilesize: 2,
+    maxFilesize: 10,
     uploadMultiple: true,
     acceptedFiles: 'image/*',
     autoProcessQueue: false,
     addRemoveLinks: true,
-    accept: function(file, done) {
-      if (file.name == "justinbieber.jpg") {
-        done("Naha, you don't.");
-      } else {
-        done();
-      }
-    }
   });
 
+  dropzone.on("complete", function(e) {
+    $.alert({
+      title: 'Success',
+      content: 'File/s successfully uploaded.',
+      buttons: {
+        ok: function() {
+          window.location.reload();
+        }
+      }
+    });
+  });
+
+  function viewImage(pathname) {
+    $.dialog({
+      title: pathname,
+      content: `<img src="./../../uploads/${pathname}"} />`,
+      backgroundDismiss: true,
+      closeIcon: true,
+    });
+  }
+
+  function deleteImage(id) {
+    const resp = confirm("Do you want to delete this image?");
+    if (resp) {
+      $.post("./../functions/delete_room_image.php", {
+        id
+      }, function(res) {
+        const data = JSON.parse(res);
+        if (data.status === 200) {
+          $.alert({
+            title: 'Success',
+            content: 'Image successfully deleted.',
+            buttons: {
+              ok: function() {
+                window.location.reload();
+              }
+            }
+          });
+        }
+      })
+    }
+  }
+
   $(document).ready(function() {
-    $.get('./../functions/room_details.php?id=' + new URLSearchParams(window.location.search).get('id'), function(res) {
+    $.get('./../functions/room_details.php?id=' + room_id, function(
+      res) {
       const data = JSON.parse(res);
       $('#title').text(`Room ${data.room_number} Images`)
     });
@@ -57,7 +122,6 @@ include_once './redirect.php';
     $('#my-great-dropzone').submit(function(e) {
       e.preventDefault();
       dropzone.processQueue();
-      console.log(e);
     })
 
     $('#sidebarCollapse').on('click', function() {
