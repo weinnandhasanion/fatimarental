@@ -2,21 +2,6 @@
 include_once './redirect.php';
 include './../../services/connect.php';
 
-$sort = $_GET['sort'] ?? 'pending';
-
-$statuses = [
-  "pending" => [0, "New"],
-  "approved" => [1, "Approved"],
-  "rejected" => [2, "Rejected"]
-];
-
-$sql = "SELECT re.*, ro.room_number FROM reservations AS re
-  INNER JOIN rooms AS ro
-  ON re.room_id = ro.id
-  WHERE re.`status` = ". $statuses[$sort][0];
-$res = $conn->query($sql);
-$reservations = [];
-if ($res) $reservations = $res->fetch_all(MYSQLI_ASSOC);
 ?>
 
 <!doctype html>
@@ -35,28 +20,14 @@ if ($res) $reservations = $res->fetch_all(MYSQLI_ASSOC);
 
       <?php include './../templates/topnav.php'?>
       <div class="main-content">
-        <div class="row ">
-          <div class="col-sm-12">
-            <ul class="nav nav-tabs">
-              <li class="nav-item">
-                <a class="nav-link <?= $sort === 'pending' ? "active" : ""?>" 
-                  href="./reservations.php">New  Reservations</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link <?= $sort === 'approved' ? "active" : ""?>"
-                  href="./reservations.php?sort=approved">Approved Reservations</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link <?= $sort === 'rejected' ? "active" : ""?>"
-                  href="./reservations.php?sort=rejected">Rejected Reservations</a>
-              </li>
-            </ul>
-            <div class="card" style="min-height: 485px; margin-top: 0; border: 1px solid rgba(0,0,0,.125) !important; border-top: 0px !important">
+        <div class="col-md-12">
+          <div class="row ">
+            <div class="card" style="min-height: 485px;">
               <div class="card-header card-header-text d-flex justify-content-start align-items-center">
-                <h4 class="card-title flex-grow-1"><?=$statuses[$sort][1]?> Reservations</h4>
+                <h4 class="card-title flex-grow-1">Payments</h4>
               </div>
               <div class="card-content table-responsive">
-                <table class="table table-hover" id='reservations-table'>
+                <table class="table table-hover" id='payments-table'>
                   <thead class="text-primary">
                     <tr>
                       <th style="width: 200px">Name</th>
@@ -67,20 +38,9 @@ if ($res) $reservations = $res->fetch_all(MYSQLI_ASSOC);
                     </tr>
                   </thead>
                   <tbody>
-                    <?php foreach ($reservations as $res) {?>
                     <tr>
-                      <td class="align-middle"><?=$res['name']?></td>
-                      <td class="align-middle">
-                        <?=$res['room_number']?>
-                      </td>
-                      <td class="align-middle"><?=date("F d, Y", strtotime($res['move_date']))?></td>
-                      <td class="align-middle"><?=empty($res['message']) ? "N/A" : $res['message']?></td>
-                      <td class="align-middle">
-                        <button class="btn btn-link btn-small" data-id="<?=$res['id']?>"
-                          onclick="viewReservationDetails($(this).attr('data-id'))">Details</button>
-                      </td>
+                      <td class="align-middle"></td>
                     </tr>
-                    <?php }?>
                   </tbody>
                 </table>
               </div>
@@ -179,7 +139,7 @@ if ($res) $reservations = $res->fetch_all(MYSQLI_ASSOC);
     }
 
     $(document).ready(function() {
-      $('#reservations-table').DataTable()
+      $('#payments-table').DataTable()
 
       $('#sidebarCollapse').on('click', function() {
         $('#sidebar').toggleClass('active');

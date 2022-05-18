@@ -57,7 +57,7 @@ $bills = $res->fetch_all(MYSQLI_ASSOC);
                       <td class="align-middle">Paid</td>
                       <td class="align-middle">
                         <button class="btn btn-link btn-small" data-id="<?=$bill['id']?>"
-                          onclick="viewRoomDetails($(this).attr('data-id'))">Details</button>
+                          onclick="viewBillDetails($(this).attr('data-id'))">Details</button>
                       </td>
                     </tr>
                     <?php }?>
@@ -327,6 +327,10 @@ foreach ($res->fetch_all(MYSQLI_ASSOC) as $row) {?>
         });
       });
     });
+
+    function viewBillDetails(id) {
+      window.open("./bill_details.php?id=" + id, "_blank");
+    }
     </script>
 </body>
 

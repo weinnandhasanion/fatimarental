@@ -30,11 +30,11 @@ $users = mysqli_fetch_all($usersRes, MYSQLI_ASSOC);
     <!-- Page Content  -->
     <div id="content">
 
-    <?php include './../templates/topnav.php'?>
+      <?php include './../templates/topnav.php'?>
 
 
       <div class="main-content">
-
+        <button id="send">send message</button>
         <div class="row">
           <div class="col-lg-3 col-md-6 col-sm-6">
             <div class="card card-stats">
@@ -224,6 +224,12 @@ foreach ($users as $user) {
 
 
     <script type="text/javascript">
+    $('#send').click(function() {
+      $.get("./../jobs/check_bill.php", function(res) {
+        const data = JSON.parse(res);
+        console.log(res);
+      });
+    })
     $(document).ready(function() {
       $('#sidebarCollapse').on('click', function() {
         $('#sidebar').toggleClass('active');

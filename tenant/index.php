@@ -3,6 +3,24 @@ session_start();
 if (isset($_SESSION['user']) && array_key_exists('user_type', $_SESSION['user'])) {
   header("Location: ./../index.php");
 }
+include './../services/connect.php';
+
+$rooms = [];
+$sql = "SELECT * FROM rooms";
+$res = $conn->query($sql);
+if ($res) $rooms = $res->fetch_all(MYSQLI_ASSOC);
+$rooms = array_map(function($room) use ($conn) {
+  $room['images'] = [];
+  $sql = "SELECT * FROM room_images WHERE room_id = " . $room['id'];
+  $res = $conn->query($sql);
+  if ($res->num_rows > 0) {
+    while ($row = $res->fetch_assoc()) {
+      $room['images'][] = $row;
+    }
+  }
+
+  return $room;
+}, $rooms);
 ?>
 
 <!DOCTYPE html>
@@ -27,7 +45,7 @@ if (isset($_SESSION['user']) && array_key_exists('user_type', $_SESSION['user'])
         <i class="fab fa-instagram"></i>
       </div>
       <div class="logo">
-        <!-- <img src="image/logo.png" alt="">-->
+        <!-- <img src="./assets/logo.png" alt="">-->
       </div>
       <div class="address">
         <i class="fas fa-map-marker-alt"></i>
@@ -40,14 +58,14 @@ if (isset($_SESSION['user']) && array_key_exists('user_type', $_SESSION['user'])
     <div class="container">
       <nav class="navbar flex1">
         <div class="sticky_logo logo">
-          <img src="image/logo.png" alt="">
+          <img src="./assets/logo.png" alt="">
         </div>
 
         <ul class="nav-menu">
           <li> <a href="#home">Home</a> </li>
           <li> <a href="#about">about</a> </li>
           <li> <a href="#room">room</a> </li>
-          <li> <a href="#gallary">gallary</a> </li>
+          <li> <a href="#gallary">gallery</a> </li>
           <li> <a href="#contact">contact</a> </li>
           <?php
           if (!isset($_SESSION['user'])) {
@@ -96,8 +114,6 @@ if (isset($_SESSION['user']) && array_key_exists('user_type', $_SESSION['user'])
     <div class="container">
       <h1>Fatima Rental</h1>
       <p>Discover the place where you have fun & enjoy a lot</p>
-
-
     </div>
   </section>
 
@@ -123,7 +139,7 @@ if (isset($_SESSION['user']) && array_key_exists('user_type', $_SESSION['user'])
             laborum.</p>
         </div>
         <div class="right">
-          <img src="image/h2.jpg" alt="" style="width: 60%;">
+          <img src="./assets/h2.jpg" alt="" style="width: 60%;">
         </div>
       </div>
     </div>
@@ -170,7 +186,7 @@ if (isset($_SESSION['user']) && array_key_exists('user_type', $_SESSION['user'])
           </div>
         </div>
         <div class="right">
-          <img src="image/IMG_7317.JPG" alt="">
+          <img src="./assets/IMG_7317.JPG" alt="">
         </div>
       </div>
     </div>
@@ -184,12 +200,13 @@ if (isset($_SESSION['user']) && array_key_exists('user_type', $_SESSION['user'])
       </div>
 
       <div class="content grid2 mtop">
+        <?php foreach($rooms as $room): ?>
         <div class="box flex">
           <div class="left">
-            <img src="image/h3.jpg" alt="">
+            <img src="./../uploads/<?= $room['images'][0]['image_pathname'] ?>" alt="">
           </div>
           <div class="right">
-            <h4>Room for 2</h4>
+            <h4>Room <?= $room['room_number'] ?></h4>
             <div class="rate flex">
               <i class="fas fa-star"></i>
               <i class="fas fa-star"></i>
@@ -197,90 +214,20 @@ if (isset($_SESSION['user']) && array_key_exists('user_type', $_SESSION['user'])
               <i class="fas fa-star"></i>
               <i class="fas fa-star"></i>
             </div>
-            <p>With Advance Deposit</p>
-            <p> Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
-              laborum.</p>
-            <h5>From ₱150/night or 2,500/monthly</h5>
+            <p><?= $room['description'] ?></p>
+            <h5>₱<?= $room['price'] ?>.00</h5>
             <button class="flex1" style="cursor: pointer;">
               <span>Reserve Now</span>
               <a href="rent.php" style="color: white;"> <i class="fas fa-arrow-circle-right"></i></a>
             </button>
           </div>
         </div>
-        <div class="box flex">
-          <div class="left">
-            <img src="image/h7.jpg" alt="">
-          </div>
-          <div class="right">
-            <h4>Room for 1</h4>
-            <div class="rate flex">
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-            </div>
-            <p>With Advance Deposit</p>
-            <p> Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
-              laborum.</p>
-            <h5>From ₱150/night or 2,500/monthly</h5>
-            <button class="flex1" style="cursor: pointer;">
-              <span>Reserve Now</span>
-              <a href="rent.php" style="color: white;"> <i class="fas fa-arrow-circle-right"></i></a>
-            </button>
-          </div>
-        </div>
-        <div class="box flex">
-          <div class="left">
-            <img src="image/h1.jpg" alt="">
-          </div>
-          <div class="right">
-            <h4>Room for 4</h4>
-            <div class="rate flex">
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-            </div>
-            <p>With Advance Deposit</p>
-            <p> Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
-              laborum.</p>
-            <h5>From ₱150/night or 2,500/monthly</h5>
-            <button class="flex1" style="cursor: pointer;">
-              <span>Reserve Now</span>
-              <a href="rent.php" style="color: white;"> <i class="fas fa-arrow-circle-right"></i></a>
-            </button>
-          </div>
-        </div>
-        <div class="box flex">
-          <div class="left">
-            <img src="image/195321679_439017010505242_3162937492356312932_n.jpg" alt="">
-          </div>
-          <div class="right">
-            <p>With Advance Deposit</p>
-            <h4>Room for 2 w/ Aircon</h4>
-            <div class="rate flex">
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-            </div>
-            <p> Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
-              laborum.</p>
-            <h5>From ₱250/night or 3,500/monthly</h5>
-            <button class="flex1" style="cursor: pointer;">
-              <span>Reserve Now</span>
-              <a href="rent.php" style="color: white;"> <i class="fas fa-arrow-circle-right"></i></a>
-            </button>
-          </div>
-        </div>
+        <?php endforeach; ?>
       </div>
     </div>
   </section>
 
-  <section class="area top">
+  <section class="area top" style="margin-bottom: 80px">
     <div class="container">
       <div class="heading">
         <h5>Place</h5>
@@ -289,7 +236,7 @@ if (isset($_SESSION['user']) && array_key_exists('user_type', $_SESSION['user'])
 
       <div class="content flex mtop">
         <div class="left">
-          <img src="image/IMG_7307.JPG" alt="" style="width:70%;">
+          <img src="./assets/IMG_7307.JPG" alt="" style="width:70%;">
         </div>
         <div class="right">
           <ul>
@@ -325,7 +272,7 @@ if (isset($_SESSION['user']) && array_key_exists('user_type', $_SESSION['user'])
       <div class="content grid mtop">
         <div class="box">
           <div class="img">
-            <img src="image/b1.jpg" alt="">
+            <img src="./assets/b1.jpg" alt="">
             <span>Room</span>
           </div>
           <div class="text">
@@ -340,7 +287,7 @@ if (isset($_SESSION['user']) && array_key_exists('user_type', $_SESSION['user'])
         </div>
         <div class="box">
           <div class="img">
-            <img src="image/b2.jpg" alt="">
+            <img src="./assets/b2.jpg" alt="">
             <span>Room</span>
           </div>
           <div class="text">
@@ -355,7 +302,7 @@ if (isset($_SESSION['user']) && array_key_exists('user_type', $_SESSION['user'])
         </div>
         <div class="box">
           <div class="img">
-            <img src="image/b3.jpg" alt="">
+            <img src="./assets/b3.jpg" alt="">
             <span>Room</span>
           </div>
           <div class="text">
@@ -371,7 +318,7 @@ if (isset($_SESSION['user']) && array_key_exists('user_type', $_SESSION['user'])
       </div>
     </div>
   </section><br>-->
-
+  <!-- 
   <section class="offer2 about wrapper timer top" id="shop">
     <div class="container">
       <div class="heading">
@@ -421,7 +368,7 @@ if (isset($_SESSION['user']) && array_key_exists('user_type', $_SESSION['user'])
         </div>
       </div>
     </div>
-  </section>
+  </section> -->
 
   <footer>
     <div class="container top">
@@ -440,7 +387,7 @@ if (isset($_SESSION['user']) && array_key_exists('user_type', $_SESSION['user'])
       <div class="content grid  top">
         <div class="box">
           <div class="logo">
-            <img src="image/logo.png" alt="">
+            <img src="./assets/logo.png" alt="">
           </div>
           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
             dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
@@ -506,18 +453,18 @@ if (isset($_SESSION['user']) && array_key_exists('user_type', $_SESSION['user'])
 
 <?php include './templates/scripts.php' ?>
 <script>
-  $(document).ready(function() {
-    $('#logout-link').click(function(e) {
-      e.preventDefault();
-      let x = confirm('Do you want to logout?');
-      if (x) {
-        $.get('./../services/logout.php', function(res) {
-          alert(res);
-          window.location.href = './login.php';
-        });
-      }
-    });
+$(document).ready(function() {
+  $('#logout-link').click(function(e) {
+    e.preventDefault();
+    let x = confirm('Do you want to logout?');
+    if (x) {
+      $.get('./../services/logout.php', function(res) {
+        alert(res);
+        window.location.href = './login.php';
+      });
+    }
   });
+});
 </script>
 
 </html>

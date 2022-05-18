@@ -6,7 +6,10 @@ $titles = [
   "rooms.php" => "Rooms",
   "tenants.php" => "Tenants",
   "billing.php" => "Billing",
-  "edit_room_images.php" => "Rooms"
+  "edit_room_images.php" => "Rooms",
+  "reports.php" => "Reports",
+  "payments.php" => "Payments",
+  "bill_details.php" => "Bill Details"
 ];
 $path = basename($_SERVER['PHP_SELF']);
 ?>

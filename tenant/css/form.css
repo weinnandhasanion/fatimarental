@@ -4,7 +4,7 @@
   --primary-color: #1884cc;
 }
 body{
-    background-image: url("../image/162153645.jpg");
+    background-image: url("./../assets/162153645.jpg");
     height: 100vh;
     background-attachment: fixed;
     background-position: center;

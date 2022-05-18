@@ -10,21 +10,10 @@ $page = basename($_SERVER['PHP_SELF']);
     <li class="<?= $page === 'dashboard.php' ? "active" : "" ?>">
       <a href="./dashboard.php" class="dashboard"><i class="material-icons">dashboard</i><span>Dashboard</span></a>
     </li>
+    
     <div class="small-screen navbar-display">
-      <li class="dropdown d-lg-none d-md-block d-xl-none d-sm-block">
-        <a href="#homeSubmenu0" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-          <i class="material-icons">notifications</i><span> notification</span></a>
-        <ul class="collapse list-unstyled menu" id="homeSubmenu0">
-          <li>
-            <a href="#">You have 5 new messages</a>
-          </li>
-        </ul>
-      </li>
       <li class="d-lg-none d-md-block d-xl-none d-sm-block">
         <a href="#"><i class="material-icons">person</i><span>user</span></a>
-      </li>
-      <li class="d-lg-none d-md-block d-xl-none d-sm-block">
-        <a href="#"><i class="material-icons">settings</i><span>setting</span></a>
       </li>
     </div>
 
@@ -50,6 +39,16 @@ $page = basename($_SERVER['PHP_SELF']);
     <li class="<?= in_array($page, ['rooms.php', 'edit_room_images.php']) ? "active" : "" ?>">
       <a href="./rooms.php">
         <i class="material-icons">meeting_room</i><span>Rooms</span></a>
+    </li>
+
+    <li class="<?= $page === 'payments.php' ? "active" : "" ?>">
+      <a href="./payments.php">
+        <i class="material-icons">payments</i><span>Payments</span></a>
+    </li>
+
+    <li class="<?= $page === 'reports.php' ? "active" : "" ?>">
+      <a href="./reports.php">
+        <i class="material-icons">receipt_long</i><span>Reports</span></a>
     </li>
   </ul>
 </nav>

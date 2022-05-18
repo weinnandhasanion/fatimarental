@@ -126,7 +126,8 @@ create table `reservations` (
     `contact_number` VARCHAR(255),
     `move_date` DATE,
     `message` VARCHAR(255),
-    `admin_id` int,
+    `admin_id` int DEFAULT NULL,
+    `status` tinyint(3) DEFAULT 0,
     `date_added` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`room_id`) REFERENCES `rooms`(`id`)
@@ -164,6 +165,10 @@ create table `tenant_bills` (
     FOREIGN KEY (`tenant_id`) REFERENCES `tenants`(`id`),
     FOREIGN KEY (`bill_id`) REFERENCES `bills`(`id`)
   );
--- create table `payments` (
---   -- WIP
--- );
+create table `payments` (
+  `id` INT auto_increment,
+  `purpose` VARCHAR(255),
+  `reference_number` VARCHAR(255) UNIQUE,
+  `date_added` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+);

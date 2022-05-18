@@ -232,8 +232,8 @@ header.sticky ul li a {
 }
 
 .home {
-  background-image: url("../image/162153645.jpg");
   height: 100vh;
+  background: linear-gradient( rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35) ), url("./../assets/162153645.jpg");
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
