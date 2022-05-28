@@ -65,9 +65,9 @@ $rooms = $conn->query("SELECT * FROM rooms")?->fetch_all(MYSQLI_ASSOC);
           <div class="inpbox full">
             <span class="flaticon-houses"></span>
             <select id="room_id" name="room_id">
-              <option value="">Select Room Number</option>
+              <option value="">Select Room</option>
               <?php foreach($rooms as $room): ?>
-              <option value="<?=$room['id']?>"><?=$room['room_number']?></option>
+              <option value="<?=$room['id']?>"><?=$room['room_name']?></option>
               <?php endforeach; ?>
             </select>
           </div>

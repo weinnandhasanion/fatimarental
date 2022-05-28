@@ -2,7 +2,7 @@
 include './../../services/connect.php';
 
 $file = $_FILES['file'];
-$room_number = $_POST['room_number'];
+$room_name = $_POST['room_name'];
 $price = $_POST['price'];
 $capacity = $_POST['capacity'];
 $description = $_POST['description'];
@@ -10,14 +10,10 @@ $description = $_POST['description'];
 $errors = [];
 $status = 422;
 
-if (!preg_match("/^[0-9]+$/", $room_number)) {
-    $errors['room_number'] = 'Room number must contain only digits.';
-} else {
-    $sql = "SELECT * FROM rooms WHERE room_number = " . intval($room_number);
-    $res = $conn->query($sql);
-    if ($res->num_rows > 0) {
-        $errors['room_number'] = 'Room number already exists.';
-    }
+$sql = "SELECT * FROM rooms WHERE room_name = " . $room_name;
+$res = $conn->query($sql);
+if ($res->num_rows > 0) {
+    $errors['room_name'] = 'Room name already exists.';
 }
 
 if (!preg_match("/^[0-9]+$/", $price)) {
@@ -44,8 +40,8 @@ foreach ($fileArr as $file) {
 // If no errors are encountered, proceed to storing in database
 if (count($errors) === 0) {
     $sql = "INSERT INTO rooms
-        (`room_number`, `price`, `capacity`, `description`)
-        VALUES (" . intval($room_number) . ", " . intval($price) . ", " . intval($capacity) . ", '$description')";
+        (`room_name`, `price`, `capacity`, `description`)
+        VALUES (" . $room_name . ", " . intval($price) . ", " . intval($capacity) . ", '$description')";
     $res = $conn->query($sql);
     if ($res) {
         $id = $conn->insert_id;

@@ -37,7 +37,7 @@ values
   );
 create table `rooms` (
     `id` INT AUTO_INCREMENT,
-    `room_number` int,
+    `room_name` varchar(255),
     `status` TINYINT CHECK (`status` < 2),
     -- Status: 0 = Unoccupied, 1 = Occupied
     `price` INT,
@@ -49,7 +49,7 @@ create table `rooms` (
 insert into
   `rooms` (
     id,
-    room_number,
+    room_name,
     `status`,
     price,
     capacity,
@@ -58,7 +58,7 @@ insert into
 values
   (
     1,
-    101,
+    "St. Joseph",
     0,
     2000,
     2,
@@ -66,7 +66,7 @@ values
   ),
   (
     2,
-    102,
+    "St. Paul",
     0,
     3000,
     3,
@@ -74,7 +74,7 @@ values
   ),
   (
     3,
-    103,
+    "St. Bernard",
     0,
     4000,
     4,
@@ -170,5 +170,5 @@ create table `payments` (
   `purpose` VARCHAR(255),
   `reference_number` VARCHAR(255) UNIQUE,
   `date_added` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`id`)
 );

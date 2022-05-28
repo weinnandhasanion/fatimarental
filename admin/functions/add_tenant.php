@@ -4,7 +4,7 @@ include './../../services/connect.php';
 $first_name = $_POST['first_name'];
 $last_name = $_POST['last_name'];
 $middle_initial = $_POST['middle_initial'];
-$room_id = intval($_POST['room_number']);
+$room_id = intval($_POST['room_name']);
 $birthdate = $_POST['birthdate'];
 $gender = intval($_POST['gender']);
 $email_address = $_POST['email_address'];
@@ -51,7 +51,7 @@ $capacity = intval($res->fetch_assoc()['capacity']);
 $sql = "SELECT * FROM tenants WHERE room_id = $room_id";
 $res = $conn->query($sql);
 if ($res->num_rows === $capacity) {
-    $errors['room_number'] = 'Room is already full.';
+    $errors['room_name'] = 'Room is already full.';
 } 
 
 

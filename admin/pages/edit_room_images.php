@@ -116,7 +116,7 @@ if ($res) {
     $.get('./../functions/room_details.php?id=' + room_id, function(
       res) {
       const data = JSON.parse(res);
-      $('#title').text(`Room ${data.room_number} Images`)
+      $('#title').text(`Room ${data.room_name} Images`)
     });
 
     $('#my-great-dropzone').submit(function(e) {

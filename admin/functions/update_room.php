@@ -2,7 +2,7 @@
 include './../../services/connect.php';
 
 $room_id = $_POST['id'];
-$room_number = $_POST['room_number'];
+$room_name = $_POST['room_name'];
 $price = $_POST['price'];
 $capacity = $_POST['capacity'];
 $description = $_POST['description'];
@@ -10,15 +10,11 @@ $description = $_POST['description'];
 $errors = [];
 $status = 422;
 
-if (!preg_match("/^[0-9]+$/", $room_number)) {
-    $errors['room_number'] = 'Room number must contain only digits.';
-} else {
-    $sql = "SELECT * FROM rooms WHERE room_number = " . intval($room_number) . "
-    AND id != $room_id";
-    $res = $conn->query($sql);
-    if ($res->num_rows > 0) {
-        $errors['room_number'] = 'Room number already exists.';
-    }
+$sql = "SELECT * FROM rooms WHERE room_name = " . $room_name . "
+AND id != $room_id";
+$res = $conn->query($sql);
+if ($res->num_rows > 0) {
+    $errors['room_name'] = 'Room name already exists.';
 }
 
 if (!preg_match("/^[0-9]+$/", $price)) {
@@ -28,7 +24,7 @@ if (!preg_match("/^[0-9]+$/", $price)) {
 // If no errors are encountered, proceed to storing in database
 if (count($errors) === 0) {
     $sql = "UPDATE rooms
-        SET room_number = " . intval($room_number) . ",
+        SET room_name = " . $room_name . ",
             price = " . intval($price) . ",
             capacity = " . intval($capacity) . ",
             `description` = '$description'

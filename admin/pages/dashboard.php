@@ -4,7 +4,7 @@ include_once './redirect.php';
 
 // Get users
 $users = [];
-$usersQuery = "SELECT t.*, r.room_number FROM tenants AS t
+$usersQuery = "SELECT t.*, r.room_name FROM tenants AS t
   INNER JOIN rooms AS r
   ON t.room_id = r.id";
 $usersRes = mysqli_query($conn, $usersQuery);
@@ -133,7 +133,7 @@ $users = mysqli_fetch_all($usersRes, MYSQLI_ASSOC);
                       <th>ID</th>
                       <th>Name</th>
                       <th>Payment Status</th>
-                      <th>Room Number</th>
+                      <th>Room</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -144,7 +144,7 @@ foreach ($users as $user) {
                       <td><?=$user['id']?></td>
                       <td><?=$user['first_name'] . " " . $user['middle_initial'] . " " . $user['last_name']?></td>
                       <td>₱3,000</td>
-                      <td><?=$user['room_number']?></td>
+                      <td><?=$user['room_name']?></td>
                     </tr>
                     <?php
 }

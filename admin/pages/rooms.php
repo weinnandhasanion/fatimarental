@@ -60,7 +60,7 @@ function renderTenants($tenants)
                 <table class="table table-hover" id='rooms-table'>
                   <thead class="text-primary">
                     <tr>
-                      <th>Room Number</th>
+                      <th>Room</th>
                       <th>Occupants</th>
                       <th>Room Status</th>
                       <th>Capacity</th>
@@ -70,7 +70,7 @@ function renderTenants($tenants)
                   <tbody>
                     <?php foreach ($rooms as $room) {?>
                     <tr>
-                      <td class="align-middle"><?=$room['room_number']?></td>
+                      <td class="align-middle"><?=$room['room_name']?></td>
                       <td class="align-middle text-truncate"><?=count($room['tenants'])?></td>
                       <td class="align-middle">
                         <?=count($room['tenants']) === intval($room['capacity']) ? 'Full' : 'Available'?>
@@ -109,9 +109,9 @@ function renderTenants($tenants)
             <div class="modal-body">
               <div class="row mb-2">
                 <div class="col-sm-4">
-                  <label>Room Number</label>
-                  <input class="form-control" type="text" name="room_number" required>
-                  <small id='room_number-error' class='text-danger'></small>
+                  <label>Room</label>
+                  <input class="form-control" type="text" name="room_name" required>
+                  <small id='room_name-error' class='text-danger'></small>
                 </div>
                 <div class="col-sm-4">
                   <label for="price">Price</label>
@@ -178,9 +178,9 @@ function renderTenants($tenants)
             <div class="modal-body">
               <div class="row mb-2">
                 <div class="col-sm-4">
-                  <label>Room Number</label>
-                  <input class="form-control" type="text" name="room_number-update" required>
-                  <small id='room_number-error-update' class='text-danger'></small>
+                  <label>Room</label>
+                  <input class="form-control" type="text" name="room_name-update" required>
+                  <small id='room_name-error-update' class='text-danger'></small>
                 </div>
                 <div class="col-sm-4">
                   <label for="price">Price</label>
@@ -247,8 +247,8 @@ function renderTenants($tenants)
           <div class="modal-body">
             <div class="row mb-2">
               <div class="col-sm-4">
-                <label>Room Number</label>
-                <input class="form-control" type="text" name="room_number-view" required readonly>
+                <label>Room</label>
+                <input class="form-control" type="text" name="room_name-view" required readonly>
               </div>
               <div class="col-sm-4">
                 <label for="price">Price</label>

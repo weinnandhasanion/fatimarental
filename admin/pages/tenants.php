@@ -4,7 +4,7 @@ include_once './redirect.php';
 
 // Get users
 $users = [];
-$usersQuery = "SELECT t.*, r.room_number FROM tenants AS t
+$usersQuery = "SELECT t.*, r.room_name FROM tenants AS t
   INNER JOIN rooms AS r
   ON t.room_id = r.id";
 $usersRes = mysqli_query($conn, $usersQuery);
@@ -59,7 +59,7 @@ foreach ($users as $user) {
                       <td class='align-middle'>
                         <?=$user['first_name'] . " " . $user['middle_initial'] . " " . $user['last_name']?></td>
                       <td class='align-middle'><?=$user['username']?></td>
-                      <td class='align-middle'><?=$user['room_number']?></td>
+                      <td class='align-middle'><?=$user['room_name']?></td>
                       <td class='align-middle'>
                         <button class="btn btn-small btn-link" onclick="viewMember($(this).attr('data-id'))"
                           data-id="<?=$user['id']?>">View</button>
@@ -111,16 +111,16 @@ foreach ($users as $user) {
               <div class="row mb-2">
                 <div class="col-sm-12">
                   <label>Room</label>
-                  <select class="form-control" placeholder="Enter Room" name="room_number" required>
+                  <select class="form-control" placeholder="Enter Room" name="room_name" required>
                     <?php
 foreach ($rooms as $room) {
     ?>
-                    <option value="<?=$room['id']?>"><?=$room['room_number']?></option>
+                    <option value="<?=$room['id']?>"><?=$room['room_name']?></option>
                     <?php
 }
 ?>
                   </select>
-                  <small id='room_number-error' class='text-danger'></small>
+                  <small id='room_name-error' class='text-danger'></small>
                 </div>
               </div>
               <div class="row mb-2">
@@ -214,16 +214,16 @@ foreach ($rooms as $room) {
             <div class="row mb-2">
               <div class="col-sm-12">
                 <label>Room</label>
-                <select class="form-control" placeholder="Enter Room" name="room_number-view" readonly>
+                <select class="form-control" placeholder="Enter Room" name="room_name-view" readonly>
                   <?php
 foreach ($rooms as $room) {
     ?>
-                  <option value="<?=$room['id']?>"><?=$room['room_number']?></option>
+                  <option value="<?=$room['id']?>"><?=$room['room_name']?></option>
                   <?php
 }
 ?>
                 </select>
-                <small id='room_number-error' class='text-danger'></small>
+                <small id='room_name-error' class='text-danger'></small>
               </div>
             </div>
             <div class="row mb-2">
@@ -319,16 +319,16 @@ foreach ($rooms as $room) {
               <div class="row mb-2">
                 <div class="col-sm-12">
                   <label>Room</label>
-                  <select class="form-control" placeholder="Enter Room" name="room_number" id="room_id-update" required>
+                  <select class="form-control" placeholder="Enter Room" name="room_name" id="room_id-update" required>
                     <?php
 foreach ($rooms as $room) {
     ?>
-                    <option value="<?=$room['id']?>"><?=$room['room_number']?></option>
+                    <option value="<?=$room['id']?>"><?=$room['room_name']?></option>
                     <?php
 }
 ?>
                   </select>
-                  <small id='room_number-error-update' class='text-danger'></small>
+                  <small id='room_name-error-update' class='text-danger'></small>
                 </div>
               </div>
               <div class="row mb-2">

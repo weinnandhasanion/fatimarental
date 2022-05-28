@@ -10,7 +10,7 @@ $statuses = [
   "rejected" => [2, "Rejected"]
 ];
 
-$sql = "SELECT re.*, ro.room_number FROM reservations AS re
+$sql = "SELECT re.*, ro.room_name FROM reservations AS re
   INNER JOIN rooms AS ro
   ON re.room_id = ro.id
   WHERE re.`status` = ". $statuses[$sort][0];
@@ -71,7 +71,7 @@ if ($res) $reservations = $res->fetch_all(MYSQLI_ASSOC);
                     <tr>
                       <td class="align-middle"><?=$res['name']?></td>
                       <td class="align-middle">
-                        <?=$res['room_number']?>
+                        <?=$res['room_name']?>
                       </td>
                       <td class="align-middle"><?=date("F d, Y", strtotime($res['move_date']))?></td>
                       <td class="align-middle"><?=empty($res['message']) ? "N/A" : $res['message']?></td>

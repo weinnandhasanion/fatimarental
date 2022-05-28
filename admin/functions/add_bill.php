@@ -62,6 +62,21 @@ if (count($errors) < 1) {
     $res = $conn->query($sql);
 
     if ($res) {
+        $bill_id = $conn->insert_id;
+
+        foreach ($addtl_charges as $idx => $charge) {
+            $sql = "INSERT INTO additional_charges (bill_id, `name`, charge) VALUES ($bill_id, '".$charge["name-$idx"]."', '".$charge["charge-$idx"]."')";
+            $res = $conn->query($sql);
+        }
+
+        $sql = "SELECT * FROM tenants WHERE room_id = $room_id";
+        $res = $conn->query($sql);
+        $rows = $res->fetch_all(MYSQLI_ASSOC);
+
+        foreach ($rows as $row) {
+            $sql = "INSERT INTO tenant_bills (tenant_id, bill_id) VALUES (".intval($row['id']).", ".intval($bill_id).")";
+            $res = $conn->query($sql);
+        }
         $status = 200;
     }
 }

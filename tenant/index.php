@@ -34,6 +34,8 @@ $rooms = array_map(function($room) use ($conn) {
   <link rel="stylesheet" href="css/style.css">
   <script src="https://code.jquery.com/jquery-1.12.4.min.js"
     integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 
 <body>
@@ -74,6 +76,7 @@ $rooms = array_map(function($room) use ($conn) {
           <?php
           } else {
           ?>
+          <li> <a href="./profile.php">Profile</a> </li>
           <li> <a href="#" id="logout-link">Logout</a> </li>
           <?php
           }
@@ -206,7 +209,7 @@ $rooms = array_map(function($room) use ($conn) {
             <img src="./../uploads/<?= $room['images'][0]['image_pathname'] ?>" alt="">
           </div>
           <div class="right">
-            <h4>Room <?= $room['room_number'] ?></h4>
+            <h4>Room <?= $room['room_name'] ?></h4>
             <div class="rate flex">
               <i class="fas fa-star"></i>
               <i class="fas fa-star"></i>

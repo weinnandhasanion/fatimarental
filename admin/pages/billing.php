@@ -2,7 +2,7 @@
 include './../../services/connect.php';
 include_once './redirect.php';
 
-$sql = "SELECT b.*, r.room_number FROM bills AS b
+$sql = "SELECT b.*, r.room_name FROM bills AS b
   INNER JOIN rooms AS r
   ON b.room_id = r.id";
 $res = $conn->query($sql);
@@ -47,7 +47,7 @@ $bills = $res->fetch_all(MYSQLI_ASSOC);
                     <?php foreach ($bills as $bill) {?>
                     <tr>
                       <td class="align-middle"><?=$bill['id']?></td>
-                      <td class="align-middle text-truncate"><?=$bill['room_number']?></td>
+                      <td class="align-middle text-truncate"><?=$bill['room_name']?></td>
                       <td class="align-middle">
                         <?=date("M d, Y", strtotime($bill['start_period']))?>
                       </td>
@@ -56,6 +56,8 @@ $bills = $res->fetch_all(MYSQLI_ASSOC);
                       </td>
                       <td class="align-middle">Paid</td>
                       <td class="align-middle">
+                        <button class="btn btn-link btn-small text-success" data-id="<?=$bill['id']?>"
+                          onclick="viewBillDetails($(this).attr('data-id'))">Pay</button>
                         <button class="btn btn-link btn-small" data-id="<?=$bill['id']?>"
                           onclick="viewBillDetails($(this).attr('data-id'))">Details</button>
                       </td>
@@ -84,20 +86,20 @@ $bills = $res->fetch_all(MYSQLI_ASSOC);
             <div class="modal-body">
               <div class="row mb-2">
                 <div class="col-sm-6">
-                  <label>Room Number</label>
-                  <select class="form-control" type="text" name="room_number" required>
+                  <label>Room</label>
+                  <select class="form-control" type="text" name="room_name" required>
                     <option value="">Select a room...</option>
                     <?php
-$sql = "SELECT r.id, r.room_number FROM rooms AS r
+$sql = "SELECT r.id, r.room_name FROM rooms AS r
   INNER JOIN tenants AS t
   ON t.room_id = r.id
   WHERE t.room_id IN (SELECT id FROM rooms)";
 $res = $conn->query($sql);
 foreach ($res->fetch_all(MYSQLI_ASSOC) as $row) {?>
-                    <option value="<?=$row['id']?>"><?=$row['room_number']?></option>
+                    <option value="<?=$row['id']?>"><?=$row['room_name']?></option>
                     <?php }?>
                   </select>
-                  <small id='room_number-error' class='text-danger'></small>
+                  <small id='room_name-error' class='text-danger'></small>
                 </div>
                 <div class="col-sm-6">
                   <label for="price">Room Charge</label>
@@ -210,7 +212,7 @@ foreach ($res->fetch_all(MYSQLI_ASSOC) as $row) {?>
 
       function openAddBillModal() {
         const id = parseInt(window.location.search.substring(window.location.search.indexOf('=') + 1))
-        $('select[name=room_number]').val(id);
+        $('select[name=room_name]').val(id);
         $.get('./../functions/room_price.php?id=' + id, function(res) {
           $('input[name=room_charge]').val(res);
         });
@@ -260,7 +262,7 @@ foreach ($res->fetch_all(MYSQLI_ASSOC) as $row) {?>
       });
 
       // When choosing room, update room charge input field
-      $('select[name=room_number]').change(function(e) {
+      $('select[name=room_name]').change(function(e) {
         const val = $(this).val();
         const billToSelect = $('select[name=bill_to]');
         renderBillToOptions(billToSelect, val);
@@ -302,7 +304,7 @@ foreach ($res->fetch_all(MYSQLI_ASSOC) as $row) {?>
         });
 
         const data = {
-          room_id: $('select[name=room_number]').val(),
+          room_id: $('select[name=room_name]').val(),
           room_charge: $('input[name=room_charge]').val(),
           water_bill: $('input[name=water_bill]').val(),
           electricity_bill: $('input[name=electricity_bill]').val(),
@@ -329,7 +331,7 @@ foreach ($res->fetch_all(MYSQLI_ASSOC) as $row) {?>
     });
 
     function viewBillDetails(id) {
-      window.open("./bill_details.php?id=" + id, "_blank");
+      window.open("./../../shared/bill_details.php?id=" + id, "_blank");
     }
     </script>
 </body>
