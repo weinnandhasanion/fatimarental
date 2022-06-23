@@ -66,8 +66,7 @@ $rooms = array_map(function($room) use ($conn) {
         <ul class="nav-menu">
           <li> <a href="#home">Home</a> </li>
           <li> <a href="#about">about</a> </li>
-          <li> <a href="#room">room</a> </li>
-          <li> <a href="#gallary">gallery</a> </li>
+          <li> <a href="#room">rooms</a> </li>
           <li> <a href="#contact">contact</a> </li>
           <?php
           if (!isset($_SESSION['user'])) {
