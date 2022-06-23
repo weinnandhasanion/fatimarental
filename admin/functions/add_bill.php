@@ -57,17 +57,22 @@ foreach ($addtl_charges as $idx => $addtl) {
 }
 
 if (count($errors) < 1) {
-    $sql = "INSERT INTO bills (room_id, admin_id, bill_to_tenant_id, room_charge, electricity_bill, water_bill, start_period, end_period)
-    VALUES ('$room_id', " . $_SESSION['user']['id'] . ", " . intval($bill_to_tenant_id) . ", '$room_charge', '$electricity_bill', '$water_bill', '$start_period', '$end_period')";
+    $total = intval($room_charge) + intval($electricity_bill) + intval($water_bill);
+    $sql = "INSERT INTO bills (reference_id, room_id, admin_id, bill_to_tenant_id, room_charge, electricity_bill, water_bill, start_period, end_period)
+    VALUES ('" . md5(uniqid('', true)) . "', '$room_id', " . $_SESSION['user']['id'] . ", " . intval($bill_to_tenant_id) . ", '$room_charge', '$electricity_bill', '$water_bill', '$start_period', '$end_period')";
     $res = $conn->query($sql);
 
     if ($res) {
         $bill_id = $conn->insert_id;
 
         foreach ($addtl_charges as $idx => $charge) {
+            $total += intval($charge["charge-$idx"]);
             $sql = "INSERT INTO additional_charges (bill_id, `name`, charge) VALUES ($bill_id, '".$charge["name-$idx"]."', '".$charge["charge-$idx"]."')";
             $res = $conn->query($sql);
         }
+
+        $sql = "UPDATE bills SET `total_amount` = $total WHERE id = $bill_id";
+        $conn->query($sql);
 
         $sql = "SELECT * FROM tenants WHERE room_id = $room_id";
         $res = $conn->query($sql);

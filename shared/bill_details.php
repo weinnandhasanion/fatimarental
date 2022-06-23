@@ -12,9 +12,6 @@ ON tb.tenant_id = t.id
 WHERE b.id = $id";
 $res = $conn->query($sql);
 $row = $res->fetch_assoc();
-
-$total_amount = intval($row['room_charge']) + intval($row['electricity_bill']) + intval($row['water_bill']);
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -60,6 +57,7 @@ $total_amount = intval($row['room_charge']) + intval($row['electricity_bill']) +
     <li> <em>Billing Date:
         <?=date("F d, Y", strtotime($row['start_period'])) . " - " . date("F d, Y", strtotime($row['end_period']))?></em>
     </li>
+    <li>Bill Reference No.: <?= $row['reference_id'] ?></li>
 
     <br>
   </ul>
@@ -90,7 +88,6 @@ $total_amount = intval($row['room_charge']) + intval($row['electricity_bill']) +
       if ($res->num_rows > 0) {
         $charges = $res->fetch_all(MYSQLI_ASSOC);
         foreach ($charges as $charge):
-          $total_amount += intval($charge['charge']);
       ?>
       <tr>
         <td><?= $charge['name'] ?></td>
@@ -105,7 +102,7 @@ $total_amount = intval($row['room_charge']) + intval($row['electricity_bill']) +
     <tbody>
       <tr>
         <td style="width: 70%">Total Amount</td>
-        <td><strong>₱<?= $total_amount ?>.00</strong></td>
+        <td><strong>₱<?= $row['total_amount'] ?>.00</strong></td>
       </tr>
     </tbody>
   </table>

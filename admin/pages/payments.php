@@ -2,6 +2,22 @@
 include_once './redirect.php';
 include './../../services/connect.php';
 
+$payments = [];
+$sql = "SELECT bp.bill_id, bp.payment_id, p.*, b.reference_id AS bill_reference_id, r.room_name, t.first_name, t.last_name
+  FROM bill_payments AS bp
+  INNER JOIN payments AS p 
+  ON bp.payment_id = p.id
+  INNER JOIN bills AS b
+  ON bp.bill_id = b.id
+  INNER JOIN rooms AS r
+  ON b.room_id = r.id
+  INNER JOIN tenants AS t
+  ON b.bill_to_tenant_id = t.id";
+$res = $conn->query($sql);
+$rows = $res->fetch_all(MYSQLI_ASSOC);
+foreach ($rows as $row) {
+  $payments[] = $row;
+}
 ?>
 
 <!doctype html>
@@ -10,6 +26,11 @@ include './../../services/connect.php';
 <?php include './../templates/head.php'?>
 
 <body>
+  <style>
+  .add-payment-input {
+    display: none;
+  }
+  </style>
   <div class="wrapper">
     <div class="body-overlay"></div>
 
@@ -32,16 +53,28 @@ include './../../services/connect.php';
                 <table class="table table-hover" id='payments-table'>
                   <thead class="text-primary">
                     <tr>
-                      <th style="width: 200px">Name</th>
+                      <th>Tenant</th>
                       <th>Room</th>
+                      <th>Bill Reference ID</th>
+                      <th>Amount</th>
                       <th>Date of Payment</th>
                       <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <!-- <tr>
-                      <td class="align-middle"></td>
-                    </tr> -->
+                    <?php foreach ($payments as $row): ?>
+                    <tr>
+                      <td class="align-middle"><?=$row['first_name']." ".$row['last_name']?></td>
+                      <td class="align-middle"><?=$row['room_name']?></td>
+                      <td class="align-middle"><?=$row['bill_reference_id']?></td>
+                      <td class="align-middle">P<?=$row['amount']?>.00</td>
+                      <td class="align-middle"><?=date('M d, Y', strtotime($row['date_added']))?></td>
+                      <td class="align-middle">
+                        <button data-id="<?=$row['id']?>" class="btn btn-link"
+                          onclick="getPaymentDetails(this)">Details</button>
+                      </td>
+                    </tr>
+                    <?php endforeach; ?>
                   </tbody>
                 </table>
               </div>
@@ -121,42 +154,49 @@ include './../../services/connect.php';
             </div>
             <div class="modal-body">
               <div class="row mb-2">
+                <div class="col-sm-12">
+                  <label for="">Bill Reference ID</label>
+                  <div class="d-flex align-items-end justify-content-between">
+                    <input type="text" class="form-control mr-3" id="reference-input">
+                    <button type="button" class="btn btn-primary" id="search-bill-btn">Search</button>
+                  </div>
+                  <small class="text-danger" id="reference-input-error"></small>
+                </div>
+              </div>
+              <input type="hidden" id="bill_id">
+              <div class="row mb-2 add-payment-input">
                 <div class="col-sm-6">
                   <label for="">Room</label>
-                  <select name="" id="" class="form-control">
-                    <option value="">Select a room...</option>
-
-                  </select>
+                  <input name="" id="room_name-add" class="form-control" readonly>
                 </div>
                 <div class="col-sm-6">
                   <label for="">Tenant</label>
-                  <select name="" id="" class="form-control">
-                    <option value="">Select a tenant...</option>
-                  </select>
+                  <input name="" id="tenant_name-add" class="form-control" readonly>
                 </div>
               </div>
-              <div class="row mb-2">
+              <div class="row mb-2 add-payment-input">
                 <div class="col-sm-6">
                   <label for="">Amount</label>
                   <div class="input-group">
                     <div class="input-group-prepend">
                       <span class="input-group-text">₱</span>
                     </div>
-                    <input type="number" name="electricity_bill" class="form-control">
+                    <input type="number" id="payment_amount-add" class="form-control">
                     <div class="input-group-append">
                       <span class="input-group-text">.00</span>
                     </div>
                   </div>
+                  <small class="text-danger" id="amount-error"></small>
                 </div>
               </div>
-              <div class="row mb-2">
+              <div class="row mb-2 add-payment-input">
                 <div class="col-sm-12">
                   <label for="">Remarks (Optional)</label>
-                  <textarea class="form-control" id="" rows="4" style="resize: none"></textarea>
+                  <textarea class="form-control" id="remarks" rows="4" style="resize: none"></textarea>
                 </div>
               </div>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer add-payment-input">
               <button type="submit" class="btn btn-success">Add</button>
             </div>
           </div>
@@ -164,35 +204,87 @@ include './../../services/connect.php';
       </form>
     </div>
 
+    <!-- View Payment Modal -->
+    <div id="view-payment-modal" tabindex="-1" class="modal fade" role="dialog">
+      <div class="modal-dialog modal-lg" role='document'>
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">View Payment Details</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row mb-2">
+              <div class="col-sm-12">
+                <label for="">Bill Reference ID</label>
+                <input type="text" class="form-control" id="bill_reference_id-view" readonly>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-sm-6">
+                <label for="">Room</label>
+                <input name="" id="room_name-view" class="form-control" readonly>
+              </div>
+              <div class="col-sm-6">
+                <label for="">Tenant</label>
+                <input name="" id="tenant-view" class="form-control" readonly>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-sm-12">
+                <label>Payment Reference ID</label>
+                <input type="text" class="form-control" readonly id='reference_id-view'>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-sm-6">
+                <label for="">Amount</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">₱</span>
+                  </div>
+                  <input type="number" id="amount-view" class="form-control" readonly>
+                  <div class="input-group-append">
+                    <span class="input-group-text">.00</span>
+                  </div>
+                </div>
+                <small class="text-danger" id="amount-error"></small>
+              </div>
+              <div class="col-sm-6">
+                <label>Date of Payment</label>
+                <input type="text" class="form-control" readonly id='date_added-view'>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-sm-12">
+                <label for="">Remarks</label>
+                <textarea class="form-control" id="remarks-view" rows="4" style="resize: none" readonly></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <?php include './../templates/scripts.php' ?>
 
     <script type="text/javascript">
-    function viewReservationDetails(id) {
-      $.get("./../functions/reservation_details.php?id=" + id, function(resp) {
-        const data = JSON.parse(resp);
-        $('#details-id').val(data.id);
-        for (key in data) {
-          $(`#${key}`).val(data[key]);
-        }
-        $('#details-modal').modal('show');
-
-        $('#approve').click(function() {
-          updateReservation(id, 'approve');
-        })
-        $('#reject').click(function() {
-          updateReservation(id, 'reject');
-        })
-      });
+    function showAddPaymentInputs(bool) {
+      $('.add-payment-input').css('display', bool ? 'flex' : 'none')
     }
 
-    function updateReservation(id, status) {
-      $.get("./../functions/update_reservation.php?id=" + id + "&status=" + status, function(resp) {
-        console.log(resp);
-        const res = JSON.parse(resp);
-        if (res.status === 200) {
-          alert(res.message);
-          window.location.reload();
+    function getPaymentDetails(el) {
+      const id = el.getAttribute('data-id');
+
+      $.get('./../functions/get_payment_details.php?id=' + id, function(res) {
+        const data = JSON.parse(res);
+
+        for (key in data) {
+          $(`#${key}-view`).val(data[key]);
         }
+
+        $('#view-payment-modal').modal('show')
       });
     }
 
@@ -217,6 +309,56 @@ include './../../services/connect.php';
         $(this).addClass('active');
 
       });
+
+      // Get bill details
+      $('#search-bill-btn').click(function() {
+        showAddPaymentInputs(false);
+        const error_msg = $('#reference-input-error');
+        error_msg.text('');
+        const reference_id = $('#reference-input').val();
+        $.get("./../functions/get_bill_details.php?reference_id=" + reference_id, function(resp) {
+          const res = JSON.parse(resp);
+          const {
+            id,
+            room_name,
+            first_name,
+            last_name
+          } = res.data;
+
+          if (res.status === 204) {
+            error_msg.text('Reference ID does not exist.');
+          } else {
+            $('#bill_id').val(id);
+            $('#room_name-add').val(room_name);
+            $('#tenant_name-add').val(first_name + ' ' + last_name);
+            showAddPaymentInputs(true);
+          }
+        });
+      });
+
+      // Add payment
+      $("#add-payment-form").submit(function(e) {
+        e.preventDefault();
+        $('#amount-error').text('');
+
+        const data = {
+          bill_id: +$('#bill_id').val(),
+          amount: $('#payment_amount-add').val(),
+          remarks: $('#remarks').val()
+        }
+
+        $.post('./../functions/add_payment.php', data, function(resp) {
+          console.log(resp);
+          const res = JSON.parse(resp);
+
+          if (res.errors.length > 0) {
+            $('#amount-error').text(res.errors.amount)
+          } else if (res.status === 200) {
+            alert('Payment successfully added!');
+            window.location.reload();
+          }
+        })
+      })
 
     });
     </script>

@@ -2,11 +2,24 @@
 include './../../services/connect.php';
 include_once './redirect.php';
 
+$bills = [];
 $sql = "SELECT b.*, r.room_name FROM bills AS b
   INNER JOIN rooms AS r
   ON b.room_id = r.id";
 $res = $conn->query($sql);
-$bills = $res->fetch_all(MYSQLI_ASSOC);
+if ($res->num_rows > 0) {
+  $rows = $res->fetch_all(MYSQLI_ASSOC);
+  foreach ($rows as $i => $row) {
+    $sql = "SELECT sum(p.amount) AS total from payments as p 
+      inner join bill_payments as bp on bp.payment_id = p.id 
+      inner join bills as b on b.id = bp.bill_id
+      WHERE bp.bill_id = " . $row['id'];
+    $res = $conn->query($sql);
+    $amount = $res->fetch_assoc();
+    $row['amount_paid'] = $amount['total'] ? intval($amount['total']) : 0;
+    $bills[] = $row;
+  }
+} 
 ?>
 <!doctype html>
 <html lang="en">
@@ -35,29 +48,30 @@ $bills = $res->fetch_all(MYSQLI_ASSOC);
                 <table class="table table-hover" id='billing-table'>
                   <thead class="text-primary">
                     <tr>
-                      <th>Bill ID</th>
                       <th>Room</th>
-                      <th>Start Period</th>
-                      <th>End Period</th>
-                      <th>Status</th>
+                      <th>Period (MM/DD/YY)</th>
+                      <th>Reference ID</th>
+                      <th>Balance</th>
                       <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
                     <?php foreach ($bills as $bill) {?>
                     <tr>
-                      <td class="align-middle"><?=$bill['id']?></td>
                       <td class="align-middle text-truncate"><?=$bill['room_name']?></td>
                       <td class="align-middle">
-                        <?=date("M d, Y", strtotime($bill['start_period']))?>
+                        <?=date("m/d/y", strtotime($bill['start_period']))?> -
+                        <?=date("m/d/y", strtotime($bill['end_period']))?>
                       </td>
+                      <td class="align-middle"><?= $bill['reference_id'] ?></td>
+                      <td class="align-middle"><?php 
+                      echo $bill['amount_paid'] >= $bill['total_amount'] ? "Paid" : "P". (intval($bill['total_amount']) - $bill['amount_paid']) .".00"
+                      ?></td>
                       <td class="align-middle">
-                        <?=date("M d, Y", strtotime($bill['end_period']))?>
-                      </td>
-                      <td class="align-middle">Paid</td>
-                      <td class="align-middle">
+                        <?php if($bill['total_amount'] > $bill['amount_paid']) {  ?>
                         <button class="btn btn-link btn-small text-success" data-id="<?=$bill['id']?>"
-                          onclick="viewBillDetails($(this).attr('data-id'))">Pay</button>
+                          onclick="window.location.href='./payments.php?bill_id=<?=$bill['id']?>'">Pay</button>
+                        <?php } ?>
                         <button class="btn btn-link btn-small" data-id="<?=$bill['id']?>"
                           onclick="viewBillDetails($(this).attr('data-id'))">Details</button>
                       </td>
@@ -90,12 +104,12 @@ $bills = $res->fetch_all(MYSQLI_ASSOC);
                   <select class="form-control" type="text" name="room_name" required>
                     <option value="">Select a room...</option>
                     <?php
-$sql = "SELECT r.id, r.room_name FROM rooms AS r
-  INNER JOIN tenants AS t
-  ON t.room_id = r.id
-  WHERE t.room_id IN (SELECT id FROM rooms)";
-$res = $conn->query($sql);
-foreach ($res->fetch_all(MYSQLI_ASSOC) as $row) {?>
+                    $sql = "SELECT r.id, r.room_name FROM rooms AS r
+                      INNER JOIN tenants AS t
+                      ON t.room_id = r.id
+                      WHERE t.room_id IN (SELECT id FROM rooms)";
+                    $res = $conn->query($sql);
+                    foreach ($res->fetch_all(MYSQLI_ASSOC) as $row) {?>
                     <option value="<?=$row['id']?>"><?=$row['room_name']?></option>
                     <?php }?>
                   </select>
