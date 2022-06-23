@@ -77,7 +77,6 @@ if (count($errors) === 0) {
         SET `first_name` = '$first_name',
         `last_name` = '$last_name',
         `middle_initial` = '$middle_initial',
-        `room_id` = '$room_id',
         `birthdate` = '$birthdate',
         `gender` = '$gender',
         `email_address` = '$email_address',
@@ -95,6 +94,30 @@ if (count($errors) === 0) {
             }
         }
         $status = 200;
+
+        // If user wants to change his room, add new row in
+        // tenant_room_history table in the DB.
+        $sql = "SELECT room_id FROM tenants WHERE id = $id";
+        $res = $conn->query($sql);
+        $row = $res->fetch_assoc();
+        if (intval($row['room_id']) !== intval($room_id)) {
+            // First, put an end date in the previous room.
+            $sql = "UPDATE tenant_room_history SET end_date = NOW() 
+                WHERE id = (SELECT id FROM tenant_room_history
+                    WHERE tenant_id = $id AND room_id = ". $row['room_id'] ." 
+                    ORDER BY date_added DESC
+                    LIMIT 1)";
+            $res = $conn->query($sql);
+
+            // Then, add into the table and continue to update the tenant's room_id.
+            if ($res) {
+                $sql = "INSERT INTO tenant_room_history (tenant_id, room_id)
+                    VALUES (". $id .", ". $room_id .")";
+                $conn->query($sql);
+                $sql = "UPDATE tenants SET room_id = $room_id WHERE id = $id";
+                $conn->query($sql);
+            }
+        }
     } else {
         $errors['error'] = 'Error in db';
     }

@@ -66,11 +66,16 @@ if (!in_array(end($ext), $acceptedExts)) {
 if (count($errors) === 0) {
     $sql = "INSERT INTO tenants
       (`first_name`, `last_name`, `middle_initial`, `room_id`, `birthdate`, `gender`, `email_address`, `contact_number`, `address`, `valid_id`, `password`)
-      VALUES ('$first_name', '$last_name', '$middle_initial', '$room_id', '$birthdate', '$gender', '$email_address', '$contact_number', '$address', '" . $file["name"] . "', '" . password_hash('fatima123', PASSWORD_DEFAULT) . "')";
+      VALUES ('$first_name', '$last_name', '$middle_initial', ".$room_id.", '$birthdate', '$gender', '$email_address', '$contact_number', '$address', '" . $file["name"] . "', '" . password_hash('fatima123', PASSWORD_DEFAULT) . "')";
     $res = mysqli_query($conn, $sql);
     if ($res) {
         move_uploaded_file($file['tmp_name'], './../../uploads/' . $file['name']);
         $status = 200;
+
+        $user_id = $conn->insert_id;
+        $sql = "INSERT INTO tenant_room_history (tenant_id, room_id)
+            VALUES (". $user_id .", ". $room_id .")";
+        $conn->query($sql);
     } else {
         $errors['error'] = 'Error in db';
     }
