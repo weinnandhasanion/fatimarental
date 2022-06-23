@@ -17,7 +17,9 @@ $user['room_name'] = $row['room_name'];
 $tabs = [
   'details' => "./profile/profile_details.php",
   'bills' => './profile/bills.php',
-  'history' => './profile/history.php'
+  'payments' => './profile/payments.php',
+  'history' => './profile/history.php',
+  'change-password' => './profile/change-password.php',
 ];
 ?>
 
@@ -66,7 +68,6 @@ $tabs = [
             <?php
           } else {
           ?>
-            <li> <a href="#" id="logout-link">Profile</a> </li>
             <li> <a href="#" id="logout-link">Logout</a> </li>
             <?php
           }
@@ -82,7 +83,8 @@ $tabs = [
       </div>
     </header>
 
-    <section class="home" style="display: flex; justify-content: center; align-items: center; height: unset; flex-grow: 1" id="home">
+    <section class="home"
+      style="display: flex; justify-content: center; align-items: center; height: unset; flex-grow: 1" id="home">
       <div class="container">
         <div class="card" style="height: 500px; padding: 0; border: 0">
           <div class="card-body d-flex" style="padding: 0;">
@@ -97,8 +99,16 @@ $tabs = [
                   <a class="nav-link <?= $tab === 'bills' ? 'active' : '' ?>" href="./profile.php?tab=bills">Bills</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link <?= $tab === 'history' ? 'active' : '' ?>"
-                    href="./profile.php?tab=history">Room History</a>
+                  <a class="nav-link <?= $tab === 'payments' ? 'active' : '' ?>"
+                    href="./profile.php?tab=payments">Payment History</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link <?= $tab === 'history' ? 'active' : '' ?>" href="./profile.php?tab=history">Room
+                    History</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link <?= $tab === 'change-password' ? 'active' : '' ?>" href="./profile.php?tab=change-password">
+                    Change Password</a>
                 </li>
               </ul>
             </div>
