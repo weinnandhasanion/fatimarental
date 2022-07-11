@@ -12,7 +12,7 @@ $email_address = $_POST['email_address'];
 $contact_number = $_POST['contact_number'];
 $address = $_POST['address'];
 
-$sql = "SELECT * FROM tenants WHERE id = $id";
+$sql = "SELECT * FROM tenants WHERE id = '$id'";
 $res = $conn->query($sql);
 $userObj = $res->fetch_all(MYSQLI_ASSOC)[0];
 
@@ -82,7 +82,7 @@ if (count($errors) === 0) {
         `email_address` = '$email_address',
         `contact_number` = '$contact_number',
         `address` = '$address'
-        WHERE id = $id";
+        WHERE id = '$id'";
     $res = mysqli_query($conn, $sql);
     if ($res) {
         if (isset($_FILES['file'])) {
@@ -97,24 +97,24 @@ if (count($errors) === 0) {
 
         // If user wants to change his room, add new row in
         // tenant_room_history table in the DB.
-        $sql = "SELECT room_id FROM tenants WHERE id = $id";
+        $sql = "SELECT room_id FROM tenants WHERE id = '$id'";
         $res = $conn->query($sql);
         $row = $res->fetch_assoc();
         if (intval($row['room_id']) !== intval($room_id)) {
             // First, put an end date in the previous room.
             $sql = "UPDATE tenant_room_history SET end_date = NOW() 
                 WHERE id = (SELECT id FROM tenant_room_history
-                    WHERE tenant_id = $id AND room_id = ". $row['room_id'] ." 
+                    WHERE tenant_id = '$id' AND to_room_id = ". $row['room_id'] ." 
                     ORDER BY date_added DESC
                     LIMIT 1)";
             $res = $conn->query($sql);
 
             // Then, add into the table and continue to update the tenant's room_id.
             if ($res) {
-                $sql = "INSERT INTO tenant_room_history (tenant_id, room_id)
-                    VALUES (". $id .", ". $room_id .")";
+                $sql = "INSERT INTO tenant_room_history (tenant_id, from_room_id, to_room_id)
+                    VALUES ('". $id ."', ". $row['room_id'] .", $room_id)";
                 $conn->query($sql);
-                $sql = "UPDATE tenants SET room_id = $room_id WHERE id = $id";
+                $sql = "UPDATE tenants SET room_id = $room_id WHERE id = '$id'";
                 $conn->query($sql);
             }
         }

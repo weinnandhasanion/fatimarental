@@ -6,7 +6,9 @@ include_once './redirect.php';
 $users = [];
 $usersQuery = "SELECT t.*, r.room_name FROM tenants AS t
   INNER JOIN rooms AS r
-  ON t.room_id = r.id";
+  ON t.room_id = r.id
+  WHERE t.status = 0
+  ORDER BY t.date_added ASC";
 $usersRes = mysqli_query($conn, $usersQuery);
 $users = mysqli_fetch_all($usersRes, MYSQLI_ASSOC);
 
@@ -43,7 +45,7 @@ $rooms = mysqli_fetch_all($roomsRes, MYSQLI_ASSOC);
                 <table class="table table-hover" id='tenants-table'>
                   <thead class="text-primary">
                     <tr>
-                      <th>ID</th>
+                      <th>#</th>
                       <th>Name</th>
                       <th>Username</th>
                       <th>Room</th>
@@ -52,10 +54,10 @@ $rooms = mysqli_fetch_all($roomsRes, MYSQLI_ASSOC);
                   </thead>
                   <tbody>
                     <?php
-foreach ($users as $user) {
+foreach ($users as $i => $user) {
     ?>
                     <tr>
-                      <td class='align-middle'><?=$user['id']?></td>
+                      <td class='align-middle'><?=$i + 1?></td>
                       <td class='align-middle'>
                         <?=$user['first_name'] . " " . $user['middle_initial'] . " " . $user['last_name']?></td>
                       <td class='align-middle'><?=$user['username']?></td>
@@ -393,6 +395,7 @@ foreach ($rooms as $room) {
     // Function to populate view tenant modal
     function viewMember(id) {
       $.get('./../functions/user_details.php?id=' + id, function(res) {
+        console.log(res);
         const user = JSON.parse(res);
         for (key in user) {
           $(`input[name=${key}-view]`).val(user[key]);
@@ -492,6 +495,7 @@ foreach ($rooms as $room) {
           cache: false,
           timeout: 800000,
           success: function(data) {
+            console.log(data);
             let res = JSON.parse(data);
             if (res.status === 422) {
               for (error in res.errors) {

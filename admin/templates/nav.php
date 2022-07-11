@@ -48,7 +48,7 @@ $page = basename($_SERVER['PHP_SELF']);
 
     <li class="<?= $page === 'reports.php' ? "active" : "" ?>">
       <a href="./reports.php">
-        <i class="material-icons">receipt_long</i><span>Reports</span></a>
+        <i class="material-icons">receipt_long</i><span>Income Reports</span></a>
     </li>
   </ul>
 </nav>

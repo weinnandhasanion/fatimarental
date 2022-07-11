@@ -7,7 +7,7 @@ $titles = [
   "tenants.php" => "Tenants",
   "billing.php" => "Billing",
   "edit_room_images.php" => "Rooms",
-  "reports.php" => "Reports",
+  "reports.php" => "Income Reports",
   "payments.php" => "Payments",
   "bill_details.php" => "Bill Details"
 ];

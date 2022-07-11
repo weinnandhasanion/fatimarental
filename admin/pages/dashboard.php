@@ -34,7 +34,6 @@ $users = mysqli_fetch_all($usersRes, MYSQLI_ASSOC);
 
 
       <div class="main-content">
-        <button id="send">send message</button>
         <div class="row">
           <div class="col-lg-3 col-md-6 col-sm-6">
             <div class="card card-stats">
@@ -123,8 +122,19 @@ $users = mysqli_fetch_all($usersRes, MYSQLI_ASSOC);
           <div class="col-lg-7 col-md-12">
             <div class="card" style="min-height: 485px">
               <div class="card-header card-header-text">
-                <h4 class="card-title">Tenant Status</h4>
-                <p class="category">New Tentat Rent on 21th December, 2020</p>
+                <h4 class="card-title">Tenants as of <?= date("F d, Y", strtotime(date(DATE_ISO8601)))?>
+                </h4>
+                <p class="category">
+                  <?php 
+                  $sql = "SELECT * FROM tenants ORDER BY date_added DESC LIMIT 1";
+                  $res = $conn->query($sql);
+                  if ($res->num_rows > 0) {
+                    $row = $res->fetch_assoc();
+                    echo "Newest tenant registered on " . date("F d, Y", strtotime($row['date_added']));
+                  } else {
+                    echo "No tenants";
+                  }
+                ?></p>
               </div>
               <div class="card-content table-responsive">
                 <table class="table table-hover">
@@ -158,7 +168,7 @@ foreach ($users as $user) {
           <div class="col-lg-5 col-md-12">
             <div class="card" style="min-height: 485px">
               <div class="card-header card-header-text">
-                <h4 class="card-title">Monthly Satus</h4>
+                <h4 class="card-title">Recent Activity</h4>
               </div>
               <div class="card-content">
                 <div class="streamline">
@@ -224,12 +234,6 @@ foreach ($users as $user) {
 
 
     <script type="text/javascript">
-    $('#send').click(function() {
-      $.get("./../jobs/check_bill.php", function(res) {
-        const data = JSON.parse(res);
-        console.log(res);
-      });
-    })
     $(document).ready(function() {
       $('#sidebarCollapse').on('click', function() {
         $('#sidebar').toggleClass('active');

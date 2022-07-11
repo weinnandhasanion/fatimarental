@@ -59,7 +59,7 @@ foreach ($addtl_charges as $idx => $addtl) {
 if (count($errors) < 1) {
     $total = intval($room_charge) + intval($electricity_bill) + intval($water_bill);
     $sql = "INSERT INTO bills (reference_id, room_id, admin_id, bill_to_tenant_id, room_charge, electricity_bill, water_bill, start_period, end_period)
-    VALUES ('" . md5(uniqid('', true)) . "', '$room_id', " . $_SESSION['user']['id'] . ", " . intval($bill_to_tenant_id) . ", '$room_charge', '$electricity_bill', '$water_bill', '$start_period', '$end_period')";
+    VALUES ('" . md5(uniqid('', true)) . "', '$room_id', " . $_SESSION['user']['id'] . ", '$bill_to_tenant_id', '$room_charge', '$electricity_bill', '$water_bill', '$start_period', '$end_period')";
     $res = $conn->query($sql);
 
     if ($res) {
@@ -79,7 +79,7 @@ if (count($errors) < 1) {
         $rows = $res->fetch_all(MYSQLI_ASSOC);
 
         foreach ($rows as $row) {
-            $sql = "INSERT INTO tenant_bills (tenant_id, bill_id) VALUES (".intval($row['id']).", ".intval($bill_id).")";
+            $sql = "INSERT INTO tenant_bills (tenant_id, bill_id) VALUES ('".$row['id']."', ".intval($bill_id).")";
             $res = $conn->query($sql);
         }
         $status = 200;

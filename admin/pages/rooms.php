@@ -7,8 +7,9 @@ $sql = "SELECT * FROM rooms";
 $roomsRes = $conn->query($sql);
 if ($roomsRes) {
     $rooms = array_map(function ($room) use ($conn) {
+        $id = $room['id'];
         $room['tenants'] = [];
-        $sql = "SELECT * FROM tenants WHERE room_id = " . $room['id'];
+        $sql = "SELECT * FROM tenants WHERE room_id = $id AND `status` = 0";
         $res = $conn->query($sql);
         $tenants = [];
         if ($res->num_rows > 0) {
@@ -17,6 +18,10 @@ if ($roomsRes) {
             }
             $room['tenants'] = $tenants;
         }
+
+        $sql = "SELECT COUNT(*) AS reserved_tenants FROM tenants WHERE room_id = $id AND `status` = 1";
+        $room['reserved_tenants'] = $conn->query($sql)->fetch_assoc()['reserved_tenants'];        
+
         return $room;
     }, $roomsRes->fetch_all(MYSQLI_ASSOC));
 }
@@ -281,9 +286,13 @@ function renderTenants($tenants)
               </div>
             </div>
             <div class="row mb-2">
-              <div class="col-sm-12">
+              <div class="col-sm-6">
                 <label>Occupants</label>
                 <input class="form-control" type="text" name="tenants-view" required readonly>
+              </div>
+              <div class="col-sm-6">
+                <label>Reserved Tenants</label>
+                <input class="form-control" type="text" name="reserved_tenants-view" required readonly>
               </div>
             </div>
             <div class="row mb-2">
@@ -305,7 +314,6 @@ function renderTenants($tenants)
   // View room modal
   function viewRoomDetails(id) {
     $.get('./../functions/room_details.php?id=' + id, function(res) {
-      console.log(res);
       let data = JSON.parse(res);
       for (key in data) {
         $(`input[name=${key}-view]`).val(data[key]);

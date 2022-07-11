@@ -10,9 +10,11 @@ $statuses = [
   "rejected" => [2, "Rejected"]
 ];
 
-$sql = "SELECT re.*, ro.room_name FROM reservations AS re
+$sql = "SELECT re.*, t.first_name, t.last_name, ro.room_name FROM reservations AS re
   INNER JOIN rooms AS ro
   ON re.room_id = ro.id
+  INNER JOIN tenants AS t
+  ON re.tenant_id = t.id
   WHERE re.`status` = ". $statuses[$sort][0];
 $res = $conn->query($sql);
 $reservations = [];
@@ -39,8 +41,8 @@ if ($res) $reservations = $res->fetch_all(MYSQLI_ASSOC);
           <div class="col-sm-12">
             <ul class="nav nav-tabs">
               <li class="nav-item">
-                <a class="nav-link <?= $sort === 'pending' ? "active" : ""?>" 
-                  href="./reservations.php">New  Reservations</a>
+                <a class="nav-link <?= $sort === 'pending' ? "active" : ""?>" href="./reservations.php">New
+                  Reservations</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link <?= $sort === 'approved' ? "active" : ""?>"
@@ -51,7 +53,8 @@ if ($res) $reservations = $res->fetch_all(MYSQLI_ASSOC);
                   href="./reservations.php?sort=rejected">Rejected Reservations</a>
               </li>
             </ul>
-            <div class="card" style="min-height: 485px; margin-top: 0; border: 1px solid rgba(0,0,0,.125) !important; border-top: 0px !important">
+            <div class="card"
+              style="min-height: 485px; margin-top: 0; border: 1px solid rgba(0,0,0,.125) !important; border-top: 0px !important">
               <div class="card-header card-header-text d-flex justify-content-start align-items-center">
                 <h4 class="card-title flex-grow-1"><?=$statuses[$sort][1]?> Reservations</h4>
               </div>
@@ -69,7 +72,7 @@ if ($res) $reservations = $res->fetch_all(MYSQLI_ASSOC);
                   <tbody>
                     <?php foreach ($reservations as $res) {?>
                     <tr>
-                      <td class="align-middle"><?=$res['name']?></td>
+                      <td class="align-middle"><?=$res['first_name']." ".$res['last_name']?></td>
                       <td class="align-middle">
                         <?=$res['room_name']?>
                       </td>
@@ -131,16 +134,34 @@ if ($res) $reservations = $res->fetch_all(MYSQLI_ASSOC);
                 </div>
               </div>
               <div class="row mb-2">
+                <div class="col-sm-6">
+                  <label>Room</label>
+                  <input readonly class="form-control" type="text" name="room_name"
+                    id="room_name" required>
+                </div>
+                <div class="col-sm-6">
+                  <label>Downpayment Deadline</label>
+                  <input readonly class="form-control" type="text" name="reservation_account_expiry_date"
+                    id="reservation_account_expiry_date" required>
+                </div>
+              </div>
+              <div class="row mb-2">
                 <div class="col-sm-12">
                   <label>Message</label>
                   <textarea readonly class='form-control' name="" id="message" rows="5" style="resize: none"></textarea>
                 </div>
               </div>
             </div>
+            <?php
+            if ($sort === 'pending'):
+              ?>
             <div class="modal-footer">
               <button type="button" id="approve" class="btn btn-success">Approve</button>
               <button type="button" id="reject" class="btn btn-danger">Reject</button>
             </div>
+            <?php
+            endif;
+            ?>
           </div>
         </div>
       </form>
@@ -197,9 +218,11 @@ if ($res) $reservations = $res->fetch_all(MYSQLI_ASSOC);
         }
         $('.sidebar-link').removeClass('active');
         $(this).addClass('active');
-
       });
 
+      $('#approve').click(function() {
+        $.post('./../functions/approve_reservation.php', {});
+      });
     });
     </script>
 </body>

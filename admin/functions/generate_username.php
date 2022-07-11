@@ -3,13 +3,14 @@ include './../../services/connect.php';
 
 $id = $_GET['id'];
 
-$sql = "SELECT * FROM tenants WHERE id = $id";
+$sql = "SELECT * FROM tenants WHERE id = '$id'";
 $res = $conn->query($sql);
 $row = $res->fetch_assoc();
 
-$username = strtolower($row['first_name'][0] . '-' . $row['last_name'] . $row['id']);
+$date_suffix = date('WyG', strtotime(date(DATE_ISO8601)));
+$username = strtolower($row['first_name'][0] . '-' . $row['last_name'] . $date_suffix);
 
-$sql = "UPDATE tenants SET username = '$username' WHERE id = $id";
+$sql = "UPDATE tenants SET username = '$username' WHERE id = '$id'";
 $res = $conn->query($sql);
 
 if ($res) {

@@ -2,8 +2,8 @@
 include './../services/connect.php';
 
 $rooms = [];
-$rooms = $conn->query("SELECT * FROM rooms")?->fetch_all(MYSQLI_ASSOC);
-
+$sql = "SELECT * FROM rooms WHERE capacity > (SELECT COUNT(*) FROM tenants WHERE room_id = rooms.id AND `status` != 2)";
+$rooms = $conn->query($sql)?->fetch_all(MYSQLI_ASSOC);
 
 ?>
 <!DOCTYPE html>
@@ -78,7 +78,18 @@ $rooms = $conn->query("SELECT * FROM rooms")?->fetch_all(MYSQLI_ASSOC);
           </div>
           <div class="inpbox">
             <span class="flaticon-user"></span>
+            <input type="text" id="mi" placeholder="Middle Initial">
+          </div>
+          <div class="inpbox">
+            <span class="flaticon-user"></span>
             <input type="text" id="lname" placeholder="Last Name">
+          </div>
+          <div class="inpbox" style="display: flex">
+            <span class="flaticon-user"></span>
+            <select name="" id="gender" placeholder="Gender">
+              <option value="0">Male</option>
+              <option value="1">Female</option>
+            </select>
           </div>
           <div class="inpbox">
             <span class="flaticon-email"></span>
@@ -114,7 +125,10 @@ $rooms = $conn->query("SELECT * FROM rooms")?->fetch_all(MYSQLI_ASSOC);
 
       const data = {
         room_id: $('#room_id').val(),
-        name: `${$('#fname').val()} ${$('#lname').val()}`,
+        first_name: $('#fname').val(),
+        middle_initial: $('#mi').val(),
+        last_name: $('#lname').val(),
+        gender: $('#gender').val(),
         email_address: $('#email').val(),
         contact_number: $('#number').val(),
         move_date: $('#move_date').val(),

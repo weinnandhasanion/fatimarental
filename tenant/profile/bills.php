@@ -4,7 +4,7 @@ $sql = "SELECT tb.bill_id, b.*, r.room_name FROM tenant_bills AS tb
   ON b.id = tb.bill_id
   INNER JOIN rooms AS r
   ON r.id = b.room_id
-  WHERE tenant_id = " . $user['id'];
+  WHERE tenant_id = '" . $user['id'] ."'";
 $res = $conn->query($sql);
 $bills = $res->fetch_all(MYSQLI_ASSOC);
 ?>

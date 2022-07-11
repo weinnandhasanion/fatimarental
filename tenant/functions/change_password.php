@@ -12,7 +12,7 @@ $errors = [];
 if (empty($current)) {
   $errors['current'] = 'Please enter your current password.';
 } else {
-  $sql = "SELECT password FROM tenants WHERE id = $id";
+  $sql = "SELECT password FROM tenants WHERE id = '$id'";
   $res = $conn->query($sql);
   $row = $res->fetch_assoc();
   if (!password_verify($current, $row['password'])) {
@@ -32,7 +32,7 @@ if (empty($confirm_pass)) {
 
 if (count($errors) < 1) {
   $pass = password_hash($new_pass, PASSWORD_DEFAULT);
-  $sql = "UPDATE tenants SET `password` = '$pass' WHERE id = $id";
+  $sql = "UPDATE tenants SET `password` = '$pass' WHERE id = '$id'";
   $res = $conn->query($sql);
   if (!$res) {
     $error['server'] = 'There is an error in changing your password. Please try again.';

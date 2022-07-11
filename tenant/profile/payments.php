@@ -10,7 +10,7 @@ $sql = "SELECT bp.bill_id, bp.payment_id, p.*, b.reference_id AS bill_reference_
   ON b.room_id = r.id
   INNER JOIN tenants AS t
   ON b.bill_to_tenant_id = t.id
-  WHERE b.bill_to_tenant_id = " . $user['id'];
+  WHERE b.bill_to_tenant_id = '" . $user['id'] ."'";
 $res = $conn->query($sql);
 $rows = $res->fetch_all(MYSQLI_ASSOC);
 foreach ($rows as $row) {

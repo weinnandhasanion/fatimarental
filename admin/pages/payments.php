@@ -84,7 +84,6 @@ foreach ($rows as $row) {
       </div>
     </div>
 
-    <!-- Reservation Details Modal -->
     <div id="details-modal" tabindex="-1" class="modal fade" role="dialog">
       <form id="details-form" method="POST">
         <div class="modal-dialog" role='document'>
