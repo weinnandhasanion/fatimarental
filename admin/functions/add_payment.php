@@ -30,6 +30,16 @@ echo json_encode([
 ]);
 
 if ($status === 200) {
-  sendMessage('09206013530', "You have paid P$amount.00 to Fatima Rental. Thank you. \nRef. No. $ref_id.");
+  $sql = "SELECT b.bill_to_tenant_id, t.contact_number FROM bills AS b
+    INNER JOIN tenants AS t
+    ON t.id = b.bill_to_tenant_id
+    WHERE b.id = $bill_id";
+  
+  $res = $conn->query($sql);
+  $row = $res->fetch_assoc();
+
+  $contact_number = $row['contact_number'];
+
+  sendMessage($contact_number, "You have paid P$amount.00 to Fatima Rental. Thank you. \nRef. No. $ref_id.");
 }
 ?>

@@ -25,7 +25,7 @@
           <td class="align-middle"><?=$record['to_room_name']?></td>
           <td class="align-middle">
             <?=date("F d, Y", strtotime($record['date_added']))?></td>
-          <td class="align-middle"><?=isset($record['end_date']) ? "Moved to another room" : "New tenant"?></td>
+          <td class="align-middle"><?=isset($record['end_date']) ? "New tenant" : "Moved to another room"?></td>
         </tr>
         <?php }?>
       </tbody>

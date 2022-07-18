@@ -43,7 +43,7 @@ $users = mysqli_fetch_all($usersRes, MYSQLI_ASSOC);
                 </div>
               </div>
               <div class="card-content">
-                <p class="category"><strong>Visits</strong></p>
+                <p class="category"><strong>Tenants</strong></p>
                 <h3 class="card-title">340</h3>
               </div>
               <div class="card-footer">
@@ -105,7 +105,7 @@ $users = mysqli_fetch_all($usersRes, MYSQLI_ASSOC);
                 </div>
               </div>
               <div class="card-content">
-                <p class="category"><strong>Total Tenant Paid</strong></p>
+                <p class="category"><strong>Vacant Rooms</strong></p>
                 <h3 class="card-title">45</h3>
               </div>
               <div class="card-footer">

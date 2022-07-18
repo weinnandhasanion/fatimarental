@@ -35,7 +35,6 @@ if (isset($_SESSION['user'])) {
 				</div>
 			</div>
 			<button type="submit" class="btn-submit"><p style="color: white;">Login</p></button>
-			<a href="#">Forgot password?</a>
 		</form>
 	</div>
 
@@ -44,8 +43,16 @@ if (isset($_SESSION['user'])) {
     $(document).ready(function() {
       $('form').submit(function(e) {
         e.preventDefault();
+
+				var username = $('#username').val();
+				var password = $('#password').val();
+
+				var data = {
+					username: username,
+					password: password
+				}
       
-        $.post("./../services/login.php", $(this).serializeArray(), function(data) {
+        $.post("./../services/login.php", data, function(data) {
           let res = JSON.parse(data);
 
 					alert(res.message);

@@ -34,7 +34,6 @@ if (isset($_SESSION['user'])) {
 				</div>
 			</div>
 			<button type="submit" class="btn-submit">Login</button>
-			<a href="#">Forgot password?</a>
 			<!-- <p>I don't have an account. <a href="#" onclick="switchForm('register', event)">Register</a></p> -->
 		</form>
 

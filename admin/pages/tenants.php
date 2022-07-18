@@ -8,6 +8,7 @@ $usersQuery = "SELECT t.*, r.room_name FROM tenants AS t
   INNER JOIN rooms AS r
   ON t.room_id = r.id
   WHERE t.status = 0
+  AND t.account_status = 0
   ORDER BY t.date_added ASC";
 $usersRes = mysqli_query($conn, $usersQuery);
 $users = mysqli_fetch_all($usersRes, MYSQLI_ASSOC);
@@ -382,6 +383,7 @@ foreach ($rooms as $room) {
               </div>
             </div>
             <div class="modal-footer">
+              <button type="button" id="disable-btn" class="btn btn-danger">Disable</button>
               <button type="submit" class="btn btn-success">Update</button>
             </div>
           </div>
@@ -595,6 +597,18 @@ foreach ($rooms as $room) {
         }
 
         $('#valid_id-error-update').text('');
+      });
+
+      $('#disable-btn').click(function() {
+        const id = $('#id-update').val();
+
+        $.post("./../functions/disable_tenant.php", {id: id}, function(res) {
+          const status = JSON.parse(res);
+          if (status === 200) {
+            alert('Tenant is now disabled.');
+            window.location.reload();
+          }
+        });
       });
     });
     </script>
