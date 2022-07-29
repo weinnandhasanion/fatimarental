@@ -51,7 +51,7 @@ $rooms = array_map(function($room) use ($conn) {
       </div>
       <div class="address">
         <i class="fas fa-map-marker-alt"></i>
-        <span>FATIMA PROPERTY RENTAL</span>
+        <span>321-N Escario Street Kamputhaw Cebu City</span>
       </div>
     </div>
   </section>
@@ -89,7 +89,7 @@ $rooms = array_map(function($room) use ($conn) {
 
         <div class="head_contact">
           <i class="fas fa-phone-volume"></i>
-          <span>+000 0000 0000</span>
+          <span>4171 6862</span>
         </div>
       </nav>
     </div>
@@ -114,8 +114,7 @@ $rooms = array_map(function($room) use ($conn) {
 
   <section class="home" id="home">
     <div class="container">
-      <h1>Fatima Rental</h1>
-      <p>Discover the place where you have fun & enjoy a lot</p>
+      <h1>Fatima Rental Property</h1>
     </div>
   </section>
 
@@ -123,7 +122,7 @@ $rooms = array_map(function($room) use ($conn) {
     <div class="container">
       <div class="heading">
         <h5>EXPLORE</h5>
-        <h2>We are cool to give you pleasure
+        <h2>We can provide safety, security and peaceful environment
         </h2>
       </div>
 
@@ -131,14 +130,17 @@ $rooms = array_map(function($room) use ($conn) {
         <div class="left">
           <h3>As much as comfort want to get from us everything
           </h3>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-            ea commodo consequat. Duis
-            aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
+          <p>One of the current problems that Cebu City faces is the interruption of water supply from time to time.
+             In Barangay Kamputhaw, MCWD turns on the water supply between 12 am to 5 am daily
+             but sometimes for less time than that. This rotating water interruption
+             is surely a discomfort due to the fact that people will have to wake up around midnight
+             just to store water for the day. Aside from that, the World Health Organization (WHO) declared that water shortages will 
+             affect the spread of pathogenic organisms, such as bacteria and viruses, because the lack of water will limit handwashing and compromise
+              the cleaning and sanitation of homes and health care facilities.
             sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-          <p> Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
-            laborum.</p>
+          <p>That is why Fatima Rental has installed a water tank below the ground to alleviate
+             this problem. To add, Fatima Rental has also passed the Water
+             Quality and Mineral Content Tests to ensure that boarders can have access to clean water 24/7p>
         </div>
         <div class="right">
           <img src="./assets/h2.jpg" alt="" style="width: 60%;">
@@ -152,7 +154,7 @@ $rooms = array_map(function($room) use ($conn) {
     <div class="container">
       <div class="heading">
         <h5>OUR ROOMS</h5>
-        <h2>Fascinating rooms & suites </h2>
+        <h2>Fascinating rooms</h2>
       </div>
       <div class="content flex mtop">
         <div class="left grid2">
@@ -197,8 +199,8 @@ $rooms = array_map(function($room) use ($conn) {
   <section class="offer mtop" id="services">
     <div class="container">
       <div class="heading">
-        <h5>EXCLUSIVE OFFERS </h5>
-        <h3>You can get an exclusive offer </h3>
+        <h5>Rooms</h5>
+        <h3>All the rooms to offer</h3>
       </div>
 
       <div class="content grid2 mtop">
@@ -247,14 +249,14 @@ $rooms = array_map(function($room) use ($conn) {
             <li>lobby</li>
           </ul>
 
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-            ea commodo consequat. Duis
-            aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
-            sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-          <p>Duis
-            aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
-            sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+          <p>This picture was shot at the 3rd floor in Fatima Rental Boarding House.
+             The surrounding area is spacious with sofas and furniture around.
+             The room has a double deck and has its own comfort room. What makes this
+             room unique is the scenery of the main busy road in Escario Street and the view of Goldberry Hotel. </p>
+          <p>Aside from that, there is a balcony that is above the chapel where lodgers can participate
+             may it be in ceremonies or announcements especially every October which 
+             is the Feast of Our Lady of Fatima
+             where the district Sitio Fatima is named. </p>
           <button class="flex1" style="cursor: pointer;">
             <span>Reserve Now</span>
             <a href="rent.php" style="color: white;"> <i class="fas fa-arrow-circle-right"></i></a>
@@ -391,9 +393,6 @@ $rooms = array_map(function($room) use ($conn) {
           <div class="logo">
             <img src="./assets/logo.png" alt="">
           </div>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-            ea commodo consequat. </p>
           <div class="social flex">
             <i class="fab fa-facebook-f"></i>
             <i class="fab fa-twitter"></i>
@@ -426,7 +425,7 @@ $rooms = array_map(function($room) use ($conn) {
             </div>
             <div class="text">
               <h3>Address</h3>
-              <p>Fatima Rental</p>
+              <p>321-N Escario Street Kamputhaw Cebu City</p>
             </div>
           </div>
           <div class="icon flex">
@@ -435,7 +434,7 @@ $rooms = array_map(function($room) use ($conn) {
             </div>
             <div class="text">
               <h3>Phone</h3>
-              <p>+123 456 7898</p>
+              <p>4171 6862</p>
             </div>
           </div>
           <div class="icon flex">
