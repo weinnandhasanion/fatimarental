@@ -88,8 +88,6 @@ $rooms = array_map(function($room) use ($conn) {
         </div>
 
         <div class="head_contact">
-          <i class="fas fa-phone-volume"></i>
-          <span>4171 6862</span>
         </div>
       </nav>
     </div>
