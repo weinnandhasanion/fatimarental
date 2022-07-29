@@ -16,6 +16,7 @@ if (isset($_SESSION['user'])) {
 </head>
 <body>
 
+	<div style="display: none"></div>
 	<div class="container">
 		<form action="#" class="login active" id="login-form">
 			<h2 class="title">Login with your account</h2>

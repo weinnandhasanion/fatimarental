@@ -18,20 +18,13 @@ $users = mysqli_fetch_all($usersRes, MYSQLI_ASSOC);
 
 
 <body>
-
-
-
-
   <div class="wrapper">
-
-
     <div class="body-overlay"></div>
     <?php include './../templates/nav.php'?>
     <!-- Page Content  -->
     <div id="content">
 
       <?php include './../templates/topnav.php'?>
-
 
       <div class="main-content">
         <div class="row">
