@@ -3,7 +3,7 @@ $rooms = [];
 $sql = "SELECT t.end_date, t.date_added, r.room_name 
   FROM tenant_room_history AS t
   INNER JOIN rooms AS r
-  ON r.id = t.room_id
+  ON r.id = t.from_room_id
   WHERE t.tenant_id = '" . $user['id'] . "'
   ORDER BY t.id ASC";
 $res = $conn->query($sql);
