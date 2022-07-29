@@ -126,7 +126,7 @@ $rooms = array_map(function($room) use ($conn) {
 
       <div class="content flex  top">
         <div class="left">
-          <h3>As much as comfort want to get from us everything
+          <h3>We want you to feel at home
           </h3>
           <p>One of the current problems that Cebu City faces is the interruption of water supply from time to time.
              In Barangay Kamputhaw, MCWD turns on the water supply between 12 am to 5 am daily
@@ -134,8 +134,7 @@ $rooms = array_map(function($room) use ($conn) {
              is surely a discomfort due to the fact that people will have to wake up around midnight
              just to store water for the day. Aside from that, the World Health Organization (WHO) declared that water shortages will 
              affect the spread of pathogenic organisms, such as bacteria and viruses, because the lack of water will limit handwashing and compromise
-              the cleaning and sanitation of homes and health care facilities.
-            sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+              the cleaning and sanitation of homes and health care facilities.</p>
           <p>That is why Fatima Rental has installed a water tank below the ground to alleviate
              this problem. To add, Fatima Rental has also passed the Water
              Quality and Mineral Content Tests to ensure that boarders can have access to clean water 24/7p>
@@ -254,7 +253,7 @@ $rooms = array_map(function($room) use ($conn) {
           <p>Aside from that, there is a balcony that is above the chapel where lodgers can participate
              may it be in ceremonies or announcements especially every October which 
              is the Feast of Our Lady of Fatima
-             where the district Sitio Fatima is named. </p>
+             where the district Sitio Fatima is named.</p>
           <button class="flex1" style="cursor: pointer;">
             <span>Reserve Now</span>
             <a href="rent.php" style="color: white;"> <i class="fas fa-arrow-circle-right"></i></a>
