@@ -27,7 +27,7 @@ $rooms = array_map(function($room) use ($conn) {
 <html lang="en" dir="ltr">
 
 <head>
-  <title>Hotel Booking Website</title>
+  <title>Fatima Rental Property</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
     integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
@@ -246,7 +246,7 @@ $rooms = array_map(function($room) use ($conn) {
             <li>lobby</li>
           </ul>
 
-          <p>This picture was shot at the 3rd floor in Fatima Rental Boarding House.
+          <p>     This picture was shot at the 3rd floor in Fatima Rental Boarding House.
              The surrounding area is spacious with sofas and furniture around.
              The room has a double deck and has its own comfort room. What makes this
              room unique is the scenery of the main busy road in Escario Street and the view of Goldberry Hotel. </p>
