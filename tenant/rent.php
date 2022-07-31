@@ -2,7 +2,8 @@
 include './../services/connect.php';
 
 $rooms = [];
-$sql = "SELECT * FROM rooms WHERE capacity > (SELECT COUNT(*) FROM tenants WHERE room_id = rooms.id AND `status` != 2)";
+$sql = "SELECT * FROM rooms WHERE capacity > (SELECT COUNT(*) FROM tenants WHERE room_id = rooms.id AND `status` != 2)
+        AND `status` != 2";
 $rooms = $conn->query($sql)?->fetch_all(MYSQLI_ASSOC);
 
 ?>

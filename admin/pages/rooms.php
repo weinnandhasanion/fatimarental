@@ -13,9 +13,11 @@ if ($roomsRes) {
         $sql = "SELECT * FROM tenants WHERE room_id = $id AND `status` = 0 AND `account_status` = 0";
         $res = $conn->query($sql);
         $tenants = [];
+        $room['status'] = ($room['status'] === 0 || empty($room['status'])) ? "Available" : "Under Maintenance";
+
         if ($res->num_rows > 0) {
             while ($row = $res->fetch_assoc()) {
-                echo "<script>console.log('room $name', '".$row['id']."')</script>";
+                // echo "<script>console.log('room $name', '".$row['id']."')</script>";
                 $tenants[] = $row;
             }
             $room['tenants'] = $tenants;
@@ -28,7 +30,7 @@ if ($roomsRes) {
         return $room;
     }, $roomsRes->fetch_all(MYSQLI_ASSOC));
 
-    echo "<script>console.log(JSON.parse('".json_encode($rooms)."'))</script>";
+    // echo "<script>console.log(JSON.parse('".json_encode($rooms)."'))</script>";
 
 }
 
@@ -84,7 +86,7 @@ function renderTenants($tenants)
                       <td class="align-middle"><?=$room['room_name']?></td>
                       <td class="align-middle text-truncate"><?=count($room['tenants'])?></td>
                       <td class="align-middle">
-                        <?=count($room['tenants']) === intval($room['capacity']) ? 'Full' : 'Available'?>
+                        <?=count($room['tenants']) >= intval($room['capacity']) ? 'Full' : $room['status']?>
                       </td>
                       <td class="align-middle"><?=$room['capacity']?></td>
                       <td class="align-middle">
@@ -225,6 +227,16 @@ function renderTenants($tenants)
                 </div>
               </div>
               <div class="row mb-2">
+                <div class="col-sm-4">
+                  <label for="">Room Status</label>
+                  <select name="status-update" id="status-update" class="form-control">
+                    <option value="0">Available</option>
+                    <option value="2">Under Maintenance</option>
+                  </select>
+                  <small id='status-error-update' class='text-danger'></small>
+                </div>
+              </div>
+              <div class="row mb-2">
                 <div class="col-sm-12 d-flex flex-column">
                   Room Images
                   <!-- <input type="file" hidden multiple id="file-input-update" name="room_images-update">
@@ -232,7 +244,8 @@ function renderTenants($tenants)
                   <small id="pathname-cont-update"></small>
                   <button type="button" class="btn btn-secondary btn-sm" style="width: 120px"
                     onclick="document.querySelector('#file-input-update').click()">Upload Image/s</button> -->
-                  <button type="button" class="btn btn-secondary btn-sm" style="width: 120px" id="update-images-btn">Update
+                  <button type="button" class="btn btn-secondary btn-sm" style="width: 120px"
+                    id="update-images-btn">Update
                     images</button>
                 </div>
               </div>
@@ -296,9 +309,13 @@ function renderTenants($tenants)
                 <label>Occupants</label>
                 <input class="form-control" type="text" name="tenants-view" required readonly>
               </div>
-              <div class="col-sm-6">
+              <div class="col-sm-3">
                 <label>Reserved Tenants</label>
                 <input class="form-control" type="text" name="reserved_tenants-view" required readonly>
+              </div>
+              <div class="col-sm-3">
+                <label for="">Room Status</label>
+                <input class="form-control" type="text" name="status-view" required readonly>
               </div>
             </div>
             <div class="row mb-2">
@@ -348,6 +365,7 @@ function renderTenants($tenants)
       for (key in data) {
         $(`input[name=${key}-update]`).val(data[key]);
       }
+      $('#status-update').val((data.status === 'Available') ? '0' : '2'); 
       $('textarea[name=description-update]').val(data.description);
       $('#room_id-update').val(id);
       $('#update-room-modal').modal('show');
@@ -420,7 +438,6 @@ function renderTenants($tenants)
         cache: false,
         timeout: 800000,
         success: function(data) {
-          console.log(data);
           let res = JSON.parse(data);
           if (res.status === 422) {
             $('#add-room-btn').removeAttr('disabled');
@@ -448,7 +465,6 @@ function renderTenants($tenants)
       }), {});
 
       $.post('./../functions/update_room.php', postData, function(res) {
-        console.log(res);
         const data = JSON.parse(res);
         if (data.status === 422) {
           for (error in data.errors) {
@@ -475,14 +491,14 @@ function renderTenants($tenants)
     });
 
     $('#logout-link').click(function() {
-        let x = confirm("Do you want to logout?");
-        if (x) {
-          $.get("./../../services/logout.php", function(message) {
-            alert(message);
-            window.location = './../login.php';
-          });
-        }
-      });
+      let x = confirm("Do you want to logout?");
+      if (x) {
+        $.get("./../../services/logout.php", function(message) {
+          alert(message);
+          window.location = './../login.php';
+        });
+      }
+    });
   });
   </script>
 </body>
