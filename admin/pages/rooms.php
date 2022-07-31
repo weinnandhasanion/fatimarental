@@ -167,7 +167,7 @@ function renderTenants($tenants)
               </div>
             </div>
             <div class="modal-footer">
-              <button type="submit" class="btn btn-success">Add</button>
+              <button type="submit" id="add-room-btn" class="btn btn-success">Add</button>
             </div>
           </div>
         </div>
@@ -396,6 +396,9 @@ function renderTenants($tenants)
 
     $('#add-room-form').submit(function(e) {
       e.preventDefault();
+
+      $('#add-room-btn').attr('disabled', 'disabled');
+
       let data = $(this).serializeArray();
       let formData = new FormData();
       let file = document.querySelector('#file-input');
@@ -420,6 +423,8 @@ function renderTenants($tenants)
           console.log(data);
           let res = JSON.parse(data);
           if (res.status === 422) {
+            $('#add-room-btn').removeAttr('disabled');
+
             for (error in res.errors) {
               $(`#${error}-error`).text(res.errors[error]);
             }

@@ -92,9 +92,10 @@ $users = mysqli_fetch_all($usersRes, MYSQLI_ASSOC);
                 <p class="category"><strong>Total Revenue</strong></p>
                 <h3 class="card-title">
                   <?php 
-                  $sql = "SELECT SUM(amount) AS sum FROM payments";
+                  $sql = "SELECT SUM(amount) AS `sum` FROM payments";
                   $res = $conn->query($sql);
-                  echo $res->fetch_assoc()['sum'] ? "₱" . $res->fetch_assoc()['sum'] . ".00" : "₱0.00";
+                  $row = $res->fetch_all(MYSQLI_ASSOC);
+                  echo !empty($row['sum']) ? "₱" . $row['sum'] . ".00" : "₱0.00";
                   ?>
                 </h3>
               </div>
