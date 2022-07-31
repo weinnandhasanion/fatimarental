@@ -47,16 +47,11 @@ $rooms = $conn->query($sql)?->fetch_all(MYSQLI_ASSOC);
       <div class="description">
         <h1><strong>Reserve</strong> your room</h1>
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-          magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-          consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
-          est laborum.
+        Please provide your personal information and the select a room you want for your reservation, Thank you
         </p>
         <div class="quote">
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua. Ut enim ad minim veniam.
+          We are happy to accommodate you. :)
           </p>
         </div>
       </div>
