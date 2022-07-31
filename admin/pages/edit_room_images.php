@@ -141,6 +141,16 @@ if ($res) {
       $('.sidebar-link').removeClass('active');
       $(this).addClass('active');
     });
+
+    $('#logout-link').click(function() {
+        let x = confirm("Do you want to logout?");
+        if (x) {
+          $.get("./../../services/logout.php", function(message) {
+            alert(message);
+            window.location = './../login.php';
+          });
+        }
+      });
   });
   </script>
 </body>

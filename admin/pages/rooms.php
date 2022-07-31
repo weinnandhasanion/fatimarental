@@ -473,6 +473,16 @@ function renderTenants($tenants)
 
       window.location.href = './edit_room_images.php?id=' + id;
     });
+
+    $('#logout-link').click(function() {
+        let x = confirm("Do you want to logout?");
+        if (x) {
+          $.get("./../../services/logout.php", function(message) {
+            alert(message);
+            window.location = './../login.php';
+          });
+        }
+      });
   });
   </script>
 </body>

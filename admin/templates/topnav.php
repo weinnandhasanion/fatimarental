@@ -34,12 +34,6 @@
             </a>
             <ul class="dropdown-menu" style="left: unset">
               <li>
-                <a href="edituser.html">Account Settings</a>
-              </li>
-              <li>
-                <a href="#">Change Password</a>
-              </li>
-              <li>
                 <a href="#" id="logout-link">Logout</a>
               </li>
             </ul>

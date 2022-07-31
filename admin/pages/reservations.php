@@ -223,7 +223,18 @@ if ($res) $reservations = $res->fetch_all(MYSQLI_ASSOC);
       $('#approve').click(function() {
         $.post('./../functions/approve_reservation.php', {});
       });
+
+      $('#logout-link').click(function() {
+        let x = confirm("Do you want to logout?");
+        if (x) {
+          $.get("./../../services/logout.php", function(message) {
+            alert(message);
+            window.location = './../login.php';
+          });
+        }
+      });
     });
+    
     </script>
 </body>
 

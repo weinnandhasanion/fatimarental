@@ -212,6 +212,16 @@ $getPercentageClass = function ($kind) use ($monthDifferential, $yearDifferentia
           window.location.reload();
         });
       })
+
+      $('#logout-link').click(function() {
+        let x = confirm("Do you want to logout?");
+        if (x) {
+          $.get("./../../services/logout.php", function(message) {
+            alert(message);
+            window.location = './../login.php';
+          });
+        }
+      });
     });
     </script>
 </body>
