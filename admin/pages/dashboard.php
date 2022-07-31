@@ -95,7 +95,7 @@ $users = mysqli_fetch_all($usersRes, MYSQLI_ASSOC);
                   $sql = "SELECT SUM(amount) AS `sum` FROM payments";
                   $res = $conn->query($sql);
                   $row = $res->fetch_all(MYSQLI_ASSOC);
-                  echo !empty($row['sum']) ? "₱" . $row['sum'] . ".00" : "₱0.00";
+                  echo !empty($row[0]['sum']) ? "₱" . $row[0]['sum'] . ".00" : "₱0.00";
                   ?>
                 </h3>
               </div>
