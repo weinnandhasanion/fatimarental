@@ -10,6 +10,7 @@ $usersQuery = "SELECT t.*, r.room_name FROM tenants AS t
   LIMIT 5";
 $usersRes = mysqli_query($conn, $usersQuery);
 $users = mysqli_fetch_all($usersRes, MYSQLI_ASSOC);
+
 ?>
 
 <!doctype html>
@@ -38,7 +39,11 @@ $users = mysqli_fetch_all($usersRes, MYSQLI_ASSOC);
               </div>
               <div class="card-content">
                 <p class="category"><strong>Tenants</strong></p>
-                <h3 class="card-title">340</h3>
+                <h3 class="card-title"><?php
+                $sql = "SELECT * FROM tenants";
+                $res = $conn->query($sql);
+                echo $res->num_rows;
+                ?></h3>
               </div>
               <div class="card-footer">
                 <div class="stats">
@@ -58,11 +63,17 @@ $users = mysqli_fetch_all($usersRes, MYSQLI_ASSOC);
               </div>
               <div class="card-content">
                 <p class="category"><strong>Reservations</strong></p>
-                <h3 class="card-title">10</h3>
+                <h3 class="card-title">
+                  <?php 
+                  $sql = "SELECT * FROM reservations";
+                  $res = $conn->query($sql);
+                  echo $res->num_rows;
+                  ?>
+                </h3>
               </div>
               <div class="card-footer">
                 <div class="stats">
-                  <i class="material-icons">local_offer</i> Weekly Reserve
+                  <i class="material-icons">local_offer</i> Monthly Reservations
                 </div>
               </div>
             </div>
@@ -78,8 +89,14 @@ $users = mysqli_fetch_all($usersRes, MYSQLI_ASSOC);
                 </div>
               </div>
               <div class="card-content">
-                <p class="category"><strong>Revenue</strong></p>
-                <h3 class="card-title">₱23,100</h3>
+                <p class="category"><strong>Total Revenue</strong></p>
+                <h3 class="card-title">
+                  <?php 
+                  $sql = "SELECT SUM(amount) AS sum FROM payments";
+                  $res = $conn->query($sql);
+                  echo $res->fetch_assoc()['sum'] ? "₱" . $res->fetch_assoc()['sum'] . ".00" : "₱0.00";
+                  ?>
+                </h3>
               </div>
               <div class="card-footer">
                 <div class="stats">
@@ -156,7 +173,7 @@ foreach ($users as $user) {
               </div>
             </div>
           </div>
-
+<!-- 
           <div class="col-lg-5 col-md-12">
             <div class="card" style="min-height: 485px">
               <div class="card-header card-header-text">
@@ -204,7 +221,7 @@ foreach ($users as $user) {
 
               </div>
             </div>
-          </div>
+          </div> -->
 
 
 
