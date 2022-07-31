@@ -9,21 +9,27 @@ if ($roomsRes) {
     $rooms = array_map(function ($room) use ($conn) {
         $id = $room['id'];
         $room['tenants'] = [];
-        $sql = "SELECT * FROM tenants WHERE room_id = $id AND `status` = 0";
+        $name = $room['room_name'];
+        $sql = "SELECT * FROM tenants WHERE room_id = $id AND `status` = 0 AND `account_status` = 0";
         $res = $conn->query($sql);
         $tenants = [];
         if ($res->num_rows > 0) {
             while ($row = $res->fetch_assoc()) {
+                echo "<script>console.log('room $name', '".$row['id']."')</script>";
                 $tenants[] = $row;
             }
             $room['tenants'] = $tenants;
         }
+
 
         $sql = "SELECT COUNT(*) AS reserved_tenants FROM tenants WHERE room_id = $id AND `status` = 1";
         $room['reserved_tenants'] = $conn->query($sql)->fetch_assoc()['reserved_tenants'];        
 
         return $room;
     }, $roomsRes->fetch_all(MYSQLI_ASSOC));
+
+    echo "<script>console.log(JSON.parse('".json_encode($rooms)."'))</script>";
+
 }
 
 function renderTenants($tenants)

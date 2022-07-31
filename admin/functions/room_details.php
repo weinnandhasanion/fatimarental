@@ -16,7 +16,7 @@ $res = $conn->query($sql);
 $row['reserved_tenants'] = $res->fetch_assoc()['reserved_tenants'];
 
 // Get tenants
-$sql = "SELECT first_name, last_name FROM tenants WHERE room_id = $id";
+$sql = "SELECT first_name, last_name FROM tenants WHERE room_id = $id AND account_status = 0";
 $res = $conn->query($sql);
 if ($res->num_rows > 0) {
     $arr = [];

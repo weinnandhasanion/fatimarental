@@ -219,7 +219,7 @@ $rooms = array_map(function($room) use ($conn) {
             <h5>₱<?= $room['price'] ?>.00</h5>
             <button class="flex1" style="cursor: pointer;">
               <span>Reserve Now</span>
-              <a href="rent.php" style="color: white;"> <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="#" style="color: white;"> <i class="fas fa-arrow-circle-right"></i></a>
             </button>
           </div>
         </div>
@@ -256,7 +256,7 @@ $rooms = array_map(function($room) use ($conn) {
              where the district Sitio Fatima is named.</p>
           <button class="flex1" style="cursor: pointer;">
             <span>Reserve Now</span>
-            <a href="rent.php" style="color: white;"> <i class="fas fa-arrow-circle-right"></i></a>
+            <a href="#" style="color: white;"> <i class="fas fa-arrow-circle-right"></i></a>
           </button>
         </div>
       </div>

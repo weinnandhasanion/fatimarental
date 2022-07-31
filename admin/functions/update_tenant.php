@@ -48,7 +48,7 @@ if (strtotime($birthdate) > time()) {
 }
 
 // Check if email exists
-$sql = "SELECT * FROM tenants WHERE email_address = '$email_address'";
+$sql = "SELECT * FROM tenants WHERE email_address = '$email_address' AND id != '$id'";
 $res = mysqli_query($conn, $sql);
 if (mysqli_num_rows($res) > 1) {
     $errors['email_address'] = 'Email address is already taken.';
@@ -64,7 +64,7 @@ if (intval($userObj['room_id']) !== $room_id) {
     $sql = "SELECT capacity FROM rooms WHERE id = $room_id";
     $res = $conn->query($sql);
     $capacity = intval($res->fetch_assoc()['capacity']);
-    $sql = "SELECT * FROM tenants WHERE room_id = $room_id";
+    $sql = "SELECT * FROM tenants WHERE room_id = $room_id AND id != '$id' AND `account_status` = 0";
     $res = $conn->query($sql);
     if ($res->num_rows === $capacity) {
         $errors['room_name'] = 'Room is already full.';
