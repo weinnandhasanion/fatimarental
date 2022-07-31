@@ -7,6 +7,7 @@ $users = [];
 $usersQuery = "SELECT t.*, r.room_name FROM tenants AS t
   INNER JOIN rooms AS r
   ON t.room_id = r.id
+  WHERE t.status = 0 AND t.account_status = 0
   LIMIT 5";
 $usersRes = mysqli_query($conn, $usersQuery);
 $users = mysqli_fetch_all($usersRes, MYSQLI_ASSOC);
