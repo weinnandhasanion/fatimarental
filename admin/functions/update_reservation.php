@@ -16,7 +16,8 @@ if ($res) {
         $tenant_id = $conn->query($sql)->fetch_assoc()['tenant_id'];
         $sql = "UPDATE tenants
         SET `status` = 0,
-          reservation_account_expiry_date = NULL
+          reservation_account_expiry_date = NULL,
+          `password` = ".password_hash('fatima123', PASSWORD_DEFAULT)."
         WHERE id = '$tenant_id'";
         $res = $conn->query($sql);
         
