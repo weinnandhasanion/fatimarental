@@ -6,7 +6,8 @@ include_once './redirect.php';
 $users = [];
 $usersQuery = "SELECT t.*, r.room_name FROM tenants AS t
   INNER JOIN rooms AS r
-  ON t.room_id = r.id";
+  ON t.room_id = r.id
+  LIMIT 5";
 $usersRes = mysqli_query($conn, $usersQuery);
 $users = mysqli_fetch_all($usersRes, MYSQLI_ASSOC);
 ?>
@@ -115,11 +116,11 @@ $users = mysqli_fetch_all($usersRes, MYSQLI_ASSOC);
           <div class="col-lg-7 col-md-12">
             <div class="card" style="min-height: 485px">
               <div class="card-header card-header-text">
-                <h4 class="card-title">Tenants as of <?= date("F d, Y", strtotime(date(DATE_ISO8601)))?>
+                <h4 class="card-title">New tenants as of <?= date("F d, Y", strtotime(date(DATE_ISO8601)))?>
                 </h4>
                 <p class="category">
                   <?php 
-                  $sql = "SELECT * FROM tenants ORDER BY date_added DESC LIMIT 1";
+                  $sql = "SELECT * FROM tenants WHERE `status` = 0 AND account_status = 0 ORDER BY date_added DESC LIMIT 1";
                   $res = $conn->query($sql);
                   if ($res->num_rows > 0) {
                     $row = $res->fetch_assoc();
@@ -135,7 +136,6 @@ $users = mysqli_fetch_all($usersRes, MYSQLI_ASSOC);
                     <tr>
                       <th>ID</th>
                       <th>Name</th>
-                      <th>Payment Status</th>
                       <th>Room</th>
                     </tr>
                   </thead>
@@ -146,7 +146,6 @@ foreach ($users as $user) {
                     <tr>
                       <td><?=$user['id']?></td>
                       <td><?=$user['first_name'] . " " . $user['middle_initial'] . " " . $user['last_name']?></td>
-                      <td>₱3,000</td>
                       <td><?=$user['room_name']?></td>
                     </tr>
                     <?php

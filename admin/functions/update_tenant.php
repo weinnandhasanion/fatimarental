@@ -86,7 +86,7 @@ if (count($errors) === 0) {
     $res = mysqli_query($conn, $sql);
     if ($res) {
         if (isset($_FILES['file'])) {
-            $sql = "UPDATE tenants SET `valid_id` = '" . $file["name"] . "'";
+            $sql = "UPDATE tenants SET `valid_id` = '" . $file["name"] . "' WHERE id = '$id'";
             $res = $conn->query($sql);
 
             if ($res) {
