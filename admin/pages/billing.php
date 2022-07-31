@@ -299,10 +299,9 @@ if ($res->num_rows > 0) {
 
         $.get("./../functions/get_room_tenants.php?id=" + val, function(res) {
           const data = JSON.parse(res);
-          const defaultOption = elem.html().trim();
           const options = data.map(d => `<option value="${d.id}">${d.first_name} ${d.last_name}</option>`).join(
             ' ');
-          elem.html(`${defaultOption} ${options}`);
+          elem.html(`<option value="">Select a tenant...</option> ${options}`);
         });
       }
 
