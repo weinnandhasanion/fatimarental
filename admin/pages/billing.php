@@ -104,13 +104,18 @@ if ($res->num_rows > 0) {
                   <select class="form-control" type="text" name="room_name" required>
                     <option value="">Select a room...</option>
                     <?php
-                    $sql = "SELECT r.id, r.room_name FROM rooms AS r
-                      INNER JOIN tenants AS t
-                      ON t.room_id = r.id
-                      WHERE t.room_id IN (SELECT id FROM rooms)";
-                    $res = $conn->query($sql);
-                    foreach ($res->fetch_all(MYSQLI_ASSOC) as $row) {?>
-                    <option value="<?=$row['id']?>"><?=$row['room_name']?></option>
+                    $rooms = [];
+                    $sql = "SELECT id, room_name FROM rooms";
+                    $res = $conn->query($sql); 
+                    while ($row = $res->fetch_assoc()) {
+                      $sql = "SELECT * FROM tenants WHERE room_id = " . $row['id'];
+                      $resNew = $conn->query($sql);
+                      if ($resNew->num_rows > 0) {
+                        $rooms[] = $row;
+                      }
+                    } 
+                    foreach ($rooms as $room) {?>
+                    <option value="<?=$room['id']?>"><?=$room['room_name']?></option>
                     <?php }?>
                   </select>
                   <small id='room_name-error' class='text-danger'></small>
