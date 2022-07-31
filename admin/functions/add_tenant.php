@@ -46,15 +46,18 @@ if (isset($contact_number) && !preg_match("/^(09|\+639)\d{9}$/", $contact_number
 }
 
 // Check if room has available occupancy
-$sql = "SELECT capacity FROM rooms WHERE id = $room_id";
+$sql = "SELECT capacity, `status` FROM rooms WHERE id = $room_id";
 $res = $conn->query($sql);
-$capacity = intval($res->fetch_assoc()['capacity']);
+$row = $res->fetch_assoc();
+$capacity = intval($row['capacity']);
+if (intval($row['status']) === 2) {
+    $errors['room_name'] = 'Room is under maintenance.';
+}
 $sql = "SELECT * FROM tenants WHERE room_id = $room_id AND account_status = 0";
 $res = $conn->query($sql);
 if ($res->num_rows >= $capacity) {
     $errors['room_name'] = 'Room is already full.';
-} 
-
+}
 
 // Check if file is image
 $acceptedExts = ['jpg', 'jpeg', 'png'];

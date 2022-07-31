@@ -59,11 +59,14 @@ if (isset($contact_number) && !preg_match("/^(09|\+639)\d{9}$/", $contact_number
     $errors['contact_number'] = 'Please enter a valid phone number.';
 }
 
-if (intval($userObj['room_id']) !== $room_id) {
-    // Check if room has available occupancy
-    $sql = "SELECT capacity FROM rooms WHERE id = $room_id";
+if (intval($userObj['room_id']) !== intval($room_id)) {
+    $sql = "SELECT capacity, `status` FROM rooms WHERE id = " . intval($room_id);
     $res = $conn->query($sql);
-    $capacity = intval($res->fetch_assoc()['capacity']);
+    $row = $res->fetch_assoc();
+    if (intval($row['status']) === 2) {
+        $errors['room_name'] = 'Room is under maintenance.';
+    }
+    $capacity = intval($row['capacity']);
     $sql = "SELECT * FROM tenants WHERE room_id = $room_id AND id != '$id' AND `account_status` = 0";
     $res = $conn->query($sql);
     if ($res->num_rows === $capacity) {
