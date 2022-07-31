@@ -42,7 +42,7 @@ values
 create table `rooms` (
     `id` INT AUTO_INCREMENT,
     `room_name` varchar(255),
-    `status` TINYINT CHECK (`status` < 2),
+    `status` TINYINT CHECK (`status` < 3),
     -- Status: 0 = Available, 1 = Full, 2 = Under Maintenance 
     `price` INT,
     `capacity` int,
