@@ -22,7 +22,7 @@ if (!preg_match("/^[0-9]+$/", $price)) {
 }
 
 if ($roomStatus === "2") {
-    $sql = "SELECT * FROM tenants WHERE room_id = $room_id";
+    $sql = "SELECT * FROM tenants WHERE room_id = $room_id AND account_status = 0 AND `status` = 0";
     $res = $conn->query($sql);
     if ($res->num_rows > 0) {
         $errors['status'] = "Cannot set status to under maintenance. Room still has tenants.";
