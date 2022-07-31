@@ -365,7 +365,8 @@ foreach ($rooms as $room) {
               <div class="row mb-2">
                 <div class="col-sm-12">
                   <label>Address</label>
-                  <textarea rows="2" class="form-control" type="text" name="address" id="address-update" required></textarea>
+                  <textarea rows="2" class="form-control" type="text" name="address" id="address-update"
+                    required></textarea>
                   <small id='address-error-update' class='text-danger'></small>
                 </div>
               </div>
@@ -601,12 +602,17 @@ foreach ($rooms as $room) {
 
       $('#disable-btn').click(function() {
         const id = $('#id-update').val();
+        $('#disable-btn').attr('disabled', 'disabled')
 
-        $.post("./../functions/disable_tenant.php", {id: id}, function(res) {
+        $.post("./../functions/disable_tenant.php", {
+          id: id
+        }, function(res) {
           const status = JSON.parse(res);
           if (status === 200) {
             alert('Tenant is now disabled.');
             window.location.reload();
+          } else {
+            $('#disable-btn').attr('disabled', '')
           }
         });
       });
