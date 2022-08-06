@@ -162,7 +162,6 @@ $rooms = array_map(function($room) use ($conn) {
           </div>
           <div class="box">
             <i class="fas fa-dollar-sign"></i>
-            <p>Free Cost</p>
             <h3>Best rate guarantee</h3>
           </div>
           <div class="box">
@@ -177,12 +176,10 @@ $rooms = array_map(function($room) use ($conn) {
           </div>
           <div class="box">
             <i class="fas fa-mug-hot"></i>
-            <p>Free Cost</p>
             <h3>No Curfew</h3>
           </div>
           <div class="box">
             <i class="fas fa-user-tie"></i>
-            <p>Free Cost</p>
             <h3>With Aircon</h3>
           </div>
         </div>
