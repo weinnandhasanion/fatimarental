@@ -2,6 +2,12 @@
 include './../../services/connect.php';
 include_once './redirect.php';
 
+function consoleLog($toLog)
+{
+    $x = json_encode($toLog);
+    echo "<script>console.log($x)</script>";
+}
+
 $rooms = [];
 $sql = "SELECT * FROM rooms";
 $roomsRes = $conn->query($sql);
@@ -9,6 +15,10 @@ if ($roomsRes) {
     $rooms = array_map(function ($room) use ($conn) {
         $id = $room['id'];
         $room['tenants'] = [];
+        $room['payment_status'] = [
+            'paid' => false,
+            'payment_id' => null,
+        ];
         $name = $room['room_name'];
         $sql = "SELECT * FROM tenants WHERE room_id = $id AND `status` = 0 AND `account_status` = 0";
         $res = $conn->query($sql);
@@ -23,9 +33,34 @@ if ($roomsRes) {
             $room['tenants'] = $tenants;
         }
 
-
         $sql = "SELECT COUNT(*) AS reserved_tenants FROM tenants WHERE room_id = $id AND `status` = 1";
-        $room['reserved_tenants'] = $conn->query($sql)->fetch_assoc()['reserved_tenants'];        
+        $room['reserved_tenants'] = $conn->query($sql)->fetch_assoc()['reserved_tenants'];
+
+        $sql = "SELECT * FROM bills WHERE room_id = $id ORDER BY id DESC LIMIT 1";
+        $res = $conn->query($sql);
+        if ($res->num_rows > 0) {
+            $bill = $res->fetch_all(MYSQLI_ASSOC)[0];
+            // var_dump($bill);
+            $bill_id = $bill['id'];
+            $bill_from = $bill['start_period'];
+            $bill_to = $bill['end_period'];
+            $amount = $bill['total_amount'];
+            $sql = "SELECT bp.*, p.amount FROM bill_payments AS bp
+              INNER JOIN payments AS p
+              ON bp.payment_id = p.id
+              WHERE bp.bill_id = $bill_id AND (bp.date_added >= '$bill_from' AND bp.date_added <= '$bill_to') ORDER BY bp.id DESC LIMIT 1";
+            $res = $conn->query($sql);
+            if ($res->num_rows > 0) {
+                $payment = $res->fetch_all(MYSQLI_ASSOC)[0];
+                $payment_id = $payment['id'];
+                $payment_amt = $payment['amount'];
+                if (intval($amount) <= intval($payment_amt)) {
+                    $room['payment_status']['paid'] = true;
+                    $room['payment_status']['payment_id'] = $payment_id;
+                }
+
+            }
+        }
 
         return $room;
     }, $roomsRes->fetch_all(MYSQLI_ASSOC));
@@ -76,6 +111,7 @@ function renderTenants($tenants)
                       <th>Room</th>
                       <th>Occupants</th>
                       <th>Room Status</th>
+                      <th>Payment Status</th>
                       <th>Capacity</th>
                       <th>Action</th>
                     </tr>
@@ -87,6 +123,20 @@ function renderTenants($tenants)
                       <td class="align-middle text-truncate"><?=count($room['tenants'])?></td>
                       <td class="align-middle">
                         <?=count($room['tenants']) >= intval($room['capacity']) ? 'Full' : $room['status']?>
+                      </td>
+                      <td class="align-middle">
+                        <?php
+if ($room['payment_status']['paid']):
+    ?>
+                        <button class='btn btn-link text-success'
+                          onclick='viewPaymentDetails(<?=$room["payment_status"]["payment_id"]?>)'>Paid</button>
+                        <?php
+else:
+    ?>
+                        Unpaid
+                        <?php
+endif;
+    ?>
                       </td>
                       <td class="align-middle"><?=$room['capacity']?></td>
                       <td class="align-middle">
@@ -365,11 +415,16 @@ function renderTenants($tenants)
       for (key in data) {
         $(`input[name=${key}-update]`).val(data[key]);
       }
-      $('#status-update').val((data.status === 'Available') ? '0' : '2'); 
+      $('#status-update').val((data.status === 'Available') ? '0' : '2');
       $('textarea[name=description-update]').val(data.description);
       $('#room_id-update').val(id);
       $('#update-room-modal').modal('show');
     })
+  }
+
+  // View room payment if paid
+  function viewPaymentDetails(id) {
+    window.location.href = "./payments.php?pid=" + id;
   }
 
   function removeErrorTexts() {

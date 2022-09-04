@@ -5,7 +5,7 @@ include './../../services/connect.php';
 $payments = [];
 $sql = "SELECT bp.bill_id, bp.payment_id, p.*, b.reference_id AS bill_reference_id, r.room_name, t.first_name, t.last_name
   FROM bill_payments AS bp
-  INNER JOIN payments AS p 
+  INNER JOIN payments AS p
   ON bp.payment_id = p.id
   INNER JOIN bills AS b
   ON bp.bill_id = b.id
@@ -16,7 +16,7 @@ $sql = "SELECT bp.bill_id, bp.payment_id, p.*, b.reference_id AS bill_reference_
 $res = $conn->query($sql);
 $rows = $res->fetch_all(MYSQLI_ASSOC);
 foreach ($rows as $row) {
-  $payments[] = $row;
+    $payments[] = $row;
 }
 ?>
 
@@ -34,7 +34,7 @@ foreach ($rows as $row) {
   <div class="wrapper">
     <div class="body-overlay"></div>
 
-    <?php include './../templates/nav.php' ?>
+    <?php include './../templates/nav.php'?>
 
     <!-- Page Content  -->
     <div id="content">
@@ -64,17 +64,17 @@ foreach ($rows as $row) {
                   <tbody>
                     <?php foreach ($payments as $row): ?>
                     <tr>
-                      <td class="align-middle"><?=$row['first_name']." ".$row['last_name']?></td>
+                      <td class="align-middle"><?=$row['first_name'] . " " . $row['last_name']?></td>
                       <td class="align-middle"><?=$row['room_name']?></td>
                       <td class="align-middle"><?=$row['bill_reference_id']?></td>
                       <td class="align-middle">P<?=$row['amount']?>.00</td>
                       <td class="align-middle"><?=date('M d, Y', strtotime($row['date_added']))?></td>
                       <td class="align-middle">
-                        <button data-id="<?=$row['id']?>" class="btn btn-link"
+                        <button data-id="<?=$row['id']?>" class="btn btn-link details-button"
                           onclick="getPaymentDetails(this)">Details</button>
                       </td>
                     </tr>
-                    <?php endforeach; ?>
+                    <?php endforeach;?>
                   </tbody>
                 </table>
               </div>
@@ -266,15 +266,15 @@ foreach ($rows as $row) {
       </div>
     </div>
 
-    <?php include './../templates/scripts.php' ?>
+    <?php include './../templates/scripts.php'?>
 
     <script type="text/javascript">
     function showAddPaymentInputs(bool) {
       $('.add-payment-input').css('display', bool ? 'flex' : 'none')
     }
 
-    function getPaymentDetails(el) {
-      const id = el.getAttribute('data-id');
+    function getPaymentDetails(val, isId = false) {
+      const id = isId ? val : el.getAttribute('data-id');
 
       $.get('./../functions/get_payment_details.php?id=' + id, function(res) {
         const data = JSON.parse(res);
@@ -288,7 +288,15 @@ foreach ($rows as $row) {
     }
 
     $(document).ready(function() {
-      $('#payments-table').DataTable()
+      $('#payments-table').DataTable({
+        pageLength: 1
+      })
+
+      const params = new URLSearchParams(window.location.search);
+      if (params.has('pid')) {
+        const id = params.get('pid');
+        getPaymentDetails(id, true);
+      }
 
       $('#sidebarCollapse').on('click', function() {
         $('#sidebar').toggleClass('active');
