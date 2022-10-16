@@ -173,7 +173,7 @@ foreach ($rooms as $room) {
               </div>
             </div>
             <div class="modal-footer">
-              <button type="submit" class="btn btn-success">Add</button>
+              <button type="submit" class="btn btn-success" id="add-tenant-btn">Add</button>
             </div>
           </div>
         </div>
@@ -385,7 +385,7 @@ foreach ($rooms as $room) {
             </div>
             <div class="modal-footer">
               <button type="button" id="disable-btn" class="btn btn-danger">Disable</button>
-              <button type="submit" class="btn btn-success">Update</button>
+              <button type="submit" class="btn btn-success" id="update-tenant-btn">Update</button>
             </div>
           </div>
         </div>
@@ -475,6 +475,7 @@ foreach ($rooms as $room) {
 
       // Add tenant
       $("#add-tenant-form").submit(function(e) {
+        $('#add-tenant-btn').attr('disabled', 'disabled')
         e.preventDefault();
         let data = $(this).serializeArray();
         let formData = new FormData();
@@ -498,6 +499,7 @@ foreach ($rooms as $room) {
           cache: false,
           timeout: 800000,
           success: function(data) {
+            $('#add-tenant-btn').removeAttr('disabled')
             console.log(data);
             let res = JSON.parse(data);
             if (res.status === 422) {
@@ -514,6 +516,7 @@ foreach ($rooms as $room) {
 
       // Update tenant
       $("#update-tenant-form").submit(function(e) {
+        $('#update-tenant-btn').attr('disabled', 'disabled')
         e.preventDefault();
         let data = $(this).serializeArray();
         let formData = new FormData();
@@ -537,6 +540,7 @@ foreach ($rooms as $room) {
           cache: false,
           timeout: 800000,
           success: function(data) {
+            $('#update-tenant-btn').removeAttr('disabled')
             console.log(data);
             let res = JSON.parse(data);
             if (res.status === 422) {

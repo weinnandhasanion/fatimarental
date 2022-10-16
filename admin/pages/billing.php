@@ -191,7 +191,7 @@ if ($res->num_rows > 0) {
               <div id="addtl-charges-cont"></div>
             </div>
             <div class="modal-footer">
-              <button type="submit" class="btn btn-success">Add</button>
+              <button type="submit" class="btn btn-success" id="add-bill-btn">Add</button>
             </div>
           </div>
         </div>
@@ -307,6 +307,7 @@ if ($res->num_rows > 0) {
 
       // Add bill
       $('#add-bill-form').submit(function(e) {
+        $('#add-bill-btn').attr('disabled', 'disabled')
         e.preventDefault();
 
         $('.error-text').each(function(_, el) {
@@ -333,6 +334,7 @@ if ($res->num_rows > 0) {
         };
 
         $.post('./../functions/add_bill.php', data, function(data) {
+          $('#add-bill-btn').removeAttr('disabled')
           console.log(data);
           let res = JSON.parse(data);
 
