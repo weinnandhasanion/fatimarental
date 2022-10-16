@@ -196,7 +196,7 @@ foreach ($rows as $row) {
               </div>
             </div>
             <div class="modal-footer add-payment-input">
-              <button type="submit" class="btn btn-success">Add</button>
+              <button type="submit" class="btn btn-success" id="add-payment-btn">Add</button>
             </div>
           </div>
         </div>
@@ -288,10 +288,6 @@ foreach ($rows as $row) {
     }
 
     $(document).ready(function() {
-      $('#payments-table').DataTable({
-        pageLength: 1
-      })
-
       const params = new URLSearchParams(window.location.search);
       if (params.has('pid')) {
         const id = params.get('pid');
@@ -345,6 +341,7 @@ foreach ($rows as $row) {
 
       // Add payment
       $("#add-payment-form").submit(function(e) {
+        $('#add-payment-btn').attr('disabled', 'disabled');
         e.preventDefault();
         $('#amount-error').text('');
 
@@ -357,6 +354,7 @@ foreach ($rows as $row) {
         $.post('./../functions/add_payment.php', data, function(resp) {
           console.log(resp);
           const res = JSON.parse(resp);
+          $('#add-payment-btn').removeAttr('disabled');
 
           if (res.errors.length > 0) {
             $('#amount-error').text(res.errors.amount)

@@ -15,12 +15,16 @@ if (isset($_POST['additional_charges']) && count($_POST['additional_charges']) >
     $addtl_charges = $_POST['additional_charges'];
 }
 
+if (empty($_POST['water_bill'])) $water_bill = "0";
+if (empty($_POST['electricity_bill'])) $electricity_bill = "0";
+
 $errors = [];
 $status = 422;
 
 if (!preg_match("/^[0-9]*$/", $water_bill)) {
     $errors['water_bill'] = 'Water bill should not contain any letters.';
 }
+
 
 if (!isset($bill_to_tenant_id)) {
     $errors['bill_to'] = 'Please select a tenant to bill.';
@@ -29,6 +33,7 @@ if (!isset($bill_to_tenant_id)) {
 if (!preg_match("/^[0-9]*$/", $electricity_bill)) {
     $errors['electricity_bill'] = 'Electricity bill should not contain any letters.';
 }
+
 
 if (strtotime($start_period) > strtotime($end_period)) {
     $errors['start_period'] = 'Start period must be a date before end period.';
