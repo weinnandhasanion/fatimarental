@@ -12,6 +12,17 @@ $usersQuery = "SELECT t.*, r.room_name FROM tenants AS t
 $usersRes = mysqli_query($conn, $usersQuery);
 $users = mysqli_fetch_all($usersRes, MYSQLI_ASSOC);
 
+// Count vacant rooms
+$sql = "SELECT * FROM rooms";
+$res = $conn->query($sql);
+$vacantCount = 0;
+foreach ($res->fetch_all(MYSQLI_ASSOC) as $row) {
+  $s = "SELECT COUNT(*) AS co FROM tenants WHERE room_id = " . $row['id'];
+  $res = $conn->query($s);
+  $count = $res->fetch_assoc()['co'];
+  if (intval($count) === 0) $vacantCount++;
+}
+
 ?>
 
 <!doctype html>
@@ -119,7 +130,9 @@ $users = mysqli_fetch_all($usersRes, MYSQLI_ASSOC);
               </div>
               <div class="card-content">
                 <p class="category"><strong>Vacant Rooms</strong></p>
-                <h3 class="card-title">45</h3>
+                <h3 class="card-title">
+                  <?= $vacantCount ?>
+                </h3>
               </div>
               <div class="card-footer">
                 <div class="stats">
