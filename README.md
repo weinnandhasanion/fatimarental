@@ -3,7 +3,7 @@
 ### About this app
 This is a simple management system I made for a local boarding house in Cebu. Technology stack for this project is simply HTML, CSS, jQuery, PHP, and MySQL for database management.
 
-### Run the app (First-time Setup)
+### Run the app (First-time setup)
 
 1. Clone the repository
 2. After cloning, put the folder inside C:\xampp\htdocs
@@ -29,3 +29,6 @@ Password: 123
 3. Copy the generated username and open another tab, then enter `localhost/fatimarental/tenant` in the address bar
 4. Paste the copied username and enter **fatima123** as the default password
 5. Verify login
+
+## Future of this app
+This project will be migrated to React Typescript and to utilize a REST API using Express in the near future.
