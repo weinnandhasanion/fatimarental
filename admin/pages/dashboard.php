@@ -22,14 +22,12 @@ foreach ($res->fetch_all(MYSQLI_ASSOC) as $row) {
   $count = $res->fetch_assoc()['co'];
   if (intval($count) === 0) $vacantCount++;
 }
-
 ?>
 
 <!doctype html>
 <html lang="en">
 
 <?php include './../templates/head.php'?>
-
 
 <body>
   <div class="wrapper">
@@ -188,74 +186,11 @@ foreach ($users as $user) {
               </div>
             </div>
           </div>
-<!-- 
-          <div class="col-lg-5 col-md-12">
-            <div class="card" style="min-height: 485px">
-              <div class="card-header card-header-text">
-                <h4 class="card-title">Recent Activity</h4>
-              </div>
-              <div class="card-content">
-                <div class="streamline">
-                  <div class="sl-item sl-primary">
-                    <div class="sl-content">
-                      <small class="text-muted">5 mins ago</small>
-                      <p>Michael has just Paid room 5 good for 2</p>
-                    </div>
-                  </div>
-                  <div class="sl-item sl-danger">
-                    <div class="sl-content">
-                      <small class="text-muted">25 mins ago</small>
-                      <p>Michael has just Paid room 5 good for 2</p>
-                    </div>
-                    <div class="sl-item sl-success">
-                      <div class="sl-content">
-                        <small class="text-muted">40 mins ago</small>
-                        <p>Michael has just Paid room 5 good for 2</p>
-                      </div>
-                    </div>
-                    <div class="sl-item">
-                      <div class="sl-content">
-                        <small class="text-muted">45 minutes ago</small>
-                        <p>Michael has just Paid room 5 good for 2</p>
-                      </div>
-                    </div>
-                    <div class="sl-item sl-warning">
-                      <div class="sl-content">
-                        <small class="text-muted">55 mins ago</small>
-                        <p>Michael has just Paid room 5 good for 2</p>
-                      </div>
-                    </div>
-                    <div class="sl-item">
-                      <div class="sl-content">
-                        <small class="text-muted">60 minutes ago</small>
-                        <p>Michael has just Paid room 5 good for 2</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-          </div> -->
-
-
-
         </div>
-
-
-
       </div>
     </div>
 
-
-
-
-
-
-
     <?php include './../templates/scripts.php'?>
-
-
 
     <script type="text/javascript">
     $(document).ready(function() {
