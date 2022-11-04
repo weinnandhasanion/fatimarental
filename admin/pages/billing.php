@@ -41,7 +41,7 @@ if ($res->num_rows > 0) {
             <div class="card" style="min-height: 485px">
               <div class="card-header card-header-text d-flex justify-content-start align-items-center">
                 <h4 class="card-title flex-grow-1">Billing</h4>
-                <button class="btn btn-success" data-toggle="modal" data-target="#add-bill-modal">New Bill
+                <button class="btn btn-success" data-toggle="modal" data-target="#add-bill-modal"  onclick="window.location.href = './bill_rooms.php'" id="add-bill-btn">New Bill
                   &#43;</button>
               </div>
               <div class="card-content table-responsive">
@@ -191,7 +191,7 @@ if ($res->num_rows > 0) {
               <div id="addtl-charges-cont"></div>
             </div>
             <div class="modal-footer">
-              <button type="submit" class="btn btn-success" id="add-bill-btn">Add</button>
+              <button type="submit" class="btn btn-success">Add</button>
             </div>
           </div>
         </div>
