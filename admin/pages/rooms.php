@@ -358,17 +358,24 @@ function renderTenants($tenants)
                             </div>
                         </div>
                         <div class="row mb-2">
-                            <div class="col-sm-6">
+                            <div class="col-sm-12">
                                 <label>Occupants</label>
                                 <input class="form-control" type="text" name="tenants-view" required readonly>
                             </div>
-                            <div class="col-sm-3">
+
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-4">
                                 <label>Reserved Tenants</label>
                                 <input class="form-control" type="text" name="reserved_tenants-view" required readonly>
                             </div>
-                            <div class="col-sm-3">
+                            <div class="col-sm-4">
                                 <label for="">Room Status</label>
                                 <input class="form-control" type="text" name="status-view" required readonly>
+                            </div>
+                            <div class="col-sm-4">
+                                <label for="">Total Income</label>
+                                <input class="form-control" type="text" name="total_amount-view" required readonly>
                             </div>
                         </div>
                         <div class="row mb-2">
@@ -436,6 +443,17 @@ function renderTenants($tenants)
             if (el.innerText !== '') el.innerText = '';
         });
     }
+
+    $('#add-room-modal').on('hidden.bs.modal', function() {
+        removeErrorTexts()
+    });
+    $('#update-room-modal').on('hidden.bs.modal', function() {
+        removeErrorTexts()
+    });
+    $('#view-room-modal').on('hidden.bs.modal', function() {
+        removeErrorTexts()
+        $('input[name=total_amount-view]').val('')
+    });
 
     $(document).ready(function() {
         $('#rooms-table').DataTable();
@@ -536,12 +554,6 @@ function renderTenants($tenants)
             });
         });
 
-        $('#add-room-modal').on('hidden.bs.modal', function() {
-            removeErrorTexts()
-        });
-        $('#update-room-modal').on('hidden.bs.modal', function() {
-            removeErrorTexts()
-        });
 
         $('#update-images-btn').click(function() {
             const id = parseInt($('#room_id-update').val());

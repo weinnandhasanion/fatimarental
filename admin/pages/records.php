@@ -25,11 +25,9 @@ switch ($record) {
         ON b.room_id = r.id";
     break;
   case 'tenant-room-activity':
-    $sql = "SELECT t.first_name, t.last_name, tr.*, r.room_name AS to_room_name FROM tenant_room_history AS tr
+    $sql = "SELECT t.first_name, t.last_name, tr.* FROM tenant_room_history AS tr
         INNER JOIN tenants AS t
         ON t.id = tr.tenant_id
-        INNER JOIN rooms AS r
-        ON r.id = tr.to_room_id
         ORDER BY date_added DESC";
     break;
   case 'room-addition-deletion':
@@ -57,6 +55,15 @@ if ($record === 'tenant-room-activity') {
       $name = "N/A";
     }
     $r['from_room_name'] = $name;
+
+    if (isset($r['to_room_id'])) {
+        $id = $r['to_room_id'];
+        $sql2 = "SELECT room_name FROM rooms WHERE id = $id";
+        $name = $conn->query($sql2)->fetch_assoc()['room_name'];
+      } else {
+        $name = "N/A";
+      }
+      $r['to_room_name'] = $name;
     $records[] = $r;
   }
 }

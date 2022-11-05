@@ -231,6 +231,7 @@ if ($res->num_rows > 0) {
         }
 
         $(document).ready(function() {
+            $('#billing-table').DataTable();
             if (window.location.search) openAddBillModal();
 
             function openAddBillModal() {
@@ -272,8 +273,6 @@ if ($res->num_rows > 0) {
         </div>
       `;
             }
-
-            $('#billing-table').DataTable();
 
             $('#sidebarCollapse').on('click', function() {
                 $('#sidebar').toggleClass('active');
