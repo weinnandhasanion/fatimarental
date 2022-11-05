@@ -36,4 +36,21 @@ if ($res->num_rows > 0) {
     }
 }
 
+// get all payments for this room
+$sql = "SELECT p.* FROM payments AS p 
+INNER JOIN bill_payments AS bp
+ON bp.payment_id = p.id
+INNER JOIN bills AS b
+ON b.id = bp.bill_id
+WHERE b.room_id = $id";
+$res = $conn->query($sql);
+if ($res->num_rows > 0) {
+    $pmts = $res->fetch_all(MYSQLI_ASSOC);
+    $total = 0;
+    foreach ($pmts as $pmt) {
+        $total += intval($pmt['amount']);
+    }
+    $row['total_amount'] = $total;
+}
+
 echo json_encode($row);
