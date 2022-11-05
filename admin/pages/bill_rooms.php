@@ -1,7 +1,6 @@
 <?php
 include_once './redirect.php';
 include './../../services/connect.php';
-include './../functions/console_log.php';
 
 $rooms = [];
 $roomsSql = "SELECT * FROM rooms";
