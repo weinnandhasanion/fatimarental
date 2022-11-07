@@ -1,5 +1,4 @@
 <?php 
-session_start();
 $payments = [];
 $room_id = $_SESSION['user']['room_id'];
 $sql = "SELECT bp.bill_id, bp.payment_id, p.*, b.reference_id, b.room_id AS bill_reference_id, r.room_name
