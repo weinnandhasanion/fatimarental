@@ -41,17 +41,13 @@ $rooms = array_map(function($room) use ($conn) {
 <body>
     <section class="head">
         <div class="container flex1">
-            <div class="scoial">
-                <i class="fab fa-facebook-f"></i>
-                <i class="fab fa-twitter"></i>
-                <i class="fab fa-instagram"></i>
-            </div>
+            
             <div class="logo">
                 <!-- <img src="./assets/logo.png" alt="">-->
             </div>
             <div class="address">
                 <i class="fas fa-map-marker-alt"></i>
-                <span>321-N Escario Street Kamputhaw Cebu City</span>
+                <span>321-North Escario Street Kamputhaw Cebu City</span>
             </div>
         </div>
     </section>
@@ -119,16 +115,17 @@ $rooms = array_map(function($room) use ($conn) {
     <section class="about" id="about">
         <div class="container">
             <div class="heading">
-                <h5>EXPLORE</h5>
-                <h2>We can provide safety, security and peaceful environment
+                <h5></h5>
+                <h2>In honor of Our Lady of Fatima
                 </h2>
             </div>
 
             <div class="content flex  top">
                 <div class="left">
-                    <h3>We want you to feel at home
-                    </h3>
-                    <p>One of the current problems that Cebu City faces is the interruption of water supply from time to
+                <center><h3>A Home Where You Can Find Peace </center>
+                    </h3>&nbsp; &nbsp;
+                    <h2></h2>
+                    <p style="color:black;"align="justify"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; One of the current problems that Cebu City faces is the interruption of water supply from time to
                         time.
                         In Barangay Kamputhaw, MCWD turns on the water supply between 12 am to 5 am daily
                         but sometimes for less time than that. This rotating water interruption
@@ -138,12 +135,12 @@ $rooms = array_map(function($room) use ($conn) {
                         affect the spread of pathogenic organisms, such as bacteria and viruses, because the lack of
                         water will limit handwashing and compromise
                         the cleaning and sanitation of homes and health care facilities.</p>
-                    <p>That is why Fatima Rental has installed a water tank below the ground to alleviate
+                    <p style="color:black;"align="justify">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; That is why Fatima Rental has installed a water tank below the ground to alleviate
                         this problem. To add, Fatima Rental has also passed the Water
                         Quality and Mineral Content Tests to ensure that boarders can have access to clean water 24/7.
                 </div>
                 <div class="right">
-                    <img src="./assets/h2.jpg" alt="" style="width: 60%;">
+                    <img src="./assets/h6.jpg" alt="" style="width: 60%;">
                 </div>
             </div>
         </div>
