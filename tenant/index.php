@@ -152,37 +152,53 @@ $rooms = array_map(function($room) use ($conn) {
     <section class="room wrapper2 top" id="room">
         <div class="container">
             <div class="heading">
-                <h5>OUR ROOMS</h5>
+                <h5>OUR INTEGRITY</h5>
                 <h2>Practical & Budget-Friendly</h2>
             </div>
             <div class="content flex mtop">
                 <div class="left grid2">
                     <div class="box">
-                        <i class="fas fa-desktop"></i>
-                        <p>Free Cost</p>
-                        <h3>No booking fee</h3>
+                        <i class="fas fa-tshirt"></i>
+                       
+                        <h3>Laundry Service</h3>
                     </div>
                     <div class="box">
-                        <i class="fas fa-dollar-sign"></i>
-                        <h3>Best rate guarantee</h3>
+                        <i class="fas fa-coins"></i>
+                        <h3>Economical Rooms</h3>
                     </div>
                     <div class="box">
                         <i class="fab fa-resolving"></i>
-                        <p>Free Cost</p>
-                        <h3>Reservations 24/7</h3>
+                       
+                        <h3>24/7 Reservations </h3>
                     </div>
                     <div class="box">
-                        <i class="fal fa-alarm-clock"></i>
-                        <p>Free Cost</p>
-                        <h3>Free High-speed Wi-Fi</h3>
+                        <i class="fal fa-wifi"></i>
+                        
+                        <h3>High-speed Wi-Fi</h3>
                     </div>
                     <div class="box">
-                        <i class="fas fa-mug-hot"></i>
-                        <h3>No Curfew</h3>
+                        <i class="fas fa-key"></i>
+                        <h3>Safe & Secure</h3>
                     </div>
                     <div class="box">
-                        <i class="fas fa-user-tie"></i>
-                        <h3>With Aircon</h3>
+                        <i class="fas fa-snowflake"></i>
+                        <h3>Aircon Ready</h3>
+                    </div>
+                    <div class="box">
+                        <i class="fas fa-water"></i>
+                        <h3>24/7 Water Tank</h3>
+                    </div>
+                    <div class="box">
+                        <i class="fas fa-trash"></i>
+                        <h3>Garbage Collection</h3>
+                    </div>
+                    <div class="box">
+                        <i class="fas fa-wrench"></i>
+                        <h3>Repair Services</h3>
+                    </div>
+                    <div class="box">
+                        <i class="fas fa-store"></i>
+                        <h3>Mini Mart</h3>
                     </div>
                 </div>
                 <div class="right">
@@ -378,37 +394,28 @@ $rooms = array_map(function($room) use ($conn) {
 
     <footer>
         <div class="container top">
-            <div class="subscribe" id="contact">
-                <h2>Looking for more Details?</h2>
-                <p> Log your email address so we can sent more details thru your email account</p>
-                <div class="input flex">
-                    <input type="email" placeholder="Your Email address">
-                    <button class="flex1">
-                        <span>Subscribe</span>
-                        <i class="fas fa-arrow-circle-right"></i>
-                    </button>
-                </div>
-            </div>
+          
 
             <div class="content grid  top">
                 <div class="box">
         
                 </div>
 
-                <div class="box">
-                    <h2 align="left">Quick Links</h2>
-                    <ul>
-                        <li><i class="fas fa-angle-double-right"></i>Reservation</li>
-                        <li><i class="fas fa-angle-double-right"></i>FAQ</li>
-                        <li><i class="fas fa-angle-double-right"></i>Contact</li>
-                    </ul>
-                </div>
+                    
 
                 <div class="box">
                     <h2>Services</h2>
                     <ul>
-                        <li><i class="fas fa-angle-double-right"></i>Maintenance</li>
-                        <li><i class="fas fa-angle-double-right"></i>House Keeping</li>
+                        <li><i class="fas fa-angle-double-right"></i>Garbage Collection</li>
+                        <li><i class="fas fa-angle-double-right"></i>Laundry</li>
+                        <li><i class="fas fa-angle-double-right"></i>Wi-Fi</li>
+                        <li><i class="fas fa-angle-double-right"></i>24/7 Water Tank</li>
+                        <li><i class="fas fa-angle-double-right"></i>Repair and Maintenance</li>
+                        <li><i class="fas fa-angle-double-right"></i>Mini-Mart</li>
+
+
+                
+
                     </ul>
                 </div>
 
@@ -432,7 +439,7 @@ $rooms = array_map(function($room) use ($conn) {
                             <p>417-1686 / (0918) 948 1290</p>
                         </div>
                     </div>
-                    
+                    </div>
                         </div>
                     </div>
                 </div>
