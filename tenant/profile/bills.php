@@ -1,5 +1,4 @@
 <?php 
-session_start();
 $room_id = $_SESSION['user']['room_id'];
 // $sql = "SELECT b.*, r.room_name FROM tenant_bills AS tb
 //   INNER JOIN bills AS b
