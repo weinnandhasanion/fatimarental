@@ -20,7 +20,7 @@ foreach ($res->fetch_all(MYSQLI_ASSOC) as $row) {
   $s = "SELECT COUNT(*) AS co FROM tenants WHERE room_id = " . $row['id'];
   $res = $conn->query($s);
   $count = $res->fetch_assoc()['co'];
-  if (intval($count) === 0) $vacantCount++;
+  if (intval($count) < intval($row['capacity'])) $vacantCount++;
 }
 ?>
 
