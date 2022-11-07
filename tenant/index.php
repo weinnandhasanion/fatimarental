@@ -41,17 +41,15 @@ $rooms = array_map(function($room) use ($conn) {
 <body>
     <section class="head">
         <div class="container flex1">
-            <div class="scoial">
-                <i class="fab fa-facebook-f"></i>
-                <i class="fab fa-twitter"></i>
-                <i class="fab fa-instagram"></i>
-            </div>
+            
             <div class="logo">
                 <!-- <img src="./assets/logo.png" alt="">-->
             </div>
             <div class="address">
                 <i class="fas fa-map-marker-alt"></i>
-                <span>321-N Escario Street Kamputhaw Cebu City</span>
+                <span>321-North Escario Street Kamputhaw Cebu City</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <i class="fas fa-phone"></i>
+                <span>417-1686 / (0918) 948 1290</span>
             </div>
         </div>
     </section>
@@ -119,16 +117,17 @@ $rooms = array_map(function($room) use ($conn) {
     <section class="about" id="about">
         <div class="container">
             <div class="heading">
-                <h5>EXPLORE</h5>
-                <h2>We can provide safety, security and peaceful environment
+                <h5></h5>
+                <h2>In honor of Our Lady of Fatima
                 </h2>
             </div>
 
             <div class="content flex  top">
                 <div class="left">
-                    <h3>We want you to feel at home
-                    </h3>
-                    <p>One of the current problems that Cebu City faces is the interruption of water supply from time to
+                <center><h3>A Home Where You Can Find Peace </center>
+                    </h3>&nbsp; &nbsp;
+                    <h2></h2>
+                    <p style="color:black;"align="justify" align="left"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; One of the current problems that Cebu City faces is the interruption of water supply from time to
                         time.
                         In Barangay Kamputhaw, MCWD turns on the water supply between 12 am to 5 am daily
                         but sometimes for less time than that. This rotating water interruption
@@ -138,12 +137,12 @@ $rooms = array_map(function($room) use ($conn) {
                         affect the spread of pathogenic organisms, such as bacteria and viruses, because the lack of
                         water will limit handwashing and compromise
                         the cleaning and sanitation of homes and health care facilities.</p>
-                    <p>That is why Fatima Rental has installed a water tank below the ground to alleviate
+                    <p style="color:black;"align="justify">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; That is why Fatima Rental has installed a water tank below the ground to alleviate
                         this problem. To add, Fatima Rental has also passed the Water
-                        Quality and Mineral Content Tests to ensure that boarders can have access to clean water 24/7p>
+                        Quality and Mineral Content Tests to ensure that boarders can have access to clean water 24/7.
                 </div>
                 <div class="right">
-                    <img src="./assets/h2.jpg" alt="" style="width: 60%;">
+                    <img  align="middle" src="./assets/h6.jpg" alt="" style="width: 60%;">
                 </div>
             </div>
         </div>
@@ -153,41 +152,57 @@ $rooms = array_map(function($room) use ($conn) {
     <section class="room wrapper2 top" id="room">
         <div class="container">
             <div class="heading">
-                <h5>OUR ROOMS</h5>
-                <h2>Fascinating rooms</h2>
+                <h5>OUR INTEGRITY</h5>
+                <h2>Practical & Budget-Friendly</h2>
             </div>
             <div class="content flex mtop">
                 <div class="left grid2">
                     <div class="box">
-                        <i class="fas fa-desktop"></i>
-                        <p>Free Cost</p>
-                        <h3>No booking fee</h3>
+                        <i class="fas fa-tshirt"></i>
+                       
+                        <h3>Laundry Service</h3>
                     </div>
                     <div class="box">
-                        <i class="fas fa-dollar-sign"></i>
-                        <h3>Best rate guarantee</h3>
+                        <i class="fas fa-coins"></i>
+                        <h3>Economical Rooms</h3>
                     </div>
                     <div class="box">
                         <i class="fab fa-resolving"></i>
-                        <p>Free Cost</p>
-                        <h3>Reservations 24/7</h3>
+                       
+                        <h3>24/7 Reservations </h3>
                     </div>
                     <div class="box">
-                        <i class="fal fa-alarm-clock"></i>
-                        <p>Free Cost</p>
-                        <h3>Free High-speed Wi-Fi</h3>
+                        <i class="fal fa-wifi"></i>
+                        
+                        <h3>High-speed Wi-Fi</h3>
                     </div>
                     <div class="box">
-                        <i class="fas fa-mug-hot"></i>
-                        <h3>No Curfew</h3>
+                        <i class="fas fa-key"></i>
+                        <h3>Safe & Secure</h3>
                     </div>
                     <div class="box">
-                        <i class="fas fa-user-tie"></i>
-                        <h3>With Aircon</h3>
+                        <i class="fas fa-snowflake"></i>
+                        <h3>Aircon Ready</h3>
+                    </div>
+                    <div class="box">
+                        <i class="fas fa-water"></i>
+                        <h3>24/7 Water Tank</h3>
+                    </div>
+                    <div class="box">
+                        <i class="fas fa-trash"></i>
+                        <h3>Garbage Collection</h3>
+                    </div>
+                    <div class="box">
+                        <i class="fas fa-wrench"></i>
+                        <h3>Repair Services</h3>
+                    </div>
+                    <div class="box">
+                        <i class="fas fa-store"></i>
+                        <h3>Mini Mart</h3>
                     </div>
                 </div>
                 <div class="right">
-                    <img src="./assets/IMG_7317.JPG" alt="">
+                    <img src="./assets/h3.JPG" alt="">
                 </div>
             </div>
         </div>
@@ -379,56 +394,40 @@ $rooms = array_map(function($room) use ($conn) {
 
     <footer>
         <div class="container top">
-            <div class="subscribe" id="contact">
-                <h2>Looking for more Details?</h2>
-                <p> Log your email address so we can sent more details thru your email account</p>
-                <div class="input flex">
-                    <input type="email" placeholder="Your Email address">
-                    <button class="flex1">
-                        <span>Subscribe</span>
-                        <i class="fas fa-arrow-circle-right"></i>
-                    </button>
-                </div>
-            </div>
+          
 
             <div class="content grid  top">
                 <div class="box">
-                    <div class="logo">
-                        <img src="./assets/logo.png" alt="">
-                    </div>
-                    <div class="social flex">
-                        <i class="fab fa-facebook-f"></i>
-                        <i class="fab fa-twitter"></i>
-                        <i class="fab fa-instagram"></i>
-                    </div>
+        
                 </div>
 
-                <div class="box">
-                    <h2>Quick Links</h2>
-                    <ul>
-                        <li><i class="fas fa-angle-double-right"></i>Reservation</li>
-                        <li><i class="fas fa-angle-double-right"></i>FAQ</li>
-                        <li><i class="fas fa-angle-double-right"></i>Contact</li>
-                    </ul>
-                </div>
+                    
 
                 <div class="box">
                     <h2>Services</h2>
                     <ul>
-                        <li><i class="fas fa-angle-double-right"></i>Maintenance</li>
-                        <li><i class="fas fa-angle-double-right"></i>House Keeping</li>
+                        <li><i class="fas fa-angle-double-right"></i>Garbage Collection</li>
+                        <li><i class="fas fa-angle-double-right"></i>Laundry</li>
+                        <li><i class="fas fa-angle-double-right"></i>Wi-Fi</li>
+                        <li><i class="fas fa-angle-double-right"></i>24/7 Water Tank</li>
+                        <li><i class="fas fa-angle-double-right"></i>Repair and Maintenance</li>
+                        <li><i class="fas fa-angle-double-right"></i>Mini-Mart</li>
+
+
+                
+
                     </ul>
                 </div>
 
                 <div class="box">
-                    <h2>Services</h2>
+                    <h2>Contact Us:</h2>
                     <div class="icon flex">
                         <div class="i">
                             <i class="fas fa-map-marker-alt"></i>
                         </div>
                         <div class="text">
                             <h3>Address</h3>
-                            <p>321-N Escario Street Kamputhaw Cebu City</p>
+                            <p>321-North Escario Street Kamputhaw Cebu City</p>
                         </div>
                     </div>
                     <div class="icon flex">
@@ -437,16 +436,10 @@ $rooms = array_map(function($room) use ($conn) {
                         </div>
                         <div class="text">
                             <h3>Phone</h3>
-                            <p>4171 6862</p>
+                            <p>417-1686 / (0918) 948 1290</p>
                         </div>
                     </div>
-                    <div class="icon flex">
-                        <div class="i">
-                            <i class="far fa-envelope"></i>
-                        </div>
-                        <div class="text">
-                            <h3>Email</h3>
-                            <p>fatimarental@gmail.com</p>
+                    </div>
                         </div>
                     </div>
                 </div>
