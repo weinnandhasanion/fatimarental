@@ -81,13 +81,16 @@ if (count($errors) < 1) {
 
             $sql = "UPDATE bills SET `total_amount` = $total WHERE id = $bill_id";
             $conn->query($sql);
-            $sql = "SELECT contact_number FROM tenants WHERE room_id = $roomId";
-            $numbers = $conn->query($sql)->fetch_all(MYSQLI_ASSOC)['contact_number'];
-                foreach ($numbers as $number) {
-                if (isset($number)) {
-                    sendMessage($number, "Your bill for $start_period to $end_period is P$total.00. Please make sure to pay to avoid penalties.");
-    }
-}
+
+            $sql = "SELECT id, contact_number FROM tenants WHERE room_id = $roomId";
+            $tenants = $conn->query($sql)->fetch_all(MYSQLI_ASSOC);
+            foreach ($tenants as $tenant) {
+                if (isset($tenant['contact_number'])) {
+                    $sql = "INSERT INTO tenant_bills (tenant_id, bill_id) VALUES ('".$tenant['id']."', ".intval($bill_id).")";
+                    $res = $conn->query($sql);
+                    sendMessage($tenant['contact_number'], "Your bill for $start_period to $end_period is P$total.00. Please make sure to pay to avoid penalties.");
+                }
+            }
         }
     }
 }

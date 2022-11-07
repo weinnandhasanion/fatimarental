@@ -97,7 +97,8 @@ foreach ($res->fetch_all(MYSQLI_ASSOC) as $row) {
                                 </form>
                             </div>
                             <div class="card-footer">
-                                <button class="btn btn-success" type="submit" form="bill-form">Send Bill</button>
+                                <button class="btn btn-success" type="submit" id="bill-btn" form="bill-form">Send
+                                    Bill</button>
                                 <button class="btn btn-link text-danger" onclick="cancel()">Cancel</button>
                             </div>
                         </div>
@@ -236,10 +237,12 @@ foreach ($res->fetch_all(MYSQLI_ASSOC) as $row) {
 
             billForm.submit(e => {
                 e.preventDefault();
+                $('#bill-btn').attr('disabled', 'disabled');
                 $('small[id$="-error"]').text('')
                 $.post('./../functions/add_bill.php', {
                     data: JSON.stringify(dataMap)
                 }, function(resp) {
+                    $('#bill-btn').removeAttr('disabled');
                     const res = JSON.parse(resp);
                     if (res.status === 422) {
                         renderErrors(res.errors);
