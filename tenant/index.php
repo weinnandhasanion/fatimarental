@@ -140,7 +140,7 @@ $rooms = array_map(function($room) use ($conn) {
                         the cleaning and sanitation of homes and health care facilities.</p>
                     <p>That is why Fatima Rental has installed a water tank below the ground to alleviate
                         this problem. To add, Fatima Rental has also passed the Water
-                        Quality and Mineral Content Tests to ensure that boarders can have access to clean water 24/7p>
+                        Quality and Mineral Content Tests to ensure that boarders can have access to clean water 24/7.
                 </div>
                 <div class="right">
                     <img src="./assets/h2.jpg" alt="" style="width: 60%;">
