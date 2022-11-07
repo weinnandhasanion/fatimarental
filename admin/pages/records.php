@@ -100,7 +100,7 @@ if ($record === 'tenant-room-activity') {
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link <?= $record === 'room-addition-deletion' ? "active" : ""?>"
-                                    href="./records.php?record=room-addition-deletion">Room Addition/Deletion</a>
+                                    href="./records.php?record=room-addition-deletion">Room Addition</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link <?= $record === 'tenant-addition' ? "active" : ""?>"
