@@ -45,9 +45,6 @@ $row = $res->fetch_assoc();
     </div>
     <ul class="mt-2">
         <li>
-            <h4 style="margin: 0;font-weight: light"><?=$row['first_name'] . " " . $row['last_name']?></h4>
-        </li>
-        <li>
             <h5 style="font-weight: light"><?=$row['room_name']?></h5>
         </li>
         <li> <em>Billing Date:
