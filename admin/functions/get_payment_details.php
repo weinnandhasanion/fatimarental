@@ -16,7 +16,6 @@ $sql = "SELECT p.*, b.reference_id AS bill_reference_id,
 $res = $conn->query($sql);
 if ($res) {
   $row = $res->fetch_assoc();
-  $row['tenant'] = $row['first_name'] ." ".$row['last_name'];
   $row['date_added'] = date('F d, Y', strtotime($row['date_added']));
   echo json_encode($row);
 }
