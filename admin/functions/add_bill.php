@@ -81,7 +81,6 @@ if (count($errors) < 1) {
 
             $sql = "UPDATE bills SET `total_amount` = $total WHERE id = $bill_id";
             $conn->query($sql);
-
             $sql = "SELECT id, contact_number FROM tenants WHERE room_id = $roomId";
             $tenants = $conn->query($sql)->fetch_all(MYSQLI_ASSOC);
             foreach ($tenants as $tenant) {
