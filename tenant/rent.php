@@ -48,7 +48,7 @@ $rooms = $conn->query($sql)?->fetch_all(MYSQLI_ASSOC);
       <div class="description">
         <h1><strong>Reserve</strong> your room</h1>
         <p>
-        Please provide your personal information and the select a room you want for your reservation, Thank you
+        Please provide your personal information and the select a room you want for your reservation.
         </p>
         <div class="quote">
           <p>
