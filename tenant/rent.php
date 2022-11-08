@@ -1,5 +1,10 @@
 <?php 
 include './../services/connect.php';
+session_start();
+
+if (isset($_SESSION['user'])) {
+  header("Location: ./index.php");
+}
 
 $rooms = [];
 $sql = "SELECT * FROM rooms WHERE `status` != 2";

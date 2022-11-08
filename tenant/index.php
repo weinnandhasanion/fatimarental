@@ -41,13 +41,13 @@ $rooms = array_map(function($room) use ($conn) {
 <body>
     <section class="head">
         <div class="container flex1">
-            
             <div class="logo">
                 <!-- <img src="./assets/logo.png" alt="">-->
             </div>
             <div class="address">
                 <i class="fas fa-map-marker-alt"></i>
-                <span>321-North Escario Street Kamputhaw Cebu City</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span>321-North Escario Street Kamputhaw Cebu City</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <i class="fas fa-phone"></i>
                 <span>417-1686 / (0918) 948 1290</span>
             </div>
@@ -84,29 +84,11 @@ $rooms = array_map(function($room) use ($conn) {
                     <span class="bar"></span>
                     <span class="bar"></span>
                 </div>
-
                 <div class="head_contact">
                 </div>
             </nav>
         </div>
     </header>
-    <script>
-    const hamburger = document.querySelector(".hamburger");
-    const navMenu = document.querySelector(".nav-menu");
-
-    hamburger.addEventListener("click", mobliemmenu);
-
-    function mobliemmenu() {
-        hamburger.classList.toggle("active");
-        navMenu.classList.toggle("active");
-    }
-
-    window.addEventListener("scroll", function() {
-        var header = document.querySelector("header");
-        header.classList.toggle("sticky", window.scrollY > 0)
-    })
-    </script>
-
 
     <section class="home" id="home">
         <div class="container">
@@ -124,10 +106,13 @@ $rooms = array_map(function($room) use ($conn) {
 
             <div class="content flex  top">
                 <div class="left">
-                <center><h3>A Home Where You Can Find Peace </center>
+                    <center>
+                        <h3>A Home Where You Can Find Peace
+                    </center>
                     </h3>&nbsp; &nbsp;
                     <h2></h2>
-                    <p style="color:black;"align="justify" align="left"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; One of the current problems that Cebu City faces is the interruption of water supply from time to
+                    <p style="color:black;" align="justify" align="left"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; One of the
+                        current problems that Cebu City faces is the interruption of water supply from time to
                         time.
                         In Barangay Kamputhaw, MCWD turns on the water supply between 12 am to 5 am daily
                         but sometimes for less time than that. This rotating water interruption
@@ -137,17 +122,17 @@ $rooms = array_map(function($room) use ($conn) {
                         affect the spread of pathogenic organisms, such as bacteria and viruses, because the lack of
                         water will limit handwashing and compromise
                         the cleaning and sanitation of homes and health care facilities.</p>
-                    <p style="color:black;"align="justify">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; That is why Fatima Rental has installed a water tank below the ground to alleviate
+                    <p style="color:black;" align="justify">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; That is why Fatima Rental
+                        has installed a water tank below the ground to alleviate
                         this problem. To add, Fatima Rental has also passed the Water
                         Quality and Mineral Content Tests to ensure that boarders can have access to clean water 24/7.
                 </div>
                 <div class="right">
-                    <img  align="middle" src="./assets/h6.jpg" alt="" style="width: 60%;">
+                    <img align="middle" src="./assets/h6.jpg" alt="" style="width: 60%;">
                 </div>
             </div>
         </div>
     </section>
-
 
     <section class="room wrapper2 top" id="room">
         <div class="container">
@@ -159,7 +144,7 @@ $rooms = array_map(function($room) use ($conn) {
                 <div class="left grid2">
                     <div class="box">
                         <i class="fas fa-tshirt"></i>
-                       
+
                         <h3>Laundry Service</h3>
                     </div>
                     <div class="box">
@@ -168,12 +153,12 @@ $rooms = array_map(function($room) use ($conn) {
                     </div>
                     <div class="box">
                         <i class="fab fa-resolving"></i>
-                       
+
                         <h3>24/7 Reservations </h3>
                     </div>
                     <div class="box">
                         <i class="fal fa-wifi"></i>
-                        
+
                         <h3>High-speed Wi-Fi</h3>
                     </div>
                     <div class="box">
@@ -226,7 +211,7 @@ $rooms = array_map(function($room) use ($conn) {
                         <img src="./../uploads/<?= $room['images'][0]['image_pathname'] ?>" alt="">
                     </div>
                     <div class="right">
-                        <h4>Room <?= $room['room_name'] ?></h4>
+                        <h4><?= $room['room_name'] ?></h4>
                         <div class="rate flex">
                             <i class="fas fa-star"></i>
                             <i class="fas fa-star"></i>
@@ -236,11 +221,15 @@ $rooms = array_map(function($room) use ($conn) {
                         </div>
                         <p><?= $room['description'] ?></p>
                         <h5>₱<?= $room['price'] ?>.00</h5>
+                        <?php
+                        if (!isset($_SESSION['user'])) {
+                        ?>
                         <button class="flex1" style="cursor: pointer;" <?=$full ? "disabled='disabled'" : ""?>
                             onclick="window.location.href = './rent.php'">
                             <span><?=$full ? "Room is full" : "Reserve now"?></span>
                             <?= !$full ? '<a href="./rent.php" style="color: white;"> <i class="fas fa-arrow-circle-right"></i></a>' : "" ?>
                         </button>
+                        <?php } ?>
                     </div>
                 </div>
                 <?php endforeach; ?>
@@ -275,134 +264,23 @@ $rooms = array_map(function($room) use ($conn) {
                         may it be in ceremonies or announcements especially every October which
                         is the Feast of Our Lady of Fatima
                         where the district Sitio Fatima is named.</p>
-                    <button class="flex1" style="cursor: pointer;">
-                        <span>Reserve Now</span>
+                    <?php if (!isset($_SESSION['user'])) { ?>
+                    <button class="flex1" style="cursor: pointer;" onclick="window.location.href = './rent.php'">
+                        <span>Reserve now</span>
                         <a href="./rent.php" style="color: white;"> <i class="fas fa-arrow-circle-right"></i></a>
                     </button>
+                    <?php } ?>
                 </div>
             </div>
         </div>
     </section>
 
-    <!--<section class="blog top" id="blog">
-    <div class="container">
-      <div class="heading">
-        <h5>OUR BLOG</h5>
-        <h3>News & articles updates</h3>
-      </div>
 
-      <div class="content grid mtop">
-        <div class="box">
-          <div class="img">
-            <img src="./assets/b1.jpg" alt="">
-            <span>Room</span>
-          </div>
-          <div class="text">
-            <div class="flex">
-              <i class="far fa-user"> <label>Admin</label> </i>
-              <i class="far fa-comments"> <label>Comment</label> </i>
-            </div>
-            <h3></h3>
-            <p> Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-            <a href="#">Read More <i class='far fa-long-arrow-alt-right'></i> </a>
-          </div>
-        </div>
-        <div class="box">
-          <div class="img">
-            <img src="./assets/b2.jpg" alt="">
-            <span>Room</span>
-          </div>
-          <div class="text">
-            <div class="flex">
-              <i class="far fa-user"> <label>Admin</label> </i>
-              <i class="far fa-comments"> <label>Comment</label> </i>
-            </div>
-            <h3></h3>
-            <p> Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-            <a href="#">Read More <i class='far fa-long-arrow-alt-right'></i> </a>
-          </div>
-        </div>
-        <div class="box">
-          <div class="img">
-            <img src="./assets/b3.jpg" alt="">
-            <span>Room</span>
-          </div>
-          <div class="text">
-            <div class="flex">
-              <i class="far fa-user"> <label>Admin</label> </i>
-              <i class="far fa-comments"> <label>Comment</label> </i>
-            </div>
-            <h3></h3>
-            <p> Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-            <a href="#">Read More <i class='far fa-long-arrow-alt-right'></i> </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section><br>-->
-    <!-- 
-  <section class="offer2 about wrapper timer top" id="shop">
-    <div class="container">
-      <div class="heading">
-        <h5 style="color: black;">EXCLUSIVE OFFERS </h5>
-        <h3>You can get an exclusive offer </h3>
-      </div>
-
-      <div class="content grid  top">
-        <div class="box">
-          <h3>Good For Two</h3>
-          <span>4.5 <label>(432 Reviews)</label> </span>
-
-          <div class="flex">
-            <i class="fal fa-alarm-clock"> Duration: 2Hours</i>
-            <i class="far fa-dot-circle"> 18+ years</i>
-          </div>
-          <button class="flex1" style="cursor: pointer;">
-            <span>Reserve Now</span>
-            <a href="rent.php" style="color: white;"> <i class="fas fa-arrow-circle-right"></i></a>
-          </button>
-        </div>
-        <div class="box">
-          <h3>Good For Two</h3>
-          <span>4.5 <label>(432 Reviews)</label> </span>
-
-          <div class="flex">
-            <i class="fal fa-alarm-clock"> Duration: 2Hours</i>
-            <i class="far fa-dot-circle"> 18+ years</i>
-          </div>
-          <button class="flex1" style="cursor: pointer;">
-            <span>Reserve Now</span>
-            <a href="rent.php" style="color: white;"> <i class="fas fa-arrow-circle-right"></i></a>
-          </button>
-        </div>
-        <div class="box">
-          <h3>Good For Two</h3>
-          <span>4.5 <label>(432 Reviews)</label> </span>
-
-          <div class="flex">
-            <i class="fal fa-alarm-clock"> Duration: 2Hours</i>
-            <i class="far fa-dot-circle"> 18+ years</i>
-          </div>
-          <button class="flex1" style="cursor: pointer;">
-            <span>Reserve Now</span>
-            <a href="rent.php" style="color: white;"> <i class="fas fa-arrow-circle-right"></i></a>
-          </button>
-        </div>
-      </div>
-    </div>
-  </section> -->
-
-    <footer>
+    <footer id="contact">
         <div class="container top">
-          
-
             <div class="content grid  top">
                 <div class="box">
-        
                 </div>
-
-                    
-
                 <div class="box">
                     <h2>Services</h2>
                     <ul>
@@ -412,13 +290,8 @@ $rooms = array_map(function($room) use ($conn) {
                         <li><i class="fas fa-angle-double-right"></i>24/7 Water Tank</li>
                         <li><i class="fas fa-angle-double-right"></i>Repair and Maintenance</li>
                         <li><i class="fas fa-angle-double-right"></i>Mini-Mart</li>
-
-
-                
-
                     </ul>
                 </div>
-
                 <div class="box">
                     <h2>Contact Us:</h2>
                     <div class="icon flex">
@@ -439,29 +312,45 @@ $rooms = array_map(function($room) use ($conn) {
                             <p>417-1686 / (0918) 948 1290</p>
                         </div>
                     </div>
-                    </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
+        </div>
+        </div>
+        </div>
     </footer>
+
+    <?php include './templates/scripts.php' ?>
+    <script>
+    const hamburger = document.querySelector(".hamburger");
+    const navMenu = document.querySelector(".nav-menu");
+
+    hamburger.addEventListener("click", mobliemmenu);
+
+    function mobliemmenu() {
+        hamburger.classList.toggle("active");
+        navMenu.classList.toggle("active");
+    }
+
+    window.addEventListener("scroll", function() {
+        var header = document.querySelector("header");
+        header.classList.toggle("sticky", window.scrollY > 0)
+    })
+
+    $(document).ready(function() {
+        $('#logout-link').click(function(e) {
+            e.preventDefault();
+            let x = confirm('Do you want to logout?');
+            if (x) {
+                $.get('./../services/logout.php', function(res) {
+                    alert(res);
+                    window.location.href = './login.php';
+                });
+            }
+        });
+    });
+    </script>
 </body>
 
-<?php include './templates/scripts.php' ?>
-<script>
-$(document).ready(function() {
-    $('#logout-link').click(function(e) {
-        e.preventDefault();
-        let x = confirm('Do you want to logout?');
-        if (x) {
-            $.get('./../services/logout.php', function(res) {
-                alert(res);
-                window.location.href = './login.php';
-            });
-        }
-    });
-});
-</script>
 
 </html>
