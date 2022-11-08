@@ -211,8 +211,8 @@ $rooms = array_map(function($room) use ($conn) {
     <section class="offer mtop" id="services">
         <div class="container">
             <div class="heading">
-                <h5>Rooms</h5>
-                <h3>All the rooms to offer</h3>
+                <h5>ACCOMODATIONS</h5>
+                <h3>All The Rooms To Offer</h3>
             </div>
 
             <div class="content grid2 mtop">
@@ -223,19 +223,13 @@ $rooms = array_map(function($room) use ($conn) {
                 ?>
                 <div class="box flex">
                     <div class="left">
-                        <img src="./../uploads/<?= $room['images'][0]['image_pathname'] ?>" alt="">
+                    <img src="./../uploads/<?= $room['images'][0]['image_pathname'] ?>" alt="">
                     </div>
                     <div class="right">
                         <h4>Room <?= $room['room_name'] ?></h4>
-                        <div class="rate flex">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <p><?= $room['description'] ?></p>
-                        <h5>₱<?= $room['price'] ?>.00</h5>
+                        
+                        <p style="color:black;"align="justify" align="left"><?= $room['description'] ?></p>
+                        <h5>₱<?= $room['price'] ?>.00/month</h5>
                         <button class="flex1" style="cursor: pointer;" <?=$full ? "disabled='disabled'" : ""?>
                             onclick="window.location.href = './rent.php'">
                             <span><?=$full ? "Room is full" : "Reserve now"?></span>
@@ -251,27 +245,27 @@ $rooms = array_map(function($room) use ($conn) {
     <section class="area top" style="margin-bottom: 80px">
         <div class="container">
             <div class="heading">
-                <h5>Place</h5>
-                <h3>The area we cover under security</h3>
+                <h5>HIGHLIGHT</h5>
+                <h3>Third Floor Rooftop</h3>
             </div>
 
             <div class="content flex mtop">
                 <div class="left">
-                    <img src="./assets/IMG_7307.JPG" alt="" style="width:70%;">
+                    <img src="./assets/IMG_7306.JPG" alt="" style="width:80%;">
                 </div>
                 <div class="right">
                     <ul>
-                        <li>Safe </li>
-                        <li>No Curfew</li>
-                        <li>lobby</li>
+                        <li>Recreation</li>
+                        <li>Lounging Area</li>
+                        <li>Parties & Events</li>
                     </ul>
 
-                    <p> This picture was shot at the 3rd floor in Fatima Rental Boarding House.
+                    <p style="color:black;"align="justify" align="left"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; This picture was shot at the 3rd floor in Fatima Rental Boarding House.
                         The surrounding area is spacious with sofas and furniture around.
                         The room has a double deck and has its own comfort room. What makes this
                         room unique is the scenery of the main busy road in Escario Street and the view of Goldberry
                         Hotel. </p>
-                    <p>Aside from that, there is a balcony that is above the chapel where lodgers can participate
+                    <p style="color:black;"align="justify" align="left">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Aside from that, there is a balcony that is above the chapel where lodgers can participate
                         may it be in ceremonies or announcements especially every October which
                         is the Feast of Our Lady of Fatima
                         where the district Sitio Fatima is named.</p>
