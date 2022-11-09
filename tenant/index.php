@@ -207,8 +207,9 @@ $rooms = array_map(function($room) use ($conn) {
                 $full = intval($occupants) === intval($room['capacity']);
                 ?>
                 <div class="box flex">
-                    <div class="left">
-                        <img src="./../uploads/<?= $room['images'][0]['image_pathname'] ?>" alt="">
+                    <div class="left" style="">
+                        <img style="object-fit: cover" src="./../uploads/<?= $room['images'][0]['image_pathname'] ?>"
+                            alt="">
                     </div>
                     <div class="right">
                         <h4><?= $room['room_name'] ?></h4>

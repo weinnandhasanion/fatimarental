@@ -129,6 +129,12 @@ create table `room_images` (
     FOREIGN KEY (`room_id`) REFERENCES `rooms`(`id`)
 );
 
+INSERT INTO `room_images` (room_id, image_pathname) 
+    VALUES (1, 'stpeter.jpg'), 
+    (2, 'stmaximillian.jpg'),
+    (3, 'stalbert.jpg'),
+    (4, 'sttherese.jpg');
+
 create table `tenant_room_history` (
     `id` int AUTO_INCREMENT,
     `tenant_id` VARCHAR(255),
