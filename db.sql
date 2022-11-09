@@ -42,7 +42,7 @@ values
 create table `rooms` (
     `id` INT AUTO_INCREMENT,
     `room_name` varchar(255),
-    `status` TINYINT CHECK (`status` < 3),
+    `status` TINYINT DEFAULT 0 CHECK (`status` < 3),
     -- Status: 0 = Available, 1 = Full, 2 = Under Maintenance 
     `price` INT,
     `capacity` int,
@@ -63,28 +63,37 @@ insert into
 values
     (
         1,
-        "St. Joseph",
+        "St. Peter",
         0,
-        2000,
-        2,
-        'Our king size four poster provides views over landscaped gardens. It has a seating area, ample storage, digital safe and mini fridge.'
+        5000,
+        3,
+        'Located in the first floor with a water dispenser outside, this is a spacious room with its own comfort room.'
     ),
     (
         2,
-        "St. Paul",
+        "St. Maximillian",
         0,
-        3000,
-        3,
-        'Our king size sleigh bedded also provides views over landscaped gardens. It has ample storage, a seating area, digital safe and mini fridge.'
+        6000,
+        4,
+        'Located in the second floor with a nice elevated view outside, this wide room has its own comfort room beside it.'
     ),
     (
         3,
-        "St. Bernard",
+        "St. Albert",
         0,
         4000,
+        3,
+        'Located in the second floor with a public CR and is near the Wi-Fi router, this room is good for students and for those who are in a budget.'
+    ),
+    (
         4,
-        'Our Deluxe Twin/Large Double also provides views over landscaped gardens. It has a seating area, digital safe and mini fridge. This room can be configured with either 2 single beds or zip and linked to provide a large double bed.'
+        "St. Therese",
+        0,
+        4000,
+        3,
+        'Located in the corner of the second floor with a public CR, this room has a nice view outside and is favorable for those owning pets specifically cats.'
     );
+    
 
 create table `tenants` (
     `id` VARCHAR(255),
@@ -119,6 +128,12 @@ create table `room_images` (
     PRIMARY KEY (`id`),
     FOREIGN KEY (`room_id`) REFERENCES `rooms`(`id`)
 );
+
+INSERT INTO `room_images` (room_id, image_pathname) 
+    VALUES (1, 'stpeter.jpg'), 
+    (2, 'stmaximillian.jpg'),
+    (3, 'stalbert.jpg'),
+    (4, 'sttherese.jpg');
 
 create table `tenant_room_history` (
     `id` int AUTO_INCREMENT,
