@@ -209,15 +209,8 @@ $rooms = array_map(function($room) use ($conn) {
                     </div>
                     <div class="right">
                         <h4><?= $room['room_name'] ?></h4>
-                        <div class="rate flex">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <p><?= $room['description'] ?></p>
-                        <h5>₱<?= $room['price'] ?>.00</h5>
+                        <p style="color:black;" align="justify" align="left"><?= $room['description'] ?></p>
+                        <h5>₱<?= $room['price'] ?>.00/month</h5>
                         <?php
                         if (!isset($_SESSION['user'])) {
                         ?>
