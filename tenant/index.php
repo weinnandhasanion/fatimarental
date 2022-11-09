@@ -204,8 +204,9 @@ $rooms = array_map(function($room) use ($conn) {
                 $full = intval($occupants) === intval($room['capacity']);
                 ?>
                 <div class="box flex">
-                    <div class="left">
-                    <img src="./../uploads/<?= $room['images'][0]['image_pathname'] ?>" alt="">
+                    <div class="left" style="">
+                        <img style="object-fit: cover" src="./../uploads/<?= $room['images'][0]['image_pathname'] ?>"
+                            alt="">
                     </div>
                     <div class="right">
                         <h4><?= $room['room_name'] ?></h4>
@@ -245,12 +246,14 @@ $rooms = array_map(function($room) use ($conn) {
                         <li>Parties & Events</li>
                     </ul>
 
-                    <p style="color:black;"align="justify" align="left"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; This picture was shot at the 3rd floor in Fatima Rental Boarding House.
+                    <p style="color:black;" align="justify" align="left"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; This
+                        picture was shot at the 3rd floor in Fatima Rental Boarding House.
                         The surrounding area is spacious with sofas and furniture around.
                         The room has a double deck and has its own comfort room. What makes this
                         room unique is the scenery of the main busy road in Escario Street and the view of Goldberry
                         Hotel. </p>
-                    <p style="color:black;"align="justify" align="left">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Aside from that, there is a balcony that is above the chapel where lodgers can participate
+                    <p style="color:black;" align="justify" align="left">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Aside from
+                        that, there is a balcony that is above the chapel where lodgers can participate
                         may it be in ceremonies or announcements especially every October which
                         is the Feast of Our Lady of Fatima
                         where the district Sitio Fatima is named.</p>
