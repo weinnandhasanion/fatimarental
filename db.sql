@@ -63,7 +63,7 @@ insert into
 values
     (
         1,
-        "Sts. Peter & Paul",
+        "St. Peter",
         0,
         5000,
         3,

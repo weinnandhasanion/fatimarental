@@ -211,10 +211,12 @@ $rooms = array_map(function($room) use ($conn) {
                         <img src="./../uploads/<?= $room['images'][0]['image_pathname'] ?>" alt="">
                     </div>
                     <div class="right">
-                        <h4>Room <?= $room['room_name'] ?></h4>
-
+                        <h4><?= $room['room_name'] ?></h4>
                         <p style="color:black;" align="justify" align="left"><?= $room['description'] ?></p>
                         <h5>₱<?= $room['price'] ?>.00/month</h5>
+                        <?php
+                        if (!isset($_SESSION['user'])) {
+                        ?>
                         <button class="flex1" style="cursor: pointer;" <?=$full ? "disabled='disabled'" : ""?>
                             onclick="window.location.href = './rent.php'">
                             <span><?=$full ? "Room is full" : "Reserve now"?></span>
