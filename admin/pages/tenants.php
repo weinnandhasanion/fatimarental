@@ -222,15 +222,7 @@ foreach ($rooms as $room) {
                         <div class="row mb-2">
                             <div class="col-sm-12">
                                 <label>Room</label>
-                                <select class="form-control" placeholder="Enter Room" name="room_name-view" readonly>
-                                    <?php
-foreach ($rooms as $room) {
-    ?>
-                                    <option value="<?=$room['id']?>"><?=$room['room_name']?></option>
-                                    <?php
-}
-?>
-                                </select>
+                                <input class="form-control" placeholder="Enter Room" name="room_name-view" readonly />
                                 <small id='room_name-error' class='text-danger'></small>
                             </div>
                         </div>
@@ -413,7 +405,6 @@ foreach ($rooms as $room) {
         // Function to populate view tenant modal
         function viewMember(id) {
             $.get('./../functions/user_details.php?id=' + id, function(res) {
-                console.log(res);
                 const user = JSON.parse(res);
                 for (key in user) {
                     $(`input[name=${key}-view]`).val(user[key]);
