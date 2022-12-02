@@ -12,22 +12,32 @@ $sql = "UPDATE reservations SET `status` = $updateStatus, admin_id = $admin_id W
 $res = $conn->query($sql);
 if ($res) {
     if ($updateStatus === 1) {
-        $sql = "SELECT tenant_id FROM reservations WHERE id = $id";
-        $tenant_id = $conn->query($sql)->fetch_assoc()['tenant_id'];
+        $sql = "SELECT tenant_id, room_id FROM reservations WHERE id = $id LIMIT 1";
+        $r = $conn->query($sql);
+        $row = $r->fetch_assoc();
+        $tenant_id = $row['tenant_id'];
+        $room_id = $row['room_id'];
         $sql = "UPDATE tenants
         SET `status` = 0,
           reservation_account_expiry_date = NULL,
           `password` = '".password_hash('fatima123', PASSWORD_DEFAULT)."'
         WHERE id = '$tenant_id'";
-        $res = $conn->query($sql);
+        $res2 = $conn->query($sql);
         
         $sql = "SELECT contact_number FROM tenants WHERE id = '$tenant_id'";
-        $contact_number = $conn->query($sql)->fetch_assoc();
+        $contact_number = $conn->query($sql)->fetch_assoc()['contact_number'];
 
-        if (!empty($contact_number)) sendMessage($contact_number, 'Your reservation has been accepted. Thank you.');
+        if (!empty($contact_number)) {
+            sendMessage($contact_number, 'Your reservation has been accepted. Thank you.');
+        }
 
-        if ($res) {
-            $status = 200;
+        if ($res2) {
+            $sql2 = "INSERT INTO tenant_room_history (`tenant_id`, `from_room_id`, `to_room_id`, `end_date`)
+                VALUES ('$tenant_id', NULL, ".intval($room_id).", NULL)";
+            $resp = $conn->query($sql2);
+            if ($resp) {
+                $status = 200;
+            }
         }
     } else {
         $sql = "SELECT tenant_id FROM reservations WHERE id = $id";

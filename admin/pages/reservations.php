@@ -27,215 +27,218 @@ if ($res) $reservations = $res->fetch_all(MYSQLI_ASSOC);
 <?php include './../templates/head.php'?>
 
 <body>
-  <div class="wrapper">
-    <div class="body-overlay"></div>
+    <div class="wrapper">
+        <div class="body-overlay"></div>
 
-    <?php include './../templates/nav.php' ?>
+        <?php include './../templates/nav.php' ?>
 
-    <!-- Page Content  -->
-    <div id="content">
+        <!-- Page Content  -->
+        <div id="content">
 
-      <?php include './../templates/topnav.php'?>
-      <div class="main-content">
-        <div class="row ">
-          <div class="col-sm-12">
-            <ul class="nav nav-tabs">
-              <li class="nav-item">
-                <a class="nav-link <?= $sort === 'pending' ? "active" : ""?>" href="./reservations.php">New
-                  Reservations</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link <?= $sort === 'approved' ? "active" : ""?>"
-                  href="./reservations.php?sort=approved">Approved Reservations</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link <?= $sort === 'rejected' ? "active" : ""?>"
-                  href="./reservations.php?sort=rejected">Rejected Reservations</a>
-              </li>
-            </ul>
-            <div class="card"
-              style="min-height: 485px; margin-top: 0; border: 1px solid rgba(0,0,0,.125) !important; border-top: 0px !important">
-              <div class="card-header card-header-text d-flex justify-content-start align-items-center">
-                <h4 class="card-title flex-grow-1"><?=$statuses[$sort][1]?> Reservations</h4>
-              </div>
-              <div class="card-content table-responsive">
-                <table class="table table-hover" id='reservations-table'>
-                  <thead class="text-primary">
-                    <tr>
-                      <th style="width: 200px">Name</th>
-                      <th>Room #</th>
-                      <th>Move Date</th>
-                      <th style="width: 250px">Message</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <?php foreach ($reservations as $res) {?>
-                    <tr>
-                      <td class="align-middle"><?=$res['first_name']." ".$res['last_name']?></td>
-                      <td class="align-middle">
-                        <?=$res['room_name']?>
-                      </td>
-                      <td class="align-middle"><?=date("F d, Y", strtotime($res['move_date']))?></td>
-                      <td class="align-middle"><?=empty($res['message']) ? "N/A" : $res['message']?></td>
-                      <td class="align-middle">
-                        <button class="btn btn-link btn-small" data-id="<?=$res['id']?>"
-                          onclick="viewReservationDetails($(this).attr('data-id'))">Details</button>
-                      </td>
-                    </tr>
-                    <?php }?>
-                  </tbody>
-                </table>
-              </div>
+            <?php include './../templates/topnav.php'?>
+            <div class="main-content">
+                <div class="row ">
+                    <div class="col-sm-12">
+                        <ul class="nav nav-tabs">
+                            <li class="nav-item">
+                                <a class="nav-link <?= $sort === 'pending' ? "active" : ""?>"
+                                    href="./reservations.php">New
+                                    Reservations</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link <?= $sort === 'approved' ? "active" : ""?>"
+                                    href="./reservations.php?sort=approved">Approved Reservations</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link <?= $sort === 'rejected' ? "active" : ""?>"
+                                    href="./reservations.php?sort=rejected">Rejected Reservations</a>
+                            </li>
+                        </ul>
+                        <div class="card"
+                            style="min-height: 485px; margin-top: 0; border: 1px solid rgba(0,0,0,.125) !important; border-top: 0px !important">
+                            <div class="card-header card-header-text d-flex justify-content-start align-items-center">
+                                <h4 class="card-title flex-grow-1"><?=$statuses[$sort][1]?> Reservations</h4>
+                            </div>
+                            <div class="card-content table-responsive">
+                                <table class="table table-hover" id='reservations-table'>
+                                    <thead class="text-primary">
+                                        <tr>
+                                            <th style="width: 200px">Name</th>
+                                            <th>Room #</th>
+                                            <th>Move Date</th>
+                                            <th style="width: 250px">Message</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach ($reservations as $res) {?>
+                                        <tr>
+                                            <td class="align-middle"><?=$res['first_name']." ".$res['last_name']?></td>
+                                            <td class="align-middle">
+                                                <?=$res['room_name']?>
+                                            </td>
+                                            <td class="align-middle"><?=date("F d, Y", strtotime($res['move_date']))?>
+                                            </td>
+                                            <td class="align-middle">
+                                                <?=empty($res['message']) ? "N/A" : $res['message']?></td>
+                                            <td class="align-middle">
+                                                <button class="btn btn-link btn-small" data-id="<?=$res['id']?>"
+                                                    onclick="viewReservationDetails($(this).attr('data-id'))">Details</button>
+                                            </td>
+                                        </tr>
+                                        <?php }?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
-    </div>
 
-    <!-- Reservation Details Modal -->
-    <div id="details-modal" tabindex="-1" class="modal fade" role="dialog">
-      <form id="details-form" method="POST">
-        <div class="modal-dialog" role='document'>
-          <div class="modal-content" style="max-width:600px">
-            <div class="modal-header">
-              <h5 class="modal-title">Reservation Details</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <input type="hidden" name="id" id="details-id" />
-              <div class="row mb-2">
-                <div class="col-sm-12">
-                  <label>Name</label>
-                  <input readonly class="form-control" type="text" name="name" id="name" required>
-                </div>
-              </div>
-              <div class="row mb-2">
-                <div class="col-sm-6">
-                  <label>Email Address</label>
-                  <input readonly class="form-control" type="text" name="email_address" id="email_address" required>
-                </div>
-                <div class="col-sm-6">
-                  <label>Contact Number</label>
-                  <input readonly class="form-control" type="text" name="contact_number" id="contact_number" required>
-                </div>
+        <!-- Reservation Details Modal -->
+        <div id="details-modal" tabindex="-1" class="modal fade" role="dialog">
+            <form id="details-form" method="POST">
+                <div class="modal-dialog" role='document'>
+                    <div class="modal-content" style="max-width:600px">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Reservation Details</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" name="id" id="details-id" />
+                            <div class="row mb-2">
+                                <div class="col-sm-12">
+                                    <label>Name</label>
+                                    <input readonly class="form-control" type="text" name="name" id="name" required>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-sm-6">
+                                    <label>Email Address</label>
+                                    <input readonly class="form-control" type="text" name="email_address"
+                                        id="email_address" required>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label>Contact Number</label>
+                                    <input readonly class="form-control" type="text" name="contact_number"
+                                        id="contact_number" required>
+                                </div>
 
-              </div>
-              <div class="row mb-2">
-                <div class="col-sm-6">
-                  <label>Date Created</label>
-                  <input readonly class="form-control" type="text" name="date_added" id="date_added" required>
-                </div>
-                <div class="col-sm-6">
-                  <label>Move Date</label>
-                  <input readonly class="form-control" type="text" name="move_date" id="move_date" required>
-                </div>
-              </div>
-              <div class="row mb-2">
-                <div class="col-sm-6">
-                  <label>Room</label>
-                  <input readonly class="form-control" type="text" name="room_name"
-                    id="room_name" required>
-                </div>
-                <div class="col-sm-6">
-                  <label>Downpayment Deadline</label>
-                  <input readonly class="form-control" type="text" name="reservation_account_expiry_date"
-                    id="reservation_account_expiry_date" required>
-                </div>
-              </div>
-              <div class="row mb-2">
-                <div class="col-sm-12">
-                  <label>Message</label>
-                  <textarea readonly class='form-control' name="" id="message" rows="5" style="resize: none"></textarea>
-                </div>
-              </div>
-            </div>
-            <?php
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-sm-6">
+                                    <label>Date Created</label>
+                                    <input readonly class="form-control" type="text" name="date_added" id="date_added"
+                                        required>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label>Move Date</label>
+                                    <input readonly class="form-control" type="text" name="move_date" id="move_date"
+                                        required>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-sm-6">
+                                    <label>Room</label>
+                                    <input readonly class="form-control" type="text" name="room_name" id="room_name"
+                                        required>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label>Downpayment Deadline</label>
+                                    <input readonly class="form-control" type="text"
+                                        name="reservation_account_expiry_date" id="reservation_account_expiry_date"
+                                        required>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-sm-12">
+                                    <label>Message</label>
+                                    <textarea readonly class='form-control' name="" id="message" rows="5"
+                                        style="resize: none"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <?php
             if ($sort === 'pending'):
               ?>
-            <div class="modal-footer">
-              <button type="button" id="approve" class="btn btn-success">Approve</button>
-              <button type="button" id="reject" class="btn btn-danger">Reject</button>
-            </div>
-            <?php
+                        <div class="modal-footer">
+                            <button type="button" id="approve" class="btn btn-success">Approve</button>
+                            <button type="button" id="reject" class="btn btn-danger">Reject</button>
+                        </div>
+                        <?php
             endif;
             ?>
-          </div>
+                    </div>
+                </div>
+            </form>
         </div>
-      </form>
-    </div>
 
-    <?php include './../templates/scripts.php' ?>
+        <?php include './../templates/scripts.php' ?>
 
-    <script type="text/javascript">
-    function viewReservationDetails(id) {
-      $.get("./../functions/reservation_details.php?id=" + id, function(resp) {
-        const data = JSON.parse(resp);
-        $('#details-id').val(data.id);
-        for (key in data) {
-          $(`#${key}`).val(data[key]);
+        <script type="text/javascript">
+        function viewReservationDetails(id) {
+            $.get("./../functions/reservation_details.php?id=" + id, function(resp) {
+                const data = JSON.parse(resp);
+                $('#details-id').val(data.id);
+                for (key in data) {
+                    $(`#${key}`).val(data[key]);
+                }
+                $('#details-modal').modal('show');
+
+                $('#approve').click(function() {
+                    updateReservation(id, 'approve');
+                })
+                $('#reject').click(function() {
+                    updateReservation(id, 'reject');
+                })
+            });
         }
-        $('#details-modal').modal('show');
 
-        $('#approve').click(function() {
-          updateReservation(id, 'approve');
-        })
-        $('#reject').click(function() {
-          updateReservation(id, 'reject');
-        })
-      });
-    }
-
-    function updateReservation(id, status) {
-      $.get("./../functions/update_reservation.php?id=" + id + "&status=" + status, function(resp) {
-        console.log(resp);
-        const res = JSON.parse(resp);
-        if (res.status === 200) {
-          alert(res.message);
-          window.location.reload();
+        function updateReservation(id, status) {
+            $.get("./../functions/update_reservation.php?id=" + id + "&status=" + status, function(resp) {
+                const res = JSON.parse(resp);
+                if (res.status === 200) {
+                    alert(res.message);
+                    window.location.reload();
+                }
+            });
         }
-      });
-    }
 
-    $(document).ready(function() {
-      $('#reservations-table').DataTable()
+        $(document).ready(function() {
+            $('#reservations-table').DataTable()
 
-      $('#sidebarCollapse').on('click', function() {
-        $('#sidebar').toggleClass('active');
-        $('#content').toggleClass('active');
-      });
+            $('#sidebarCollapse').on('click', function() {
+                $('#sidebar').toggleClass('active');
+                $('#content').toggleClass('active');
+            });
 
-      $('.more-button,.body-overlay').on('click', function() {
-        $('#sidebar,.body-overlay').toggleClass('show-nav');
-      });
+            $('.more-button,.body-overlay').on('click', function() {
+                $('#sidebar,.body-overlay').toggleClass('show-nav');
+            });
 
-      $('.sidebar-link').click(function(e) {
-        if ($(this).hasClass('active')) {
-          e.preventDefault();
-          return;
-        }
-        $('.sidebar-link').removeClass('active');
-        $(this).addClass('active');
-      });
+            $('.sidebar-link').click(function(e) {
+                if ($(this).hasClass('active')) {
+                    e.preventDefault();
+                    return;
+                }
+                $('.sidebar-link').removeClass('active');
+                $(this).addClass('active');
+            });
 
-      $('#approve').click(function() {
-        $.post('./../functions/approve_reservation.php', {});
-      });
-
-      $('#logout-link').click(function() {
-        let x = confirm("Do you want to logout?");
-        if (x) {
-          $.get("./../../services/logout.php", function(message) {
-            alert(message);
-            window.location = './../login.php';
-          });
-        }
-      });
-    });
-    
-    </script>
+            $('#logout-link').click(function() {
+                let x = confirm("Do you want to logout?");
+                if (x) {
+                    $.get("./../../services/logout.php", function(message) {
+                        alert(message);
+                        window.location = './../login.php';
+                    });
+                }
+            });
+        });
+        </script>
 </body>
 
 </html>
