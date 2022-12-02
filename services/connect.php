@@ -7,7 +7,7 @@
 // $database = "fatimadb";
 
 $servername = "127.0.0.1:3306";
-$username = "u630200923_fatima_user";
+$username = "u630200923_fatimauser";
 $password = "Fatima123";
 $database = "u630200923_fatimarental";
 
