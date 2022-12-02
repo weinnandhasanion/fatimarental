@@ -57,30 +57,30 @@ tenant\profile\payments.php
 Room History (Tenant)
 
 ```
-tenant\profile.php
-tenant\profile\history.php
+tenant/profile.php
+tenant/profile/history.php
 ```
 
 Change Password (Tenant)
 
 ```
-tenant\profile.php
-tenant\profile\change-password.php
+tenant/profile.php
+tenant/profile/change-password.php
 ```
 
 Dashboard
 
 ```
-admin\pages\dashboard.php
+admin/pages/dashboard.php
 ```
 
 Reservations
 
 ```
-admin\pages\reservations.php
-admin\functions\approve_reservation.php
-admin\functions\update_reservation.php
-admin\functions\reservation_details.php
+admin/pages/reservations.php
+admin/functions/approve_reservation.php
+admin/functions/update_reservation.php
+admin/functions/reservation_details.php
 ```
 
 #### Russell
