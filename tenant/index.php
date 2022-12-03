@@ -18,6 +18,7 @@ $rooms = array_map(function($room) use ($conn) {
       $room['images'][] = $row;
     }
   }
+  
 
   return $room;
 }, $rooms);
