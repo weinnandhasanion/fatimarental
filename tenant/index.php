@@ -184,7 +184,7 @@ $rooms = array_map(function($room) use ($conn) {
                     </div>
                 </div>
                 <div class="right">
-                    <img src="./assets/h3.JPG" alt="">
+                    <img src="./assets/h3.jpg" alt="">
                 </div>
             </div>
         </div>
