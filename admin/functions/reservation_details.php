@@ -14,7 +14,7 @@ $row = $res->fetch_assoc();
 
 $row['move_date'] = date("F d, Y", strtotime($row['move_date']));
 $row['date_added'] = date("F d, Y", strtotime($row['date_added']));
-$row['reservation_account_expiry_date'] = date("F d, Y", strtotime($row['reservation_account_expiry_date']));
+$row['reservation_account_expiry_date'] = $row['reservation_account_expiry_date'] ? date("F d, Y", strtotime($row['reservation_account_expiry_date'])) : "N/A";
 $row['name'] = $row['first_name']." ".$row['last_name'];
 
 echo json_encode($row);
