@@ -151,7 +151,7 @@ foreach ($rooms as $room) {
                 const res = JSON.parse(resp);
                 if (res.status === 200) {
                     alert(
-                        'Successfully reserved room. Please check your email regarding reservation details.'
+                        'Successfully reserved room.'
                     )
                     window.location.href = 'index.php'
                 } else {
