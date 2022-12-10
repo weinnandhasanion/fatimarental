@@ -105,9 +105,9 @@ create table `tenants` (
     `middle_initial` VARCHAR(2),
     `gender` TINYINT CHECK (`gender` < 3),
     -- Gender: 0 = Male, 1 = Female, 2 = Unspecified
-    `status` TINYINT(4) DEFAULT 0,
-    -- Status: 0 = Permanent, 1 = Reserved, 2 = Rejected Reservation
-    `reservation_account_expiry_date` TIMESTAMP NULL DEFAULT NULL,
+    -- `status` TINYINT(4) DEFAULT 0,
+    -- -- Status: 0 = Permanent, 1 = Reserved, 2 = Rejected Reservation
+    -- `reservation_account_expiry_date` TIMESTAMP NULL DEFAULT NULL,
     `email_address` VARCHAR(255),
     `address` VARCHAR(255),
     `contact_number` VARCHAR(255),
@@ -150,8 +150,13 @@ create table `tenant_room_history` (
 create table `reservations` (
     `id` INT AUTO_INCREMENT,
     `room_id` int,
-    `tenant_id` VARCHAR(255),
+    `name` VARCHAR(255),
+    `gender` TINYINT CHECK (`gender` < 3),
+    -- Gender: 0 = Male, 1 = Female, 2 = Unspecified,
+    `email_address` VARCHAR(255),
+    `contact_number` VARCHAR(255),
     `move_date` DATE,
+    `date_approved` DATE,
     `message` VARCHAR(255),
     `admin_id` int DEFAULT NULL,
     `status` tinyint(3) DEFAULT 0,
