@@ -7,7 +7,7 @@ $users = [];
 $usersQuery = "SELECT t.*, r.room_name FROM tenants AS t
   INNER JOIN rooms AS r
   ON t.room_id = r.id
-  WHERE t.status = 0 AND t.account_status = 0
+  WHERE t.account_status = 0
   LIMIT 5";
 $usersRes = mysqli_query($conn, $usersQuery);
 $users = mysqli_fetch_all($usersRes, MYSQLI_ASSOC);
@@ -50,7 +50,7 @@ foreach ($res->fetch_all(MYSQLI_ASSOC) as $row) {
                             <div class="card-content">
                                 <p class="category"><strong>Tenants</strong></p>
                                 <h3 class="card-title"><?php
-                $sql = "SELECT * FROM tenants WHERE `status` = 0 AND account_status = 0";
+                $sql = "SELECT * FROM tenants WHERE account_status = 0";
                 $res = $conn->query($sql);
                 echo $res->num_rows;
                 ?></h3>
@@ -58,7 +58,8 @@ foreach ($res->fetch_all(MYSQLI_ASSOC) as $row) {
                             <div class="card-footer">
                                 <div class="stats">
                                     <i class="material-icons text-info">info</i>
-                                    <a href="http://localhost/fatimarental/admin/pages/tenants.php">See detailed report</a>
+                                    <a href="http://localhost/fatimarental/admin/pages/tenants.php">See detailed
+                                        report</a>
                                 </div>
                             </div>
                         </div>
@@ -83,7 +84,9 @@ foreach ($res->fetch_all(MYSQLI_ASSOC) as $row) {
                             </div>
                             <div class="card-footer">
                                 <div class="stats">
-                                    <i class="material-icons">local_offer</i> <a href="http://localhost/fatimarental/admin/pages/reservations.php">Monthly Reservations</a>
+                                    <i class="material-icons">local_offer</i> <a
+                                        href="http://localhost/fatimarental/admin/pages/reservations.php">Monthly
+                                        Reservations</a>
                                 </div>
                             </div>
                         </div>
@@ -111,7 +114,8 @@ foreach ($res->fetch_all(MYSQLI_ASSOC) as $row) {
                             </div>
                             <div class="card-footer">
                                 <div class="stats">
-                                    <i class="material-icons">date_range</i> <a href="http://localhost/fatimarental/admin/pages/payments.php">Total Payments</a>
+                                    <i class="material-icons">date_range</i> <a
+                                        href="http://localhost/fatimarental/admin/pages/payments.php">Total Payments</a>
                                 </div>
                             </div>
                         </div>
@@ -134,7 +138,8 @@ foreach ($res->fetch_all(MYSQLI_ASSOC) as $row) {
                             </div>
                             <div class="card-footer">
                                 <div class="stats">
-                                    <i class="material-icons">update</i> <a href="http://localhost/fatimarental/admin/pages/rooms.php"> Just Updated </a>
+                                    <i class="material-icons">update</i> <a
+                                        href="http://localhost/fatimarental/admin/pages/rooms.php"> Just Updated </a>
                                 </div>
                             </div>
                         </div>
@@ -151,7 +156,7 @@ foreach ($res->fetch_all(MYSQLI_ASSOC) as $row) {
                                 </h4>
                                 <p class="category">
                                     <?php 
-                  $sql = "SELECT * FROM tenants WHERE `status` = 0 AND account_status = 0 ORDER BY date_added DESC LIMIT 1";
+                  $sql = "SELECT * FROM tenants WHERE account_status = 0 ORDER BY date_added DESC LIMIT 1";
                   $res = $conn->query($sql);
                   if ($res->num_rows > 0) {
                     $row = $res->fetch_assoc();

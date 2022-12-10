@@ -10,11 +10,9 @@ $statuses = [
   "rejected" => [2, "Rejected"]
 ];
 
-$sql = "SELECT re.*, t.first_name, t.last_name, ro.room_name FROM reservations AS re
+$sql = "SELECT re.*, ro.room_name FROM reservations AS re
   INNER JOIN rooms AS ro
   ON re.room_id = ro.id
-  INNER JOIN tenants AS t
-  ON re.tenant_id = t.id
   WHERE re.`status` = ". $statuses[$sort][0];
 $res = $conn->query($sql);
 $reservations = [];

@@ -200,7 +200,7 @@ $rooms = array_map(function($room) use ($conn) {
 
             <div class="content grid2 mtop">
                 <?php foreach($rooms as $room): 
-                $sql = "SELECT COUNT(*) AS co FROM tenants WHERE room_id = ". $room['id'] ." AND `status` = 0 AND account_status = 0";  
+                $sql = "SELECT COUNT(*) AS co FROM tenants WHERE room_id = ". $room['id'] ." AND account_status = 0";  
                 $occupants = $conn->query($sql)->fetch_assoc()['co'];
                 $full = intval($occupants) === intval($room['capacity']);
                 ?>
