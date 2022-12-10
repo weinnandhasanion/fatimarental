@@ -150,7 +150,9 @@ create table `tenant_room_history` (
 create table `reservations` (
     `id` INT AUTO_INCREMENT,
     `room_id` int,
-    `name` VARCHAR(255),
+    `first_name` VARCHAR(255),
+    `middle_initial` VARCHAR(255),
+    `last_name` VARCHAR(255),
     `gender` TINYINT CHECK (`gender` < 3),
     -- Gender: 0 = Male, 1 = Female, 2 = Unspecified,
     `email_address` VARCHAR(255),
@@ -161,9 +163,9 @@ create table `reservations` (
     `admin_id` int DEFAULT NULL,
     `status` tinyint(3) DEFAULT 0,
     -- 0: pending, 1: approved, 2: rejected
+    `expiry_date` DATE,
     `date_added` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
-    FOREIGN KEY (`tenant_id`) REFERENCES `tenants`(`id`),
     FOREIGN KEY (`room_id`) REFERENCES `rooms`(`id`)
 );
 
