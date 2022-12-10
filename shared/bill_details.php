@@ -65,7 +65,7 @@ $row = $res->fetch_assoc();
         <tbody>
             <tr>
                 <td>Room Charge</td>
-                <td>₱<?= $row['price'] ?>.00</td>
+                <td>₱<?= $row['room_charge'] ?>.00</td>
             </tr>
             <tr>
                 <td>Electricity Bill</td>
