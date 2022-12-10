@@ -54,7 +54,7 @@ try {
     if (intval($row['status']) === 2) {
         $errors['room_name'] = 'Room is under maintenance.';
     }
-    $sql = "SELECT * FROM tenants WHERE room_id = $room_id AND `status` != 2 AND account_status = 0";
+    $sql = "SELECT * FROM tenants WHERE room_id = $room_id AND account_status = 0";
     $res = $conn->query($sql);
     if ($res->num_rows >= $capacity) {
         $errors['room_name'] = 'Room is already full.';

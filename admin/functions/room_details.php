@@ -11,7 +11,7 @@ $row['room_images'] = [];
 $row['reserved_tenants'] = 0;
 $row['status'] = ($row['status'] === 0 || empty($row['status'])) ? "Available" : "Under Maintenance";
 
-$sql = "SELECT COUNT(*) AS reserved_tenants FROM tenants WHERE account_status = 0 AND room_id = $id AND `status` = 1";
+$sql = "SELECT COUNT(*) AS reserved_tenants FROM tenants WHERE account_status = 0 AND room_id = $id";
 $res = $conn->query($sql);
 
 $row['reserved_tenants'] = $res->fetch_assoc()['reserved_tenants'];

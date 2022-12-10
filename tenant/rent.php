@@ -13,7 +13,7 @@ $rooms = $conn->query($sql)?->fetch_all(MYSQLI_ASSOC);
 $options = [];
 
 foreach ($rooms as $room) {
-  $sql = "SELECT COUNT(*) AS co FROM tenants WHERE room_id = " . $room['id'] ." AND `status` != 2";
+  $sql = "SELECT COUNT(*) AS co FROM tenants WHERE room_id = " . $room['id'];
   $count = $conn->query($sql)->fetch_assoc()['co'];
   if ($room['capacity'] > $count) {
     $options[] = $room;

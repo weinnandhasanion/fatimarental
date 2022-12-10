@@ -20,7 +20,7 @@ if ($roomsRes) {
             'payment_id' => null,
         ];
         $name = $room['room_name'];
-        $sql = "SELECT * FROM tenants WHERE room_id = $id AND `status` = 0 AND `account_status` = 0";
+        $sql = "SELECT * FROM tenants WHERE room_id = $id AND `account_status` = 0";
         $res = $conn->query($sql);
         $tenants = [];
         $room['status'] = ($room['status'] === 0 || empty($room['status'])) ? "Available" : "Under Maintenance";
@@ -32,9 +32,6 @@ if ($roomsRes) {
             }
             $room['tenants'] = $tenants;
         }
-
-        $sql = "SELECT COUNT(*) AS reserved_tenants FROM tenants WHERE room_id = $id AND `status` = 1";
-        $room['reserved_tenants'] = $conn->query($sql)->fetch_assoc()['reserved_tenants'];
 
         $sql = "SELECT * FROM bills WHERE room_id = $id ORDER BY id DESC LIMIT 1";
         $res = $conn->query($sql);
@@ -365,15 +362,12 @@ function renderTenants($tenants)
 
                         </div>
                         <div class="row mb-2">
-                            <div class="col-sm-4">
-                                <label>Reserved Tenants</label>
-                                <input class="form-control" type="text" name="reserved_tenants-view" required readonly>
-                            </div>
-                            <div class="col-sm-4">
+
+                            <div class="col-sm-6">
                                 <label for="">Room Status</label>
                                 <input class="form-control" type="text" name="status-view" required readonly>
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
                                 <label for="">Total Income</label>
                                 <input class="form-control" type="text" name="total_amount-view" required readonly>
                             </div>

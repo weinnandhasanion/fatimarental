@@ -33,22 +33,13 @@ if ($error === null) {
   $move_date = $_POST['move_date'];
   $message = $_POST['message'];
   
-  if (empty($message)) $message = null;
+  if (empty($message)) $message = "";
   
-  $id = guidv4();
-  $status = 1;
-  $sql = "INSERT INTO tenants (id, room_id, first_name, last_name, middle_initial, gender, `status`, email_address, contact_number, reservation_account_expiry_date)
-    VALUES ('$id', $room_id, '$first_name', '$last_name', '$middle_initial', ".intval($gender).", $status, '$email_address', '$contact_number', DATE_ADD(NOW(), INTERVAL 3 DAY))";
+  $sql = "INSERT INTO reservations (room_id, `first_name`, `middle_initial`, `last_name`, email_address, contact_number, move_date, `message`, `expiry_date`)  
+  VALUES ($room_id, '$first_name', '$middle_initial', '$last_name', '$email_address', '$contact_number', '$move_date', '$message', DATE_ADD(NOW(), INTERVAL 3 DAY))";
+
   $res = $conn->query($sql);
-  
-  if ($res) {
-    $sql = "INSERT INTO reservations (room_id, tenant_id, move_date, `message`)  
-    VALUES ($room_id, '$id', '$move_date', '$message')";
-  
-    $res = $conn->query($sql);
-    if ($res) $status = 200;
-  }
-  
+  if ($res) $status = 200;
 }
 
 echo json_encode(['status' => $status, 'error' => $error]);
