@@ -91,19 +91,21 @@ foreach ($res->fetch_all(MYSQLI_ASSOC) as $row) {
                                                 data-id="<?= $room["id"] ?>">+ Add
                                                 additional charge</button>
                                         </div>
-                                        <div class="col-sm-12 mt-2 d-flex align-items-center"
+                                        <div class="col-sm-12 mt-2 d-flex align-items-center flex-wrap"
                                             id="filename-cont-<?= $room["id"] ?>" style="gap: 8px">
                                             <input type="file" hidden id="attachment-<?= $room["id"] ?>" multiple
                                                 accept="image/png, image/jpeg" />
-                                            <button
-                                                class="btn btn-sm btn-secondary d-flex justify-content-center align-items-center"
-                                                onclick="attachReceipt(this.getAttribute('data-id'))" type="button"
-                                                data-id="<?= $room["id"] ?>"><i class="material-icons"
-                                                    style="font-size: 12px; margin-right: 5px">photo_camera</i>
-                                                Attach
-                                                photo of
-                                                receipt</button>
-
+                                            <div>
+                                                <button
+                                                    class="btn btn-sm btn-secondary d-flex justify-content-center align-items-center"
+                                                    onclick="attachReceipt(this.getAttribute('data-id'))" type="button"
+                                                    data-id="<?= $room["id"] ?>"><i class="material-icons"
+                                                        style="font-size: 12px; margin-right: 5px">photo_camera</i>
+                                                    Attach
+                                                    photo of
+                                                    receipt</button>
+                                                <small class="text-danger" id="files-<?= $room["id"] ?>-error"></small>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -224,7 +226,6 @@ foreach ($res->fetch_all(MYSQLI_ASSOC) as $row) {
             } = e.target;
             const [, id] = name.split('-');
             dataMap = mapData(id, name, value);
-            console.log('change', dataMap);
         });
 
         $(document).ready(function() {
@@ -238,7 +239,7 @@ foreach ($res->fetch_all(MYSQLI_ASSOC) as $row) {
                 getElecFields(id, e);
             });
 
-            $('button[name="addtl-charge"]').click(e => {
+            $('button[name="addtl-charge"]').click(function(e) {
                 const id = $(e.target).attr('data-id');
                 let {
                     charges
@@ -248,7 +249,7 @@ foreach ($res->fetch_all(MYSQLI_ASSOC) as $row) {
                 getAddtlCharges(id, charges);
             });
 
-            billForm.submit(e => {
+            billForm.submit(function(e) {
                 e.preventDefault();
 
                 let formData = new FormData();
@@ -288,20 +289,6 @@ foreach ($res->fetch_all(MYSQLI_ASSOC) as $row) {
                         console.error(err);
                     }
                 });
-                // $.post('./../functions/add_bill.php', {
-                //     data: JSON.stringify(dataMap)
-                // }, function(resp) {
-                //     $('#bill-btn').removeAttr('disabled');
-                //     const res = JSON.parse(resp);
-                //     if (res.status === 422) {
-                //         renderErrors(res.errors);
-                //     }
-
-                //     if (res.status === 200) {
-                //         alert('Bill successfully published.');
-                //         window.location.href = './billing.php';
-                //     }
-                // });
             });
         });
 
@@ -314,19 +301,54 @@ foreach ($res->fetch_all(MYSQLI_ASSOC) as $row) {
                     files
                 } = e.target;
 
-                dataMap = mapData(id, 'files', Array.from(files));
+                filesToStore = Array.from(files).length < 1 ? dataMap[id].files ?? [] : Array.from(files);
 
-                appendImageName(Array.from(files), id);
+                dataMap = mapData(id, 'files', filesToStore);
+
+                appendImageName(filesToStore, id);
             });
         }
 
-        const appendImageName = (files, id) => {
-            $(`.receipt-images-${id}`).remove();
+        function appendImageName(files, id) {
+            $(`button[id^="receipt-images-${id}"]`).remove();
+            $(`#remove-img-${id}`).remove();
 
-            for (file of files) {
-                const elem = `<a href="#" class="text-primary receipt-images-${id}">${file.name}</a>`;
+            const removeElem = `<button type="button" class="btn btn-sm btn-link text-danger" id="remove-img-${id}" onclick="removeImages(this)">
+                Remove
+            </button>`;
+
+            for ([i, file] of files.entries()) {
+                const elem =
+                    `<button type="button" class="text-primary btn btn-link" id="receipt-images-${id}-${i}" onclick="clickImage(this.id)">${file.name}</button>`;
                 $(`#filename-cont-${id}`).append(elem);
             }
+
+            $(`#filename-cont-${id}`).append(removeElem);
+        }
+
+        function clickImage(elemId) {
+            const [index, id] = elemId.split('-').reverse();
+            const reader = new FileReader();
+            const file = dataMap[id].files[index];
+            reader.addEventListener('load', event => {
+                $.dialog({
+                    backgroundDismiss: true,
+                    title: file.name,
+                    content: `<div style='display: flex; justify-content: center; align-items: center;'>
+              <img src='${event.target.result}' />
+            </div>`
+                });
+            });
+            reader.readAsDataURL(file);
+        };
+
+        function removeImages(elem) {
+            const [id] = elem.id.split('-').reverse();
+
+            dataMap = mapData(id, 'files', []);
+
+            $(`button[id^="receipt-images-${id}"]`).remove();
+            $(elem).remove();
         }
 
         function cancel() {

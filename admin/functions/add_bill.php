@@ -16,13 +16,30 @@ foreach ($data as $roomKey => $room) {
     }
     
     // Unset unnecessary values for errors
-    unset($errors[$roomKey]["files"]);
     unset($errors[$roomKey]["room_price"]);
     unset($errors[$roomKey]["charges"]);
 }
 
 foreach ($data as $roomKey => $room) {
     // Generate errors
+    if (!isset($data[$roomKey]['files'])) {
+            $errors[$roomKey]['files'] = "Please attach receipt/s";
+    } else {
+        $isValid = true;
+        foreach ($data[$roomKey]['files'] as $key => $file) {
+            $acceptedExts = ['jpg', 'jpeg', 'png'];
+            [$fileExt] = array_reverse(explode(".", $files["$roomKey-" . $key+1]['name']));
+            if (!in_array(strtolower($fileExt), $acceptedExts)) {
+                $errors[$roomKey]['files'] = "Only image files are accepted";
+                $isValid = false;
+            }
+
+            if ($isValid) {
+                unset($errors[$roomKey]['files']);
+            }
+        }
+    }
+
     foreach ($data[$roomKey] as $key => $value) {
         if (in_array($key, ["charges", "files"])) continue;
         if (empty($value)) {

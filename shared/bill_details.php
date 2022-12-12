@@ -8,6 +8,13 @@ ON b.room_id = r.id
 WHERE b.id = $id";
 $res = $conn->query($sql);
 $row = $res->fetch_assoc();
+
+$sqlImgs = "SELECT image_pathname FROM bill_receipts WHERE bill_id = $id";
+$pathnames = [];
+$resImgs = $conn->query($sqlImgs);
+while ($rowImgs = $resImgs->fetch_assoc()) {
+    $pathnames[] = $rowImgs['image_pathname'];
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -99,6 +106,13 @@ $row = $res->fetch_assoc();
             </tr>
         </tbody>
     </table>
+    <br>
+    <h6>Attachments</h6>
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px;">
+        <?php foreach ($pathnames as $src) { ?>
+        <img src="./../uploads/<?= $src ?>" alt="<?= $src ?>" style="height: 300px; width: 300px; object-fit: cover">
+        <?php } ?>
+    </div>
     <br>
     <small>For inquiries or concerns regarding this bill, please contact 09152341234.</small>
     <br />
