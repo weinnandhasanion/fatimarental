@@ -188,6 +188,14 @@ create table `bills` (
     FOREIGN KEY (`admin_id`) REFERENCES `admins`(`id`)
 );
 
+create table `bill_receipts` (
+    `id` INT AUTO_INCREMENT,
+    `image_pathname` TEXT,
+    `bill_id` INT,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`bill_id`) REFERENCES `bills`(`id`)
+);
+
 create table `additional_charges` (
     `id` INT AUTO_INCREMENT,
     `bill_id` INT,

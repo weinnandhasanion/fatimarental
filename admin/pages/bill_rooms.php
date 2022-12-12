@@ -91,6 +91,20 @@ foreach ($res->fetch_all(MYSQLI_ASSOC) as $row) {
                                                 data-id="<?= $room["id"] ?>">+ Add
                                                 additional charge</button>
                                         </div>
+                                        <div class="col-sm-12 mt-2 d-flex align-items-center"
+                                            id="filename-cont-<?= $room["id"] ?>" style="gap: 8px">
+                                            <input type="file" hidden id="attachment-<?= $room["id"] ?>" multiple
+                                                accept="image/png, image/jpeg" />
+                                            <button
+                                                class="btn btn-sm btn-secondary d-flex justify-content-center align-items-center"
+                                                onclick="attachReceipt(this.getAttribute('data-id'))" type="button"
+                                                data-id="<?= $room["id"] ?>"><i class="material-icons"
+                                                    style="font-size: 12px; margin-right: 5px">photo_camera</i>
+                                                Attach
+                                                photo of
+                                                receipt</button>
+
+                                        </div>
                                     </div>
 
                                     <?php endforeach ?>
@@ -232,29 +246,88 @@ foreach ($res->fetch_all(MYSQLI_ASSOC) as $row) {
                 dataMap = mapData(id, 'charges', ++charges);
                 $(`#ref-${id}`).append(renderAdditionalCharge(charges, id))
                 getAddtlCharges(id, charges);
-                console.log('click', dataMap);
-            })
+            });
 
             billForm.submit(e => {
                 e.preventDefault();
-                $('#bill-btn').attr('disabled', 'disabled');
-                $('small[id$="-error"]').text('')
-                $.post('./../functions/add_bill.php', {
-                    data: JSON.stringify(dataMap)
-                }, function(resp) {
-                    $('#bill-btn').removeAttr('disabled');
-                    const res = JSON.parse(resp);
-                    if (res.status === 422) {
-                        renderErrors(res.errors);
-                    }
 
-                    if (res.status === 200) {
-                        alert('Bill successfully published.');
-                        window.location.href = './billing.php';
+                let formData = new FormData();
+                formData.append('data', JSON.stringify(dataMap));
+                Object.keys(dataMap).forEach(key => {
+                    if (dataMap[key].files?.length > 0) {
+                        for ([i, file] of dataMap[key].files.entries()) {
+                            formData.append(`${key}-${i+1}`, file);
+                        }
                     }
                 });
+
+                $('#bill-btn').attr('disabled', 'disabled');
+                $('small[id$="-error"]').text('');
+                $.ajax({
+                    type: "POST",
+                    enctype: 'multipart/form-data',
+                    url: "./../functions/add_bill.php",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+                    timeout: 800000,
+                    success: function(resp) {
+                        $('#bill-btn').removeAttr('disabled');
+                        const res = JSON.parse(resp);
+                        if (res.status === 422) {
+                            renderErrors(res.errors);
+                        }
+
+                        if (res.status === 200) {
+                            alert('Bill successfully published.');
+                            window.location.href = './billing.php';
+                        }
+                    },
+                    error: function(err) {
+                        console.error(err);
+                    }
+                });
+                // $.post('./../functions/add_bill.php', {
+                //     data: JSON.stringify(dataMap)
+                // }, function(resp) {
+                //     $('#bill-btn').removeAttr('disabled');
+                //     const res = JSON.parse(resp);
+                //     if (res.status === 422) {
+                //         renderErrors(res.errors);
+                //     }
+
+                //     if (res.status === 200) {
+                //         alert('Bill successfully published.');
+                //         window.location.href = './billing.php';
+                //     }
+                // });
             });
         });
+
+        function attachReceipt(id) {
+            const fileInput = $(`#attachment-${id}`);
+            fileInput.click();
+
+            fileInput.on('change', function(e) {
+                const {
+                    files
+                } = e.target;
+
+                dataMap = mapData(id, 'files', Array.from(files));
+
+                appendImageName(Array.from(files), id);
+            });
+        }
+
+        const appendImageName = (files, id) => {
+            $(`.receipt-images-${id}`).remove();
+
+            for (file of files) {
+                const elem = `<a href="#" class="text-primary receipt-images-${id}">${file.name}</a>`;
+                $(`#filename-cont-${id}`).append(elem);
+            }
+        }
 
         function cancel() {
             const res = confirm('Are you sure to cancel billing?');

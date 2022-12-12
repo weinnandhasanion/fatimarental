@@ -4,6 +4,7 @@ include "./send_message.php";
 session_start();
 
 $data = $_POST['data'] ? json_decode(json_encode(json_decode($_POST['data'])), true) : [];
+$files = $_FILES;
 $errors = [];
 $status = 422;
 
@@ -15,6 +16,7 @@ foreach ($data as $roomKey => $room) {
     }
     
     // Unset unnecessary values for errors
+    unset($errors[$roomKey]["files"]);
     unset($errors[$roomKey]["room_price"]);
     unset($errors[$roomKey]["charges"]);
 }
@@ -22,7 +24,7 @@ foreach ($data as $roomKey => $room) {
 foreach ($data as $roomKey => $room) {
     // Generate errors
     foreach ($data[$roomKey] as $key => $value) {
-        if ($key === "charges") continue;
+        if (in_array($key, ["charges", "files"])) continue;
         if (empty($value)) {
             $errors[$roomKey][$key] = "Please provide a value";
         } else if (!str_contains($key, "name") && !is_numeric($value)) {
@@ -41,7 +43,6 @@ foreach ($data as $roomKey => $room) {
 }
 
 if (count($errors) < 1) {
-    $sqls = [];
     $status = 200;
 
     foreach ($data as $roomId => $room) {
@@ -51,7 +52,7 @@ if (count($errors) < 1) {
         $end_period = date("Y-m-t");
         $room_charge = intval($room['room_price']);
         $total = intval($room_charge) + intval($electricity_bill) + intval($water_bill);
-        foreach (['charges', 'room_price', 'water_bill', 'electricity_bill'] as $key) {
+        foreach (['charges', 'room_price', 'water_bill', 'electricity_bill', 'files'] as $key) {
             unset($data[$roomId][$key]);
         }
         
@@ -72,9 +73,9 @@ if (count($errors) < 1) {
                     $i++;
                 }
     
-                foreach ($charges as $ch) {
-                    $total += intval($ch[1]);
-                    $sql = "INSERT INTO additional_charges (bill_id, `name`, charge) VALUES ($bill_id, '".$ch[0]."', '".$ch[1]."')";
+                foreach ($charges as [$name, $charge]) {
+                    $total += intval($charge);
+                    $sql = "INSERT INTO additional_charges (bill_id, `name`, charge) VALUES ($bill_id, '$name', '$charge')";
                     $conn->query($sql);
                 }
             }
@@ -90,6 +91,21 @@ if (count($errors) < 1) {
                     sendMessage($tenant['contact_number'], "Your bill for $start_period to $end_period is P$total.00. Please make sure to pay to avoid penalties.");
                 }
             }
+        }
+    }
+
+    foreach ($files as $key => $file) {
+        [$room_id] = explode("-", $key);
+        $filename = $file["name"];
+
+        $sql = "SELECT id FROM bills WHERE room_id = $room_id ORDER BY date_added DESC LIMIT 1";
+        $id = $conn->query($sql)->fetch_assoc()['id'];
+
+        $sql2 = "INSERT INTO bill_receipts (image_pathname, bill_id) VALUES ('$filename', $id)";
+        $res = $conn->query($sql2);
+
+        if ($res) {
+            move_uploaded_file($file['tmp_name'], './../../uploads/' . $file['name']);
         }
     }
 }
