@@ -130,10 +130,10 @@ create table `room_images` (
 );
 
 INSERT INTO `room_images` (room_id, image_pathname) 
-    VALUES (1, 'stpeter.jpg'), 
-    (2, 'stmaximillian.jpg'),
-    (3, 'stalbert.jpg'),
-    (4, 'sttherese.jpg');
+    VALUES (1, 'stpeter.JPG'), 
+    (2, 'stmaximillian.JPG'),
+    (3, 'stalbert.JPG'),
+    (4, 'sttherese.JPG');
 
 create table `tenant_room_history` (
     `id` int AUTO_INCREMENT,
