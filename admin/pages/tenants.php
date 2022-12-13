@@ -629,6 +629,17 @@ foreach ($rooms as $room) {
                 });
             });
 
+            // Check url if redirected from reservation page and pre-pop form values in add tenant modal
+            if (window.location.search.includes('create_tenant=true')) {
+                const searchParams = new URLSearchParams(window.location.search);
+                const data = Object.fromEntries(searchParams.entries());
+                for (key in data) {
+                    $(`input[name="${key}"]`).val(data[key]);
+                }
+                $('select[name="room_name"]').val(data.room_id);
+                $('#add-tenant-modal').modal('show');
+            }
+
             $('#logout-link').click(function() {
                 let x = confirm("Do you want to logout?");
                 if (x) {

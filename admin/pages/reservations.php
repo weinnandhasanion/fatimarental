@@ -167,6 +167,12 @@ if ($res) $reservations = $res->fetch_all(MYSQLI_ASSOC);
                             <button type="button" id="reject" class="btn btn-danger">Reject</button>
                         </div>
                         <?php
+            elseif ($sort === 'approved'):
+                ?>
+                        <div class="modal-footer">
+                            <button type="button" id="create-tenant" class="btn btn-success">Create Tenant</button>
+                        </div>
+                        <?php
             endif;
             ?>
                     </div>
@@ -234,6 +240,23 @@ if ($res) $reservations = $res->fetch_all(MYSQLI_ASSOC);
                         window.location = './../login.php';
                     });
                 }
+            });
+
+            $('#create-tenant').click(function() {
+                const id = $('#details-id').val();
+                $.get(`./../functions/reservation_details.php?id=${id}&create_tenant=true`,
+                    function(res) {
+                        const data = JSON.parse(res);
+
+                        const keys = ['room_id', 'first_name', 'middle_initial', 'last_name',
+                            'email_address', 'contact_number'
+                        ];
+
+                        let params = keys.map(key => `${key}=${data[key]}`);
+
+                        window.location.href = './tenants.php?' + params.join('&') +
+                            '&create_tenant=true';
+                    });
             });
         });
         </script>
