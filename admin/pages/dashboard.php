@@ -58,7 +58,7 @@ foreach ($res->fetch_all(MYSQLI_ASSOC) as $row) {
                             <div class="card-footer">
                                 <div class="stats">
                                     <i class="material-icons text-info">info</i>
-                                    <a href="http://localhost/fatimarental/admin/pages/tenants.php">See detailed
+                                    <a href="./tenants.php">See detailed
                                         report</a>
                                 </div>
                             </div>
@@ -84,8 +84,7 @@ foreach ($res->fetch_all(MYSQLI_ASSOC) as $row) {
                             </div>
                             <div class="card-footer">
                                 <div class="stats">
-                                    <i class="material-icons">local_offer</i> <a
-                                        href="http://localhost/fatimarental/admin/pages/reservations.php">Monthly
+                                    <i class="material-icons">local_offer</i> <a href="./reservations.php">Monthly
                                         Reservations</a>
                                 </div>
                             </div>
@@ -114,8 +113,7 @@ foreach ($res->fetch_all(MYSQLI_ASSOC) as $row) {
                             </div>
                             <div class="card-footer">
                                 <div class="stats">
-                                    <i class="material-icons">date_range</i> <a
-                                        href="http://localhost/fatimarental/admin/pages/payments.php">Total Payments</a>
+                                    <i class="material-icons">date_range</i> <a href="./reports.php">Total Payments</a>
                                 </div>
                             </div>
                         </div>
@@ -138,8 +136,7 @@ foreach ($res->fetch_all(MYSQLI_ASSOC) as $row) {
                             </div>
                             <div class="card-footer">
                                 <div class="stats">
-                                    <i class="material-icons">update</i> <a
-                                        href="http://localhost/fatimarental/admin/pages/rooms.php"> Just Updated </a>
+                                    <i class="material-icons">update</i> <a href="./rooms.php"> Just Updated </a>
                                 </div>
                             </div>
                         </div>
