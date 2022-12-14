@@ -11,6 +11,10 @@ $now = strtotime(date(DATE_RSS));
 foreach ($reservation as $reservations) {
     if ($now > strtotime($reservation['expiry_date'])) {
         $sql = "UPDATE reservation SET `status` = 2 WHERE id = $id";
-        $conn->query($sql);
+        $res = $conn->query($sql);
+
+        if ($res) {
+            echo "reservation id: $id updated by CRON";
+        }
     }
 }

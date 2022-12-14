@@ -22,6 +22,8 @@ foreach ($rooms as $room) {
     $message = "Hi! You are now $days days behind your previous bill. Please pay your bills before $lastDeadline. Thank you.";
     foreach ($numbers as $number) {
       sendMessage($number, $message);
+
+      echo "message sent to $number";
     }
   }
 }
